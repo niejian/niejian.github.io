@@ -100,13 +100,13 @@
 
 
 
-  <meta name="description" content="1. 下载release版本本次够简单的是1.4.0的版本 2. 初始化数据库信息数据库表信息 2.1 修改注册中心配置初始化数据库表后，需要修改 ApolloConfigDB.ServerConfig表中的注册中心信息，apollo在启动的时候回读取该表的信息然后将服务注册上去。 2.2 初始化配置环境信息修改ApolloPortalDB.serverConfig表的apollo.portal.">
+  <meta name="description" content="1. 下载release版本本次构建的是1.4.0的版本 2. 初始化数据库信息数据库表信息 2.1 修改注册中心配置初始化数据库表后，需要修改 ApolloConfigDB.ServerConfig表中的注册中心信息，apollo在启动的时候回读取该表的信息然后将服务注册上去。 2.2 初始化配置环境信息修改ApolloPortalDB.serverConfig表的apollo.portal.e">
 <meta name="keywords" content="apollo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="源码构建Apollo以及改造">
 <meta property="og:url" content="https://niejian.github.io/2019/05/23/源码构建Apollo以及改造/index.html">
 <meta property="og:site_name" content="code4fun">
-<meta property="og:description" content="1. 下载release版本本次够简单的是1.4.0的版本 2. 初始化数据库信息数据库表信息 2.1 修改注册中心配置初始化数据库表后，需要修改 ApolloConfigDB.ServerConfig表中的注册中心信息，apollo在启动的时候回读取该表的信息然后将服务注册上去。 2.2 初始化配置环境信息修改ApolloPortalDB.serverConfig表的apollo.portal.">
+<meta property="og:description" content="1. 下载release版本本次构建的是1.4.0的版本 2. 初始化数据库信息数据库表信息 2.1 修改注册中心配置初始化数据库表后，需要修改 ApolloConfigDB.ServerConfig表中的注册中心信息，apollo在启动的时候回读取该表的信息然后将服务注册上去。 2.2 初始化配置环境信息修改ApolloPortalDB.serverConfig表的apollo.portal.e">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://s2.ax1x.com/2019/05/23/VClTsA.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/05/23/VCMX0P.png">
@@ -115,10 +115,10 @@
 <meta property="og:image" content="https://s2.ax1x.com/2019/05/23/VCQxD1.md.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/05/23/VC1fwq.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/05/23/VC3QXj.md.png">
-<meta property="og:updated_time" content="2019-05-23T02:11:29.902Z">
+<meta property="og:updated_time" content="2019-05-23T02:42:18.055Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="源码构建Apollo以及改造">
-<meta name="twitter:description" content="1. 下载release版本本次够简单的是1.4.0的版本 2. 初始化数据库信息数据库表信息 2.1 修改注册中心配置初始化数据库表后，需要修改 ApolloConfigDB.ServerConfig表中的注册中心信息，apollo在启动的时候回读取该表的信息然后将服务注册上去。 2.2 初始化配置环境信息修改ApolloPortalDB.serverConfig表的apollo.portal.">
+<meta name="twitter:description" content="1. 下载release版本本次构建的是1.4.0的版本 2. 初始化数据库信息数据库表信息 2.1 修改注册中心配置初始化数据库表后，需要修改 ApolloConfigDB.ServerConfig表中的注册中心信息，apollo在启动的时候回读取该表的信息然后将服务注册上去。 2.2 初始化配置环境信息修改ApolloPortalDB.serverConfig表的apollo.portal.e">
 <meta name="twitter:image" content="https://s2.ax1x.com/2019/05/23/VClTsA.png">
 
 
@@ -406,7 +406,7 @@
                 
               
 
-              <time title="创建时间：2019-05-23 10:10:35 / 修改时间：10:11:29" itemprop="dateCreated datePublished" datetime="2019-05-23T10:10:35+08:00">2019-05-23</time>
+              <time title="创建时间：2019-05-23 10:10:35 / 修改时间：10:42:18" itemprop="dateCreated datePublished" datetime="2019-05-23T10:10:35+08:00">2019-05-23</time>
             
 
             
@@ -498,7 +498,7 @@
       
 
       
-        <h3 id="1-下载release版本"><a href="#1-下载release版本" class="headerlink" title="1. 下载release版本"></a>1. 下载release版本</h3><p>本次够简单的是1.4.0的版本</p>
+        <h3 id="1-下载release版本"><a href="#1-下载release版本" class="headerlink" title="1. 下载release版本"></a>1. 下载release版本</h3><p>本次构建的是1.4.0的版本</p>
 <h3 id="2-初始化数据库信息"><a href="#2-初始化数据库信息" class="headerlink" title="2. 初始化数据库信息"></a>2. 初始化数据库信息</h3><p><a href="https://github.com/nobodyiam/apollo-build-scripts/blob/master/sql/apolloportaldb.sql" target="_blank" rel="noopener">数据库表信息</a><br><br></p>
 <h4 id="2-1-修改注册中心配置"><a href="#2-1-修改注册中心配置" class="headerlink" title="2.1 修改注册中心配置"></a>2.1 修改注册中心配置</h4><p><strong><em>初始化数据库表后，需要修改 <code>ApolloConfigDB.ServerConfig</code>表中的注册中心信息，apollo在启动的时候回读取该表的信息然后将服务注册上去。</em></strong><br></p>
 <h4 id="2-2-初始化配置环境信息"><a href="#2-2-初始化配置环境信息" class="headerlink" title="2.2 初始化配置环境信息"></a>2.2 初始化配置环境信息</h4><p>修改ApolloPortalDB.serverConfig表的<code>apollo.portal.envs</code><br><img src="https://s2.ax1x.com/2019/05/23/VClTsA.png" alt="VClTsA.png"></p>
