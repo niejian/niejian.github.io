@@ -351,6 +351,229 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://niejian.github.io/2019/05/23/源码构建Apollo以及改造/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jian Nie">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://s2.ax1x.com/2019/05/07/Er0DE9.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="code4fun">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/23/源码构建Apollo以及改造/" class="post-title-link" itemprop="url">源码构建Apollo以及改造</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-23 10:10:35 / 修改时间：10:11:29" itemprop="dateCreated datePublished" datetime="2019-05-23T10:10:35+08:00">2019-05-23</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/apollo/" itemprop="url" rel="index"><span itemprop="name">apollo</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">4.2k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">4 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1-下载release版本"><a href="#1-下载release版本" class="headerlink" title="1. 下载release版本"></a>1. 下载release版本</h3><p>本次够简单的是1.4.0的版本</p>
+<h3 id="2-初始化数据库信息"><a href="#2-初始化数据库信息" class="headerlink" title="2. 初始化数据库信息"></a>2. 初始化数据库信息</h3><p><a href="https://github.com/nobodyiam/apollo-build-scripts/blob/master/sql/apolloportaldb.sql" target="_blank" rel="noopener">数据库表信息</a><br><br></p>
+<h4 id="2-1-修改注册中心配置"><a href="#2-1-修改注册中心配置" class="headerlink" title="2.1 修改注册中心配置"></a>2.1 修改注册中心配置</h4><p><strong><em>初始化数据库表后，需要修改 <code>ApolloConfigDB.ServerConfig</code>表中的注册中心信息，apollo在启动的时候回读取该表的信息然后将服务注册上去。</em></strong><br></p>
+<h4 id="2-2-初始化配置环境信息"><a href="#2-2-初始化配置环境信息" class="headerlink" title="2.2 初始化配置环境信息"></a>2.2 初始化配置环境信息</h4><p>修改ApolloPortalDB.serverConfig表的<code>apollo.portal.envs</code><br><img src="https://s2.ax1x.com/2019/05/23/VClTsA.png" alt="VClTsA.png"></p>
+<h3 id="3-修改对应数据库配置"><a href="#3-修改对应数据库配置" class="headerlink" title="3. 修改对应数据库配置"></a>3. 修改对应数据库配置</h3><h4 id="3-1-修改打包脚本"><a href="#3-1-修改打包脚本" class="headerlink" title="3.1 修改打包脚本"></a>3.1 修改打包脚本</h4><ol>
+<li>位置：<code>scripts/build.sh</code></li>
+<li>修改配置<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># apollo config db info</span><br><span class="line">apollo_config_db_url=jdbc:mysql://yun2:3306/ApolloConfigDB?characterEncoding=utf8</span><br><span class="line">apollo_config_db_username=root</span><br><span class="line">apollo_config_db_password=root</span><br><span class="line"></span><br><span class="line"># apollo portal db info</span><br><span class="line">apollo_portal_db_url=jdbc:mysql://yun2:3306/ApolloPortalDB?characterEncoding=utf8</span><br><span class="line">apollo_portal_db_username=root</span><br><span class="line">apollo_portal_db_password=root</span><br><span class="line"></span><br><span class="line"># meta server url, different environments should have different meta server addresses</span><br><span class="line"># 这里是对应的是各个环境中的configService地址</span><br><span class="line">dev_meta=http://localhost:8080</span><br><span class="line">#fat_meta=http://fill-in-fat-meta-server:8080</span><br><span class="line">uat_meta=http://localhost:8082</span><br><span class="line">pro_meta=http://localhost:8083</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>从以上脚本可以看出，需要有3个configService和3个adminService。所以需要初始化3个不同的ApolloConfigDB库。</p>
+<ol start="3">
+<li>执行脚本<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./build.sh</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><strong><font color="red">注意：修改<code>dev_meta</code>的信息要与实际启动的机器相同</font></strong><br></p>
+<h4 id="3-2-上传压缩包"><a href="#3-2-上传压缩包" class="headerlink" title="3.2 上传压缩包"></a>3.2 上传压缩包</h4><p>对用户来说，实际有用的包就是三个：<code>configService</code>,<code>adminService</code>,<code>portalService</code>。执行完脚本后可以看到<br><a href="https://imgchr.com/i/VCMX0P" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/05/23/VCMX0P.png" alt="VCMX0P.png"></a><br><a href="https://imgchr.com/i/VCMOmt" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/05/23/VCMOmt.png" alt="VCMOmt.png"></a><br><a href="https://imgchr.com/i/VCMqOI" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/05/23/VCMqOI.png" alt="VCMqOI.png"></a></p>
+<ol>
+<li>解压相应的带github标签的包</li>
+<li>修改相关配置<ol>
+<li>portal，admin包不需要修改</li>
+<li>config包修改</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">├── apollo-configservice-1.4.0.jar</span><br><span class="line">├── apollo-configservice-1.4.0-sources.jar</span><br><span class="line">├── apollo-configservice.conf</span><br><span class="line">├── apollo-configservice_dataserverapollo-configservice.pid</span><br><span class="line">├── apollo-configservice.jar</span><br><span class="line">├── config</span><br><span class="line">│   ├── application-github.properties  --&gt;config模块的数据库连接信息</span><br><span class="line">│   └── app.properties</span><br><span class="line">└── scripts</span><br><span class="line">    ├── shutdown.sh</span><br><span class="line">    └── startup.sh  ---&gt;启动端口信息</span><br></pre></td></tr></table></figure>
+<p><strong>所以config模块主要修改压缩包解压后两个部分: config下的数据库配置信息和启动脚本，启动端口要与3.2步骤设置的启动脚本一致</strong></p>
+<h4 id="3-3-启动"><a href="#3-3-启动" class="headerlink" title="3.3 启动"></a>3.3 启动</h4><p>修改完后数据库配置信息，和启动脚本的端口后，直接运行启动脚本。</p>
+<h3 id="4-效果图"><a href="#4-效果图" class="headerlink" title="4.效果图"></a>4.效果图</h3><p><a href="https://imgchr.com/i/VCQxD1" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/05/23/VCQxD1.md.png" alt="VCQxD1.md.png"></a><br>左侧就能看到对应的不同环境的配置信息了。</p>
+<h3 id="5-项目依赖"><a href="#5-项目依赖" class="headerlink" title="5. 项目依赖"></a>5. 项目依赖</h3><p>在运行<code>build.sh</code>脚本的时候，会将apollo运行和依赖相关的jar包打包。apollo服务端运行的话就只需要<code>adminservice</code>,<code>configservice</code>,<code>portal</code>三个模块。如果其它项目需要使用这个配置中心就需要将打包好的client包依赖进去。<br><br>当其它项目想使用这个配置中心，传统的做法是需要在<code>application.yml</code>中添加<code>apollo.meata=xxxx.xxx</code>的配置信息来告诉项目此时该连接哪个配置中心下载哪些配置中心的配置。但是可以优化这个操作，具体步骤如下</p>
+<h4 id="5-1-在core模块添加配置中心配置信息"><a href="#5-1-在core模块添加配置中心配置信息" class="headerlink" title="5.1 在core模块添加配置中心配置信息"></a>5.1 在core模块添加配置中心配置信息</h4><p><img src="https://s2.ax1x.com/2019/05/23/VC1fwq.png" alt="VC1fwq.png"></p>
+<p><font color="red"><strong>具体配置信息要跟build.sh脚本指定的一致</strong></font><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dev.meta=http://node3:8080</span><br><span class="line">#fat_meta=http://fill-in-fat-meta-server:8080</span><br><span class="line">uat.meta=http://node3:8082</span><br><span class="line">pro.meta=http://node1:8083</span><br></pre></td></tr></table></figure></p>
+<h4 id="5-2-修改core的pom文件打包方式，将配置文件打包进jar中"><a href="#5-2-修改core的pom文件打包方式，将配置文件打包进jar中" class="headerlink" title="5.2 修改core的pom文件打包方式，将配置文件打包进jar中"></a>5.2 修改core的pom文件打包方式，将配置文件打包进jar中</h4><p><a href="https://imgchr.com/i/VC3QXj" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/05/23/VC3QXj.md.png" alt="VC3QXj.md.png"></a></p>
+<h4 id="5-3-将打包好的client，core上传到私服"><a href="#5-3-将打包好的client，core上传到私服" class="headerlink" title="5.3 将打包好的client，core上传到私服"></a>5.3 将打包好的client，core上传到私服</h4><h3 id="6-具体使用和改造"><a href="#6-具体使用和改造" class="headerlink" title="6 具体使用和改造"></a>6 具体使用和改造</h3><p>如果就这样引入客户端还是无法读到相关配置的，需要修改core模块的相关代码。<br><br>经调试，如果客户端中没有配置<code>apollo.meta=xxx</code>的配置，他会默认返回<code>http://apollo.meta</code>,具体的实现在<code>MetaDomainConsts</code>中，需要做一下改造，来根据实际环境连接读取相应的xonfigservice<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">    Properties prop = <span class="keyword">new</span> Properties();</span><br><span class="line">    <span class="comment">// 读取配置文件</span></span><br><span class="line">    prop = ResourceUtils.readConfigFile(<span class="string">"apollo-env.properties"</span>, prop);</span><br><span class="line">    Properties env = System.getProperties();</span><br><span class="line">    domains.put(Env.LOCAL,</span><br><span class="line">            env.getProperty(<span class="string">"local_meta"</span>, prop.getProperty(<span class="string">"local.meta"</span>, DEFAULT_META_URL)));</span><br><span class="line">    domains.put(Env.DEV,</span><br><span class="line">            env.getProperty(<span class="string">"dev_meta"</span>, prop.getProperty(<span class="string">"dev.meta"</span>, DEFAULT_META_URL)));</span><br><span class="line">    domains.put(Env.FAT,</span><br><span class="line">            env.getProperty(<span class="string">"fat_meta"</span>, prop.getProperty(<span class="string">"fat.meta"</span>, DEFAULT_META_URL)));</span><br><span class="line">    domains.put(Env.UAT,</span><br><span class="line">            env.getProperty(<span class="string">"uat_meta"</span>, prop.getProperty(<span class="string">"uat.meta"</span>, DEFAULT_META_URL)));</span><br><span class="line">    domains.put(Env.LPT,</span><br><span class="line">            env.getProperty(<span class="string">"lpt_meta"</span>, prop.getProperty(<span class="string">"lpt.meta"</span>, DEFAULT_META_URL)));</span><br><span class="line">    domains.put(Env.PRO,</span><br><span class="line">            env.getProperty(<span class="string">"pro_meta"</span>, prop.getProperty(<span class="string">"pro.meta"</span>, DEFAULT_META_URL)));</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>加上以上一段客户端就能根据配置的环境来去读不同的配置了。</p>
+<h3 id="7-新特性"><a href="#7-新特性" class="headerlink" title="7 新特性"></a>7 新特性</h3><h4 id="7-1-自动更新配置"><a href="#7-1-自动更新配置" class="headerlink" title="7.1 自动更新配置"></a>7.1 自动更新配置</h4><p>具体实现在<strong>AutoUpdateConfigChangeListener</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onChange</span><span class="params">(ConfigChangeEvent changeEvent)</span> </span>&#123;</span><br><span class="line">    Set&lt;String&gt; keys = changeEvent.changedKeys();</span><br><span class="line">    <span class="keyword">if</span> (CollectionUtils.isEmpty(keys)) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (String key : keys) &#123;</span><br><span class="line">      <span class="comment">// 1. check whether the changed key is relevant</span></span><br><span class="line">      Collection&lt;SpringValue&gt; targetValues = springValueRegistry.get(beanFactory, key);</span><br><span class="line">      <span class="keyword">if</span> (targetValues == <span class="keyword">null</span> || targetValues.isEmpty()) &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 2. update the value</span></span><br><span class="line">      <span class="keyword">for</span> (SpringValue val : targetValues) &#123;</span><br><span class="line">        updateSpringValue(val);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">updateSpringValue</span><span class="params">(SpringValue springValue)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      Object value = resolvePropertyValue(springValue);</span><br><span class="line">      springValue.update(value);</span><br><span class="line"></span><br><span class="line">      logger.info(<span class="string">"Auto update apollo changed value successfully, new value: &#123;&#125;, &#123;&#125;"</span>, value,</span><br><span class="line">          springValue);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">      logger.error(<span class="string">"Auto update apollo changed value failed, &#123;&#125;"</span>, springValue.toString(), ex);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://niejian.github.io/2019/05/16/dubbo框架设计简介/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2612,231 +2835,13 @@ b. 消费者能绕过zk来直接发起调用，在使用url标签，直接指定
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://niejian.github.io/2019/04/19/apollo-配置中心源码解读/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jian Nie">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="https://s2.ax1x.com/2019/05/07/Er0DE9.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="code4fun">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/04/19/apollo-配置中心源码解读/" class="post-title-link" itemprop="url">apollo 配置中心源码解读</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-04-19 13:10:03 / 修改时间：15:18:18" itemprop="dateCreated datePublished" datetime="2019-04-19T13:10:03+08:00">2019-04-19</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">13k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">12 分钟</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>apollo配置中心事件通知：ApplicationEventPublisher</p>
-<p>点击发布的时候触发一下操作：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">portal: &apos;/apps/:appId/envs/:env/clusters/:clusterName/namespaces/:namespaceName/releases’</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">portal:http://localhost:8070/apps/demo-apollo-test/envs/DEV/clusters/default/namespaces/application/releases</span><br></pre></td></tr></table></figure>
-<p><code>admin-service:apps/{appId}/clusters/{clusterName}/namespaces/{namespaceName}/releases</code></p>
-<h3 id="Apollo配置中心监听器"><a href="#Apollo配置中心监听器" class="headerlink" title="Apollo配置中心监听器"></a>Apollo配置中心监听器</h3><h4 id="1-apollo的核心代码分享"><a href="#1-apollo的核心代码分享" class="headerlink" title="1. apollo的核心代码分享"></a>1. apollo的核心代码分享</h4><ul>
-<li><p>SpringApplication启动的关键步骤</p>
-<p><img src="https://s2.ax1x.com/2019/04/12/AbT1H0.png" alt></p>
-<p><img src="https://s2.ax1x.com/2019/04/12/AbTN34.jpg" alt></p>
-</li>
-<li><p>在SpringApplication中，会加载所有实现了Init方法的类</p>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">applyInitializers</span><span class="params">(ConfigurableApplicationContext context)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (ApplicationContextInitializer initializer : getInitializers()) &#123;</span><br><span class="line">        Class&lt;?&gt; requiredType = GenericTypeResolver.resolveTypeArgument(</span><br><span class="line">            initializer.getClass(), ApplicationContextInitializer.class);</span><br><span class="line">        Assert.isInstanceOf(requiredType, context, <span class="string">"Unable to call initializer."</span>);</span><br><span class="line">        initializer.initialize(context);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>通过上述步骤，Apollo自己实现的<strong>ApplicationContextInitializer</strong>也就 被加载到容器中了。具体的加载流程如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.initialize-&gt;</span><br><span class="line">2.initializeSystemProperty(environment) 读取项目中Apollo相关的配置文件，在首次读取的时候都是为空的，配置文件还没有加载进来；如果读到了相关配置，就会将配置信息放到容器的环境变量中。</span><br><span class="line">3.</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">CompositePropertySource composite = <span class="keyword">new</span> CompositePropertySource(PropertySourcesConstants.APOLLO_BOOTSTRAP_PROPERTY_SOURCE_NAME);</span><br><span class="line"> <span class="comment">//循环遍历项目配置的namespace，</span></span><br><span class="line">  <span class="keyword">for</span> (String namespace : namespaceList) &#123;</span><br><span class="line">      <span class="comment">//1.调用trySync(),来同步apollo的和本地缓存的配置信息</span></span><br><span class="line">      <span class="comment">//2.将这些配置信息转换为应用的全局property</span></span><br><span class="line">    Config config = ConfigService.getConfig(namespace);</span><br><span class="line"></span><br><span class="line">    composite.addPropertySource(configPropertySourceFactory.getConfigPropertySource(namespace, config));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  environment.getPropertySources().addFirst(composite);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="2-Apollo启动一览"><a href="#2-Apollo启动一览" class="headerlink" title="2.Apollo启动一览"></a>2.Apollo启动一览</h4><h5 id="2-1-ApolloApplicationContextInitializer的作用"><a href="#2-1-ApolloApplicationContextInitializer的作用" class="headerlink" title="2.1 ApolloApplicationContextInitializer的作用"></a>2.1 ApolloApplicationContextInitializer的作用</h5><p>定义apollo的容器启动的时候具体的工作事项</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ApolloApplicationContextInitializer implements</span><br><span class="line">    ApplicationContextInitializer&lt;ConfigurableApplicationContext&gt;</span><br></pre></td></tr></table></figure>
-<p>容器启动的时候调用init方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"> <span class="meta">@Override</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initialize</span><span class="params">(ConfigurableApplicationContext context)</span> </span>&#123;</span><br><span class="line">   ConfigurableEnvironment environment = context.getEnvironment();</span><br><span class="line"></span><br><span class="line">  ------</span><br><span class="line">      <span class="comment">//关键步骤</span></span><br><span class="line">   <span class="keyword">for</span> (String namespace : namespaceList) &#123;</span><br><span class="line">       <span class="comment">//关键步骤：</span></span><br><span class="line">      </span><br><span class="line">     Config config = ConfigService.getConfig(namespace);</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">       	1.调用ConfigService.getService </span></span><br><span class="line"><span class="comment">         	public static Config getConfig(String namespace) &#123;</span></span><br><span class="line"><span class="comment">   			return s_instance.getManager().getConfig(namespace);</span></span><br><span class="line"><span class="comment"> 		 	&#125;</span></span><br><span class="line"><span class="comment"> 		 	2.DefaultConfigManager.getConfig</span></span><br><span class="line"><span class="comment"> 		 	if (config == null) &#123;</span></span><br><span class="line"><span class="comment">         		ConfigFactory factory = m_factoryManager.getFactory(namespace);</span></span><br><span class="line"><span class="comment">         		config = factory.create(namespace);</span></span><br><span class="line"><span class="comment">         		m_configs.put(namespace, config);</span></span><br><span class="line"><span class="comment">       	&#125;</span></span><br><span class="line"><span class="comment">       	3.DefaultConfigFactory.create(String namespace)</span></span><br><span class="line"><span class="comment">       	 DefaultConfig defaultConfig =</span></span><br><span class="line"><span class="comment">       		new DefaultConfig(namespace, createLocalConfigRepository(namespace));</span></span><br><span class="line"><span class="comment">       	4.createLocalConfigRepository--&gt;new LocalFileConfigRepository(namespace, createRemoteConfigRepository(namespace));</span></span><br><span class="line"><span class="comment">       	5.调用 LocalFileConfigRepository的构造方法 --&gt; RemoteConfigRepository</span></span><br><span class="line"><span class="comment">       	6.调用RemoteConfigRepository构造方法</span></span><br><span class="line"><span class="comment">       	 public RemoteConfigRepository(String namespace) &#123;</span></span><br><span class="line"><span class="comment">               m_namespace = namespace;</span></span><br><span class="line"><span class="comment">               m_configCache = new AtomicReference&lt;&gt;();</span></span><br><span class="line"><span class="comment">               m_configUtil = ApolloInjector.getInstance(ConfigUtil.class);</span></span><br><span class="line"><span class="comment">               m_httpUtil = ApolloInjector.getInstance(HttpUtil.class);</span></span><br><span class="line"><span class="comment">               m_serviceLocator = ApolloInjector.getInstance(ConfigServiceLocator.class);</span></span><br><span class="line"><span class="comment">               remoteConfigLongPollService = ApolloInjector.getInstance(RemoteConfigLongPollService.class);</span></span><br><span class="line"><span class="comment">               m_longPollServiceDto = new AtomicReference&lt;&gt;();</span></span><br><span class="line"><span class="comment">               m_remoteMessages = new AtomicReference&lt;&gt;();</span></span><br><span class="line"><span class="comment">               m_loadConfigRateLimiter = RateLimiter.create(m_configUtil.getLoadConfigQPS());</span></span><br><span class="line"><span class="comment">               m_configNeedForceRefresh = new AtomicBoolean(true);</span></span><br><span class="line"><span class="comment">               m_loadConfigFailSchedulePolicy = new ExponentialSchedulePolicy(m_configUtil.getOnErrorRetryInterval(),</span></span><br><span class="line"><span class="comment">                   m_configUtil.getOnErrorRetryInterval() * 8);</span></span><br><span class="line"><span class="comment">               gson = new Gson();</span></span><br><span class="line"><span class="comment">               this.trySync();</span></span><br><span class="line"><span class="comment">               this.schedulePeriodicRefresh();</span></span><br><span class="line"><span class="comment">               this.scheduleLongPollingRefresh();</span></span><br><span class="line"><span class="comment">             &#125;</span></span><br><span class="line"><span class="comment">       	</span></span><br><span class="line"><span class="comment">       */</span></span><br><span class="line">composite.addPropertySource(configPropertySourceFactory.getConfigPropertySource(namespace, config));</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   environment.getPropertySources().addFirst(composite);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p>终上，在容器启动的时候，会调用<strong>RemoteConfigRepository</strong>的构造方法，而实现配置中心的同步主要是调用<strong>trySync，schedulePeriodicRefresh，scheduleLongPollingRefresh</strong>这个三个方法来实现配置的实时同步</p>
-<h5 id="2-2trySync"><a href="#2-2trySync" class="headerlink" title="2.2trySync()"></a>2.2trySync()</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">trySync</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      sync();</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">      Tracer.logEvent(<span class="string">"ApolloConfigException"</span>, ExceptionUtil.getDetailMessage(ex));</span><br><span class="line">      logger</span><br><span class="line">          .warn(<span class="string">"Sync config failed, will retry. Repository &#123;&#125;, reason: &#123;&#125;"</span>, <span class="keyword">this</span>.getClass(), ExceptionUtil</span><br><span class="line">              .getDetailMessage(ex));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="comment">//实际调用</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">sync</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Transaction transaction = Tracer.newTransaction(<span class="string">"Apollo.ConfigService"</span>, <span class="string">"syncRemoteConfig"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">       <span class="comment">//从缓存中获取，如果有的话，启动的时候previos唯恐</span></span><br><span class="line">      ApolloConfig previous = m_configCache.get();</span><br><span class="line">        <span class="comment">//获取当前的配置文件</span></span><br><span class="line">      ApolloConfig current = loadApolloConfig();</span><br><span class="line">        <span class="comment">//比较两者是否有差异，</span></span><br><span class="line">      <span class="keyword">if</span> (previous != current) &#123;</span><br><span class="line">        logger.debug(<span class="string">"Remote Config refreshed!"</span>);</span><br><span class="line">          <span class="comment">//如果缓存的配置信息与当前查数据库获取到的信息不同，那么就将从数据库中获取到的配置信息放到缓存中。这样在程序启动的时候，configCache就完成了初始化</span></span><br><span class="line">        m_configCache.set(current);</span><br><span class="line">        <span class="keyword">this</span>.fireRepositoryChange(m_namespace, <span class="keyword">this</span>.getConfig());</span><br><span class="line">      &#125;</span><br><span class="line">----</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//如果两者有差异，就触发此操作</span></span><br><span class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">fireRepositoryChange</span><span class="params">(String namespace, Properties newProperties)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (RepositoryChangeListener listener : m_listeners) &#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">          <span class="comment">//如果两者有差异，那么刷新缓存配置，并且将重写本地的缓存文件</span></span><br><span class="line">        listener.onRepositoryChange(namespace, newProperties);</span><br><span class="line">      &#125; <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">        Tracer.logError(ex);</span><br><span class="line">        logger.error(<span class="string">"Failed to invoke repository change listener &#123;&#125;"</span>, listener.getClass(), ex);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<h5 id="2-3-schedulePeriodicRefresh"><a href="#2-3-schedulePeriodicRefresh" class="headerlink" title="2.3 schedulePeriodicRefresh"></a>2.3 schedulePeriodicRefresh</h5><p>开启多线程，调用 trySync();</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">schedulePeriodicRefresh</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    logger.debug(<span class="string">"Schedule periodic refresh with interval: &#123;&#125; &#123;&#125;"</span>,</span><br><span class="line">        m_configUtil.getRefreshInterval(), m_configUtil.getRefreshIntervalTimeUnit());</span><br><span class="line">    m_executorService.scheduleAtFixedRate(</span><br><span class="line">        <span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">          <span class="meta">@Override</span></span><br><span class="line">          <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            Tracer.logEvent(<span class="string">"Apollo.ConfigService"</span>, String.format(<span class="string">"periodicRefresh: %s"</span>, m_namespace));</span><br><span class="line">            logger.debug(<span class="string">"refresh config for namespace: &#123;&#125;"</span>, m_namespace);</span><br><span class="line">            trySync();</span><br><span class="line">            Tracer.logEvent(<span class="string">"Apollo.Client.Version"</span>, Apollo.VERSION);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;, m_configUtil.getRefreshInterval(), m_configUtil.getRefreshInterval(),</span><br><span class="line">        m_configUtil.getRefreshIntervalTimeUnit());</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<h5 id="2-4-scheduleLongPollingRefresh"><a href="#2-4-scheduleLongPollingRefresh" class="headerlink" title="2.4 scheduleLongPollingRefresh"></a>2.4 scheduleLongPollingRefresh</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">scheduleLongPollingRefresh</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   remoteConfigLongPollService.submit(m_namespace, <span class="keyword">this</span>);</span><br><span class="line"> &#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">submit</span><span class="params">(String namespace, RemoteConfigRepository remoteConfigRepository)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">boolean</span> added = m_longPollNamespaces.put(namespace, remoteConfigRepository);</span><br><span class="line">   m_notifications.putIfAbsent(namespace, INIT_NOTIFICATION_ID);</span><br><span class="line">   <span class="keyword">if</span> (!m_longPollStarted.get()) &#123;</span><br><span class="line">     startLongPolling();</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> added;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p>整个apollo配置中心的逻辑就是这样，简单的说就是无线循环的去获取配置信息，当获取到的配置信息与上次获取到的不同那么就刷新容器缓存的配置项并且更新客户端缓存的配置信息。</p>
-<h4 id="3-注解ApolloConfigChangeListener分析"><a href="#3-注解ApolloConfigChangeListener分析" class="headerlink" title="3. 注解ApolloConfigChangeListener分析"></a>3. 注解ApolloConfigChangeListener分析</h4><h5 id="3-1-ApolloConfigChangeListener实现原理"><a href="#3-1-ApolloConfigChangeListener实现原理" class="headerlink" title="3.1@ApolloConfigChangeListener实现原理"></a>3.1@ApolloConfigChangeListener实现原理</h5><p>Apollo配置中心有声明一个后置处理器，所以在程序启动的时候，spring容器会自动加载这个PostProcessor。</p>
-<p>类图如下</p>
-<p><img src="https://s2.ax1x.com/2019/04/12/AbThDI.png" alt></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">ApolloProcessor</span> <span class="keyword">implements</span> <span class="title">BeanPostProcessor</span>, <span class="title">PriorityOrdered</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> Object <span class="title">postProcessBeforeInitialization</span><span class="params">(Object bean, String beanName)</span></span></span><br><span class="line"><span class="function">      <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">    Class clazz = bean.getClass();</span><br><span class="line">    <span class="keyword">for</span> (Field field : findAllField(clazz)) &#123;</span><br><span class="line">      processField(bean, beanName, field);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (Method method : findAllMethod(clazz)) &#123;</span><br><span class="line">      processMethod(bean, beanName, method);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> bean;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p>由ApolloProcessor的具体实现可以看到，在postProcessBeforeInitialization(后置处理器生成之前，会调用子类的processField、processMethod方法)。就是说<strong>在ApolloProcessor构造后置处理器之前，会调用ApolloAnnotationProcessor的processMethod</strong></p>
-<p>ApolloAnnotationProcessor的具体实现</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"> <span class="meta">@Override</span></span><br><span class="line"> <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">processMethod</span><span class="params">(<span class="keyword">final</span> Object bean, String beanName, <span class="keyword">final</span> Method method)</span> </span>&#123;</span><br><span class="line">     <span class="comment">//判断方法上是否加上ApolloConfigChangeListener注解</span></span><br><span class="line">   ApolloConfigChangeListener annotation = AnnotationUtils</span><br><span class="line">       .findAnnotation(method, ApolloConfigChangeListener.class);</span><br><span class="line">   <span class="keyword">if</span> (annotation == <span class="keyword">null</span>) &#123;</span><br><span class="line">     <span class="keyword">return</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   Class&lt;?&gt;[] parameterTypes = method.getParameterTypes();</span><br><span class="line">   Preconditions.checkArgument(parameterTypes.length == <span class="number">1</span>,</span><br><span class="line">       <span class="string">"Invalid number of parameters: %s for method: %s, should be 1"</span>, parameterTypes.length,</span><br><span class="line">       method);</span><br><span class="line">   Preconditions.checkArgument(ConfigChangeEvent.class.isAssignableFrom(parameterTypes[<span class="number">0</span>]),</span><br><span class="line">       <span class="string">"Invalid parameter type: %s for method: %s, should be ConfigChangeEvent"</span>, parameterTypes[<span class="number">0</span>],</span><br><span class="line">       method);</span><br><span class="line"><span class="comment">//将 标有注解ApolloConfigChangeListener的方法设为公有的</span></span><br><span class="line">   ReflectionUtils.makeAccessible(method);</span><br><span class="line">     <span class="comment">//ApolloConfigChangeListener注解上是否加上指定的namespace，如果没有的话，默认使用的namespace为application</span></span><br><span class="line">   String[] namespaces = annotation.value();</span><br><span class="line">   String[] annotatedInterestedKeys = annotation.interestedKeys();</span><br><span class="line">   Set&lt;String&gt; interestedKeys = annotatedInterestedKeys.length &gt; <span class="number">0</span> ? Sets.newHashSet(annotatedInterestedKeys) : <span class="keyword">null</span>;</span><br><span class="line">   ConfigChangeListener configChangeListener = <span class="keyword">new</span> ConfigChangeListener() &#123;</span><br><span class="line">     <span class="meta">@Override</span></span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onChange</span><span class="params">(ConfigChangeEvent changeEvent)</span> </span>&#123;</span><br><span class="line">       ReflectionUtils.invokeMethod(method, bean, changeEvent);</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">for</span> (String namespace : namespaces) &#123;</span><br><span class="line">     Config config = ConfigService.getConfig(namespace);</span><br><span class="line"></span><br><span class="line">     <span class="keyword">if</span> (interestedKeys == <span class="keyword">null</span>) &#123;</span><br><span class="line">       config.addChangeListener(configChangeListener);</span><br><span class="line">     &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">       config.addChangeListener(configChangeListener, interestedKeys);</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">RemoteConfigLongPollService</span><br><span class="line">	doLongPollingRefresh</span><br><span class="line">		notify(lastServiceDto, response.getBody()); <span class="comment">//通知同步更新</span></span><br><span class="line">调用sync()比较配置文件是否发生改变，变化就同步更新</span><br></pre></td></tr></table></figure>
-<p>在配置文件发生变动的时候，调用顺序就跟第一大节说的顺序一致。</p>
-<h4 id="4-实际使用"><a href="#4-实际使用" class="headerlink" title="4 实际使用"></a>4 实际使用</h4><h5 id="4-1配置多个环境列表-一个portal管理多个环境的配置"><a href="#4-1配置多个环境列表-一个portal管理多个环境的配置" class="headerlink" title="4.1配置多个环境列表(一个portal管理多个环境的配置)"></a>4.1配置多个环境列表(一个portal管理多个环境的配置)</h5><p><strong>在启动portal的时候需要添加参数来指定某个环境对应的注册中心是什么。</strong>如下：</p>
-<p>在启动Portal的时候，当点击的是dev也签，调用的注册中心是dev_meta；</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-Dapollo_profile=github,auth</span><br><span class="line">-Dspring.datasource.url=jdbc:mysql://yun1:3306/ApolloPortalDB?characterEncoding=utf8</span><br><span class="line">-Dspring.datasource.username=root</span><br><span class="line">-Dspring.datasource.password=Blue123!</span><br><span class="line">-Ddev_meta=http://localhost:8080</span><br><span class="line">-Dfat_meta=http://yun2:8080</span><br><span class="line">-Dserver.port=8070</span><br></pre></td></tr></table></figure>
-<p><em>**</em>在apollo中，可以支持多个环境列表的，通过阅读源码可以知道；在portal模块启动的时候，Apollo会将PortalDB库中的ServerConfig表中的数据添加到运行变量中去，其中就有环境列表的信息，这里需要手动加上去，并且用逗号隔开，添加的值也只能是它规定的那几个值。代码如下：</p>
-<ul>
-<li>获取表中的数据并将它们设置到环境变量中</li>
-</ul>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Env&gt; <span class="title">portalSupportedEnvs</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    String[] configurations = getArrayProperty(<span class="string">"apollo.portal.envs"</span>, <span class="keyword">new</span> String[]&#123;<span class="string">"FAT"</span>, <span class="string">"UAT"</span>, <span class="string">"PRO"</span>&#125;);</span><br><span class="line">    List&lt;Env&gt; envs = Lists.newLinkedList();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (String env : configurations) &#123;</span><br><span class="line">      envs.add(Env.fromString(env));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> envs;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">PortalDBPropertySource</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">super</span>(<span class="string">"DBConfig"</span>, Maps.newConcurrentMap());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//将PortalDB.ServerConfig中的表数据全部放入到运行变量中</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">refresh</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  Iterable&lt;ServerConfig&gt; dbConfigs = serverConfigRepository.findAll();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (ServerConfig config: dbConfigs) &#123;</span><br><span class="line">    String key = config.getKey();</span><br><span class="line">    Object value = config.getValue();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.source.isEmpty()) &#123;</span><br><span class="line">      logger.info(<span class="string">"Load config from DB : &#123;&#125; = &#123;&#125;"</span>, key, value);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!Objects.equals(<span class="keyword">this</span>.source.get(key), value)) &#123;</span><br><span class="line">      logger.info(<span class="string">"Load config from DB : &#123;&#125; = &#123;&#125;. Old value = &#123;&#125;"</span>, key,</span><br><span class="line">                  value, <span class="keyword">this</span>.source.get(key));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.source.put(key, value);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="4-2-指定运行环境"><a href="#4-2-指定运行环境" class="headerlink" title="4.2 指定运行环境"></a>4.2 指定运行环境</h5><ul>
-<li>1.<strong>在默认路径 /opt/settings/server.properties中指定代码的运行时环境</strong>。在项目启动的时候，会找到classpath路径下面的 apollo-env.properties，由它来指定具体的环境与注册中心的对应关系。这样，就不需要添加-Dapollo.mata这个变量了</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">MetaDomainConsts</span><br><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">  Properties prop = <span class="keyword">new</span> Properties();</span><br><span class="line">  prop = ResourceUtils.readConfigFile(<span class="string">"apollo-env.properties"</span>, prop);</span><br><span class="line">  Properties env = System.getProperties();</span><br><span class="line">  domains.put(Env.LOCAL,</span><br><span class="line">      env.getProperty(<span class="string">"local_meta"</span>, prop.getProperty(<span class="string">"local.meta"</span>, DEFAULT_META_URL)));</span><br><span class="line">  domains.put(Env.DEV,</span><br><span class="line">      env.getProperty(<span class="string">"dev_meta"</span>, prop.getProperty(<span class="string">"dev.meta"</span>, DEFAULT_META_URL)));</span><br><span class="line">  domains.put(Env.FAT,</span><br><span class="line">      env.getProperty(<span class="string">"fat_meta"</span>, prop.getProperty(<span class="string">"fat.meta"</span>, DEFAULT_META_URL)));</span><br><span class="line">  domains.put(Env.UAT,</span><br><span class="line">      env.getProperty(<span class="string">"uat_meta"</span>, prop.getProperty(<span class="string">"uat.meta"</span>, DEFAULT_META_URL)));</span><br><span class="line">  domains.put(Env.LPT,</span><br><span class="line">      env.getProperty(<span class="string">"lpt_meta"</span>, prop.getProperty(<span class="string">"lpt.meta"</span>, DEFAULT_META_URL)));</span><br><span class="line">  domains.put(Env.PRO,</span><br><span class="line">      env.getProperty(<span class="string">"pro_meta"</span>, prop.getProperty(<span class="string">"pro.meta"</span>, DEFAULT_META_URL)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
 
 
           </div>
@@ -2879,7 +2884,7 @@ b. 消费者能绕过zk来直接发起调用，在使用url标签，直接指定
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2910,7 +2915,9 @@ b. 消费者能绕过zk来直接发起调用，在使用url标签，直接指定
                     
                       
                     
-                    <span class="site-state-item-count">7</span>
+                      
+                    
+                    <span class="site-state-item-count">8</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -3031,7 +3038,7 @@ b. 消费者能绕过zk来直接发起调用，在使用url标签，直接指定
       <i class="fa fa-area-chart"></i>
     </span>
     
-    <span title="站点总字数">64k</span>
+    <span title="站点总字数">68k</span>
   
 
   
@@ -3040,7 +3047,7 @@ b. 消费者能绕过zk来直接发起调用，在使用url标签，直接指定
       <i class="fa fa-coffee"></i>
     </span>
     
-    <span title="站点阅读时长">58 分钟</span>
+    <span title="站点阅读时长">1:02</span>
   
 </div>
 

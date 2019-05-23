@@ -100,22 +100,13 @@
 
 
 
-  <meta name="description" content="apollo配置中心事件通知：ApplicationEventPublisher 点击发布的时候触发一下操作： 1portal: &amp;apos;/apps/:appId/envs/:env/clusters/:clusterName/namespaces/:namespaceName/releases’ 1portal:http://localhost:8070/apps/demo-apollo-t">
-<meta name="keywords" content="apollo">
-<meta property="og:type" content="article">
-<meta property="og:title" content="apollo 配置中心源码解读">
-<meta property="og:url" content="https://niejian.github.io/2019/04/19/apollo-配置中心源码解读/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="code4fun">
+<meta property="og:url" content="https://niejian.github.io/page/2/index.html">
 <meta property="og:site_name" content="code4fun">
-<meta property="og:description" content="apollo配置中心事件通知：ApplicationEventPublisher 点击发布的时候触发一下操作： 1portal: &amp;apos;/apps/:appId/envs/:env/clusters/:clusterName/namespaces/:namespaceName/releases’ 1portal:http://localhost:8070/apps/demo-apollo-t">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://s2.ax1x.com/2019/04/12/AbT1H0.png">
-<meta property="og:image" content="https://s2.ax1x.com/2019/04/12/AbTN34.jpg">
-<meta property="og:image" content="https://s2.ax1x.com/2019/04/12/AbThDI.png">
-<meta property="og:updated_time" content="2019-04-19T07:18:18.498Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="apollo 配置中心源码解读">
-<meta name="twitter:description" content="apollo配置中心事件通知：ApplicationEventPublisher 点击发布的时候触发一下操作： 1portal: &amp;apos;/apps/:appId/envs/:env/clusters/:clusterName/namespaces/:namespaceName/releases’ 1portal:http://localhost:8070/apps/demo-apollo-t">
-<meta name="twitter:image" content="https://s2.ax1x.com/2019/04/12/AbT1H0.png">
+<meta name="twitter:title" content="code4fun">
 
 
 
@@ -123,7 +114,7 @@
 
   
   
-  <link rel="canonical" href="https://niejian.github.io/2019/04/19/apollo-配置中心源码解读/">
+  <link rel="canonical" href="https://niejian.github.io/page/2/">
 
 
 
@@ -133,7 +124,7 @@
   };
 </script>
 
-  <title>apollo 配置中心源码解读 | code4fun</title>
+  <title>code4fun</title>
   
 
 
@@ -181,7 +172,8 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left 
+  page-home">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -342,9 +334,9 @@
           
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
 
   
 
@@ -376,8 +368,10 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">apollo 配置中心源码解读
-
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/04/19/apollo-配置中心源码解读/" class="post-title-link" itemprop="url">apollo 配置中心源码解读</a>
               
             
           </h1>
@@ -422,13 +416,6 @@
           
           
 
-          
-            <span class="post-meta-divider">|</span>
-            <span class="post-meta-item-icon">
-            <i class="fa fa-eye"></i>
-             阅读次数： 
-            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
-            </span>
           
 
           
@@ -476,7 +463,9 @@
       
 
       
-        <p>apollo配置中心事件通知：ApplicationEventPublisher</p>
+        
+          
+            <p>apollo配置中心事件通知：ApplicationEventPublisher</p>
 <p>点击发布的时候触发一下操作：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">portal: &apos;/apps/:appId/envs/:env/clusters/:clusterName/namespaces/:namespaceName/releases’</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">portal:http://localhost:8070/apps/demo-apollo-test/envs/DEV/clusters/default/namespaces/application/releases</span><br></pre></td></tr></table></figure>
@@ -529,6 +518,8 @@
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">MetaDomainConsts</span><br><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">  Properties prop = <span class="keyword">new</span> Properties();</span><br><span class="line">  prop = ResourceUtils.readConfigFile(<span class="string">"apollo-env.properties"</span>, prop);</span><br><span class="line">  Properties env = System.getProperties();</span><br><span class="line">  domains.put(Env.LOCAL,</span><br><span class="line">      env.getProperty(<span class="string">"local_meta"</span>, prop.getProperty(<span class="string">"local.meta"</span>, DEFAULT_META_URL)));</span><br><span class="line">  domains.put(Env.DEV,</span><br><span class="line">      env.getProperty(<span class="string">"dev_meta"</span>, prop.getProperty(<span class="string">"dev.meta"</span>, DEFAULT_META_URL)));</span><br><span class="line">  domains.put(Env.FAT,</span><br><span class="line">      env.getProperty(<span class="string">"fat_meta"</span>, prop.getProperty(<span class="string">"fat.meta"</span>, DEFAULT_META_URL)));</span><br><span class="line">  domains.put(Env.UAT,</span><br><span class="line">      env.getProperty(<span class="string">"uat_meta"</span>, prop.getProperty(<span class="string">"uat.meta"</span>, DEFAULT_META_URL)));</span><br><span class="line">  domains.put(Env.LPT,</span><br><span class="line">      env.getProperty(<span class="string">"lpt_meta"</span>, prop.getProperty(<span class="string">"lpt.meta"</span>, DEFAULT_META_URL)));</span><br><span class="line">  domains.put(Env.PRO,</span><br><span class="line">      env.getProperty(<span class="string">"pro_meta"</span>, prop.getProperty(<span class="string">"pro.meta"</span>, DEFAULT_META_URL)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+          
+        
       
     </div>
 
@@ -549,128 +540,14 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/apollo/" rel="tag"># apollo</a>
-          
-        </div>
+
+      
+
       
 
       
       
-        <div class="post-widgets">
-        
-
-        
-
-        
-          
-          <div class="social_share">
-            
-              <div>
-                
-
-<script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.js"></script>
-
-
-
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.css">
-
-
-  
-
-
-<div class="likely">
-	
- 	 	<div class="twitter">Tweet</div>
-	
- 	 	<div class="facebook">Share</div>
-	
- 	 	<div class="linkedin">Link</div>
-	
- 	 	<div class="gplus">Plus</div>
-	
- 	 	<div class="vkontakte">Share</div>
-	
- 	 	<div class="odnoklassniki">Class</div>
-	
- 	 	<div class="telegram">Send</div>
-	
- 	 	<div class="whatsapp">Send</div>
-	
- 	 	<div class="pinterest">Pin</div>
-	
-</div>
-
-              </div>
-            
-            
-            
-              <div>
-                
-  <div class="bdsharebuttonbox">
-    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
-    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
-    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
-    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
-    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
-    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
-    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
-    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
-    <a href="#" class="bds_more" data-cmd="more"></a>
-    <a class="bds_count" data-cmd="count"></a>
-  </div>
-  <script>
-    window._bd_share_config = {
-      "common": {
-        "bdText": "",
-        "bdMini": "2",
-        "bdMiniList": false,
-        "bdPic": ""
-      },
-      "share": {
-        "bdSize": "16",
-        "bdStyle": "0"
-      },
-      "image": {
-        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
-        "viewText": "分享到：",
-        "viewSize": "16"
-      }
-    }
-  </script>
-
-<script>
-  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
-</script>
-
-              </div>
-            
-          </div>
-        
-        </div>
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/05/07/线程相关知识总结/" rel="prev" title="线程相关知识总结">
-                线程相关知识总结 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
+        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -680,20 +557,18 @@
   </article>
 
 
-  </div>
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
 
 
           </div>
           
-
-  
-    <div class="comments" id="comments">
-      <div id="lv-container" data-id="city" data-uid="MTAyMC80NDEwMC8yMDYzNQ=="></div>
-    </div>
-
-  
-
-
 
 
         </div>
@@ -714,17 +589,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <div class="site-overview-wrap sidebar-panel">
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -868,23 +734,6 @@
         </div>
       </div>
 
-      
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-            
-            
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Apollo配置中心监听器"><span class="nav-number">1.</span> <span class="nav-text">Apollo配置中心监听器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-apollo的核心代码分享"><span class="nav-number">1.1.</span> <span class="nav-text">1. apollo的核心代码分享</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Apollo启动一览"><span class="nav-number">1.2.</span> <span class="nav-text">2.Apollo启动一览</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-ApolloApplicationContextInitializer的作用"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 ApolloApplicationContextInitializer的作用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2trySync"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2trySync()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3-schedulePeriodicRefresh"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3 schedulePeriodicRefresh</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-4-scheduleLongPollingRefresh"><span class="nav-number">1.2.4.</span> <span class="nav-text">2.4 scheduleLongPollingRefresh</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-注解ApolloConfigChangeListener分析"><span class="nav-number">1.3.</span> <span class="nav-text">3. 注解ApolloConfigChangeListener分析</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-ApolloConfigChangeListener实现原理"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1@ApolloConfigChangeListener实现原理</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-实际使用"><span class="nav-number">1.4.</span> <span class="nav-text">4 实际使用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1配置多个环境列表-一个portal管理多个环境的配置"><span class="nav-number">1.4.1.</span> <span class="nav-text">4.1配置多个环境列表(一个portal管理多个环境的配置)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-指定运行环境"><span class="nav-number">1.4.2.</span> <span class="nav-text">4.2 指定运行环境</span></a></li></ol></li></ol></li></ol></div>
-            
-
-          </div>
-        </div>
-      <!--/noindex-->
       
 
       
@@ -1050,10 +899,6 @@
 
 
   
-  <script src="/js/scrollspy.js?v=7.1.1"></script>
-<script src="/js/post-details.js?v=7.1.1"></script>
-
-
 
   
 
@@ -1069,23 +914,6 @@
 
   
 
-
-  
-    <script>
-  window.livereOptions = {
-    refer: '2019/04/19/apollo-配置中心源码解读/'
-  };
-  (function(d, s) {
-    var j, e = d.getElementsByTagName(s)[0];
-    if (typeof LivereTower === 'function') { return; }
-    j = d.createElement(s);
-    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-    j.async = true;
-    e.parentNode.insertBefore(j, e);
-  })(document, 'script');
-</script>
-
-  
 
 
 
