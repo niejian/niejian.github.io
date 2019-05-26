@@ -109,7 +109,9 @@
 <meta property="og:description" content="内存模型内存模型如下图所示 堆堆是Java虚拟机所管理的内存最大一块。堆是所有线程共享的一块内存区域，在虚拟机启动时创建。此内存区域唯一的目的就是存放对象实例。所有的对象实例都在这里分配内存Java堆是垃圾收集器管理的主要区域。从内存回收的角度来看，由于现在的垃圾收集器采用的是分代收集算法。所以，java堆又分为新生代和老年代。从内存分配的角度来说，线程共享的java对中可能划分出多个线程私有的f">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://s2.ax1x.com/2019/05/26/VECQk4.png">
-<meta property="og:updated_time" content="2019-05-26T04:38:18.353Z">
+<meta property="og:image" content="https://s2.ax1x.com/2019/05/26/VEoAmt.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/05/26/VEoxun.png">
+<meta property="og:updated_time" content="2019-05-26T14:05:38.778Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM内存模型详解">
 <meta name="twitter:description" content="内存模型内存模型如下图所示 堆堆是Java虚拟机所管理的内存最大一块。堆是所有线程共享的一块内存区域，在虚拟机启动时创建。此内存区域唯一的目的就是存放对象实例。所有的对象实例都在这里分配内存Java堆是垃圾收集器管理的主要区域。从内存回收的角度来看，由于现在的垃圾收集器采用的是分代收集算法。所以，java堆又分为新生代和老年代。从内存分配的角度来说，线程共享的java对中可能划分出多个线程私有的f">
@@ -400,7 +402,7 @@
                 
               
 
-              <time title="创建时间：2019-05-26 12:34:39 / 修改时间：12:38:18" itemprop="dateCreated datePublished" datetime="2019-05-26T12:34:39+08:00">2019-05-26</time>
+              <time title="创建时间：2019-05-26 12:34:39 / 修改时间：22:05:38" itemprop="dateCreated datePublished" datetime="2019-05-26T12:34:39+08:00">2019-05-26</time>
             
 
             
@@ -458,7 +460,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">1.6k</span>
+                <span title="本文字数">2.9k</span>
               
 
               
@@ -472,7 +474,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">1 分钟</span>
+                <span title="阅读时长">3 分钟</span>
               
             </div>
           
@@ -504,7 +506,11 @@
 </ul>
 <ol>
 <li>如果线程请求的栈深度大于虚拟机所允许的深度，将抛出<code>StackOverflowError</code></li>
-<li>如果虚拟机栈可以动态扩展，扩展时无法申请做够的内存，将会爬出<code>OutOfMemorryError</code><h4 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h4>与虚拟机栈发挥的作用非常类似，他们之间的区别是<strong>虚拟机栈为虚拟机执行java方法服务，而本地方法栈则为虚拟机使用到的<code>native</code>方法服务。</strong>与虚拟机栈一样，本地房发展区域也会抛出<code>StackOverflowError</code>，<code>OutOfMemorryError</code>异常。<h4 id="方法区（1-8后该区域被废弃）"><a href="#方法区（1-8后该区域被废弃）" class="headerlink" title="方法区（1.8后该区域被废弃）"></a>方法区（1.8后该区域被废弃）</h4>方法区与java堆一样，是各个线程所共享的，<font color="green">它用来存储已被虚拟机加载的<code>类信息</code>、<code>常量</code>、<code>静态变量</code>、<code>即时编译后的代码</code>等数据</font>。<br><br>方法区是jvm提出的规范，而<code>永久代</code>就是方法区的具体实现。<br><br>java虚拟机对方法区的限制非常宽松，可以像堆一样不需要连续的内存可可选择的固定大小外，还可以选择不识闲垃圾收集，相对而言，垃圾收集行为在这边区域是比较少出现的。<br><br>在方法区会报出 永久代内存溢出的错误。而java1.8为了解决这个问题，就提出了<code>meta space（元空间）</code>的概念，就是为了解决永久代内存溢出的情况，一般来说，在不指定 <code>meta space</code>大小的情况下，虚拟机方法区内存大小就是宿主主机的内存大小<h4 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h4>程序计数器是一块较小的内存空间，他可以看做是当前线程所执行字节码的行号指示器。在虚拟机的概念模型里，字节码解释器工作时就是通过改变这个计数器的值来选择下一条将要执行的字节码指令。<br><br><font color="red">由于JAVA虚拟机的多线程是通过多线程流转切换并分配处理器执行时间的方式来实现的。</font><strong>在任一一个确定的时刻，一个处理器都只会执行一条线程中的指令。因此，为了线程切换后能恢复到正确的执行位置，每条线程都需要一个独立的程序计数器，各个线程的计数器之间互不影响，独立存储，我们称该类内存区域为<code>线程私有</code></strong><br><br>如果线程正在执行一个Java方法，这个计数器记录的是正在执行的虚拟机字节码指令的地址。<h4 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h4>运行时常量池是方法区的一部分。Class文件除了 有类的版本、字段、方法、接口等描述信息外，还有一项是常量池，<strong>用于存放编译期生成的各种字面量和符号引用，这部分内容在类加载后进入方法区的运行时常量池。</strong><br><br>运行时常量池相对于Class文件常量池的另外一个重要特征是具备<code>动态性</code>.Java语言并不要求常量一定只有在编译器才能产生，依旧是并非预置入Class文件中的常量池的内容才能进入方法区运行时常量池</li>
+<li>如果虚拟机栈可以动态扩展，扩展时无法申请做够的内存，将会爬出<code>OutOfMemorryError</code><h4 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h4>与虚拟机栈发挥的作用非常类似，他们之间的区别是<strong>虚拟机栈为虚拟机执行java方法服务，而本地方法栈则为虚拟机使用到的<code>native</code>方法服务。</strong>与虚拟机栈一样，本地房发展区域也会抛出<code>StackOverflowError</code>，<code>OutOfMemorryError</code>异常。<h4 id="方法区（1-8后该区域被废弃）"><a href="#方法区（1-8后该区域被废弃）" class="headerlink" title="方法区（1.8后该区域被废弃）"></a>方法区（1.8后该区域被废弃）</h4>方法区与java堆一样，是各个线程所共享的，<font color="green">它用来存储已被虚拟机加载的<code>类信息</code>、<code>常量</code>、<code>静态变量</code>、<code>即时编译后的代码</code>等数据</font>。<br><br>方法区是jvm提出的规范，而<code>永久代</code>就是方法区的具体实现。<br><br>java虚拟机对方法区的限制非常宽松，可以像堆一样不需要连续的内存可可选择的固定大小外，还可以选择不识闲垃圾收集，相对而言，垃圾收集行为在这边区域是比较少出现的。<br><br>在方法区会报出 永久代内存溢出的错误。而java1.8为了解决这个问题，就提出了<code>meta space（元空间）</code>的概念，就是为了解决永久代内存溢出的情况，一般来说，在不指定 <code>meta space</code>大小的情况下，虚拟机方法区内存大小就是宿主主机的内存大小<h4 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h4>程序计数器是一块较小的内存空间，他可以看做是当前线程所执行字节码的行号指示器。在虚拟机的概念模型里，字节码解释器工作时就是通过改变这个计数器的值来选择下一条将要执行的字节码指令。<br><br><font color="red">由于JAVA虚拟机的多线程是通过多线程流转切换并分配处理器执行时间的方式来实现的。</font><strong>在任一一个确定的时刻，一个处理器都只会执行一条线程中的指令。因此，为了线程切换后能恢复到正确的执行位置，每条线程都需要一个独立的程序计数器，各个线程的计数器之间互不影响，独立存储，我们称该类内存区域为<code>线程私有</code></strong><br><br>如果线程正在执行一个Java方法，这个计数器记录的是正在执行的虚拟机字节码指令的地址。<h3 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h3>运行时常量池是方法区的一部分。Class文件除了 有类的版本、字段、方法、接口等描述信息外，还有一项是常量池，<strong>用于存放编译期生成的各种字面量和符号引用，这部分内容在类加载后进入方法区的运行时常量池。</strong><br><br>运行时常量池相对于Class文件常量池的另外一个重要特征是具备<code>动态性</code>.Java语言并不要求常量一定只有在编译器才能产生，依旧是并非预置入Class文件中的常量池的内容才能进入方法区运行时常量池<h3 id="对象创建"><a href="#对象创建" class="headerlink" title="对象创建"></a>对象创建</h3>在语言层面上，创建对象（克隆，反序列化）通常只是一个<code>new</code>关键字。<h4 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h4>虚拟机在遇到一条<code>new</code>指令时，首先去检查这个指令的参数是否能在常量池中定位到这个类的符号引用并且减产这个符号引用代表的类是否已经被加载、解析、和初始化国。如果没有，那必须执行相应的类加载过程。<br><br>在类加载检查通过后，接下来虚拟机将为新生的对象分配内存。对象所需内存的大小在类加载完成后便可完全确定。<h4 id="内存分配"><a href="#内存分配" class="headerlink" title="内存分配"></a>内存分配</h4><code>为对象分配空间的任务等同于把一块确定大小的内存从java堆中划分出来。</code>假设java堆中内存是绝对规整的，所有用过的内存都放在一边，空闲的放在另外一边，中间放着一个指针最为分界点的指示器，那所分配内存就仅仅是把那个指针向空闲的空间那边挪动一段与对象大小相等的距离，这种分配方式称为<code>指针碰撞</code>。<br><br>如果内存不是规整的，已使用的和空闲的内存区域是相互交错的，虚拟机必须维护一个列表，记录哪些内存块是可用的，在分配的时候从列表中找到一块足够大的空间划分给对象实例，并更新这个列表。这种分配方式是<code>空闲列表</code>。<br><br>选择哪种分配分配方式是由java堆是否规整来决定的，而java堆是否规整又是由其所采用 的垃圾收集器是否带有压缩规整的功能决定，因此，使用<code>Serial</code>、<code>ParNew</code>等带来Compat过程的收集器时，分配算法是指针碰撞。而使用<code>CMS</code>这种基于<code>Mark-Swaeep</code>算法，采用的是空闲列表分配方式。<h3 id="对象的内存布局"><a href="#对象的内存布局" class="headerlink" title="对象的内存布局"></a>对象的内存布局</h3>在HotSpot虚拟机中，对象在内存中的存储布局分为3块区域：<code>对象头（Header）</code>、<code>实例数据（Instance Data）</code>、<code>对其补充（Padding）</code><br><h4 id="对象头（Heading）"><a href="#对象头（Heading）" class="headerlink" title="对象头（Heading）"></a>对象头（Heading）</h4>对象头包括两部分信息</li>
+<li>用于存储对象自身运行时数据。<blockquote>
+<p>如哈希码，GC分代年龄、锁状态标志、偏向线程ID。这部分s数据的长度在32位和64位的虚拟机中分别为32bit和64bit。</p>
+</blockquote>
+<h3 id="对象的访问定位"><a href="#对象的访问定位" class="headerlink" title="对象的访问定位"></a>对象的访问定位</h3>创建对象时为了使用对象，<code>java程序需要通过栈上的refrence数据来操作堆上的具体对象</code>。由于refrence类在java虚拟机值规定了一个指向对象的引用，并没有定义这个引用应该通过何种方式去定位、访问堆中的具体位置，所以对象访问方式也取决于虚拟机对这个refrence的具体实现，目前主流的访问凡是是使用<code>句柄</code>、<code>直接指针</code>两种。<h4 id="句柄访问"><a href="#句柄访问" class="headerlink" title="句柄访问"></a>句柄访问</h4>如果使用句柄访问的话，那么java堆中就会划分出一块内存来座位句柄池，refrence中存储的就是对象的句柄地址，而句柄中包含了对象实例数据和类型数据的各自具体的地址信息。<br><br><img src="https://s2.ax1x.com/2019/05/26/VEoAmt.png" alt><h4 id="指针直接访问"><a href="#指针直接访问" class="headerlink" title="指针直接访问"></a>指针直接访问</h4>如果使用指针直接访问，那么java堆对象的布局就必须考虑如何放置访问类型数据的相关信息，而refrence中存储的直接就是对象地址<br><br><img src="https://s2.ax1x.com/2019/05/26/VEoxun.png" alt><br>这个两种访问方式各有优势，使用句柄访问的最大好处就是refrence中存储的是稳定的句柄地址，在对象被移动（垃圾收集时）只会改变句柄中对象实例指针，refrence本省不需要修改。<br><br>使用直接指针访问的方式最大的好处就是速度更快，节省了一次指针定位的事件开销。由于对象的访问在java中非常频繁，一次这类开销积少成多也是一个比较客观的优化。</li>
 </ol>
 
       
@@ -861,7 +867,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存模型"><span class="nav-number">1.</span> <span class="nav-text">内存模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#堆"><span class="nav-number">1.1.</span> <span class="nav-text">堆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#虚拟机栈"><span class="nav-number">1.2.</span> <span class="nav-text">虚拟机栈</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#虚拟机栈存储的数据类型"><span class="nav-number">1.2.1.</span> <span class="nav-text">虚拟机栈存储的数据类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常见异常"><span class="nav-number">1.2.2.</span> <span class="nav-text">常见异常</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本地方法栈"><span class="nav-number">1.3.</span> <span class="nav-text">本地方法栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法区（1-8后该区域被废弃）"><span class="nav-number">1.4.</span> <span class="nav-text">方法区（1.8后该区域被废弃）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#程序计数器"><span class="nav-number">1.5.</span> <span class="nav-text">程序计数器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行时常量池"><span class="nav-number">1.6.</span> <span class="nav-text">运行时常量池</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存模型"><span class="nav-number">1.</span> <span class="nav-text">内存模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#堆"><span class="nav-number">1.1.</span> <span class="nav-text">堆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#虚拟机栈"><span class="nav-number">1.2.</span> <span class="nav-text">虚拟机栈</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#虚拟机栈存储的数据类型"><span class="nav-number">1.2.1.</span> <span class="nav-text">虚拟机栈存储的数据类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常见异常"><span class="nav-number">1.2.2.</span> <span class="nav-text">常见异常</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本地方法栈"><span class="nav-number">1.3.</span> <span class="nav-text">本地方法栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法区（1-8后该区域被废弃）"><span class="nav-number">1.4.</span> <span class="nav-text">方法区（1.8后该区域被废弃）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#程序计数器"><span class="nav-number">1.5.</span> <span class="nav-text">程序计数器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时常量池"><span class="nav-number">2.</span> <span class="nav-text">运行时常量池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对象创建"><span class="nav-number">3.</span> <span class="nav-text">对象创建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#过程"><span class="nav-number">3.1.</span> <span class="nav-text">过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存分配"><span class="nav-number">3.2.</span> <span class="nav-text">内存分配</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对象的内存布局"><span class="nav-number">4.</span> <span class="nav-text">对象的内存布局</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#对象头（Heading）"><span class="nav-number">4.1.</span> <span class="nav-text">对象头（Heading）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对象的访问定位"><span class="nav-number">5.</span> <span class="nav-text">对象的访问定位</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#句柄访问"><span class="nav-number">5.1.</span> <span class="nav-text">句柄访问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#指针直接访问"><span class="nav-number">5.2.</span> <span class="nav-text">指针直接访问</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -894,7 +900,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
     
-    <span title="站点总字数">70k</span>
+    <span title="站点总字数">71k</span>
   
 
   
@@ -903,7 +909,7 @@
       <i class="fa fa-coffee"></i>
     </span>
     
-    <span title="站点阅读时长">1:03</span>
+    <span title="站点阅读时长">1:05</span>
   
 </div>
 
