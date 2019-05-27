@@ -349,6 +349,8 @@
   
 
   
+    <div class="reading-progress-bar"></div>
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
@@ -562,9 +564,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/数据库/" rel="tag"># 数据库</a>
+            <a href="/tags/数据库/" <i class="fa fa-tag"> 数据库</a>
           
-            <a href="/tags/事务隔离/" rel="tag"># 事务隔离</a>
+            <a href="/tags/事务隔离/" <i class="fa fa-tag"> 事务隔离</a>
           
         </div>
       
@@ -1038,6 +1040,8 @@
 
 
 
+  
+
 
 
   
@@ -1048,6 +1052,9 @@
 
   
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
 
 
   
@@ -1173,6 +1180,15 @@
   
 
   
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
 
   
 
