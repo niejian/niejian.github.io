@@ -14,7 +14,7 @@
   
 
 
-<html class="theme-next gemini use-motion" lang="zh-CN">
+<html class="theme-next pisces use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -74,7 +74,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Gemini',
+    scheme: 'Pisces',
     version: '7.1.1',
     sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
     back2top: true,
@@ -335,6 +335,211 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://niejian.github.io/2019/05/30/JAVA-GC算法详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jian Nie">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://s2.ax1x.com/2019/05/07/Er0DE9.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="code4fun">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/30/JAVA-GC算法详解/" class="post-title-link" itemprop="url">JAVA GC算法详解</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-30 10:55:33 / 修改时间：10:56:16" itemprop="dateCreated datePublished" datetime="2019-05-30T10:55:33+08:00">2019-05-30</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/jam/" itemprop="url" rel="index"><span itemprop="name">jam</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">1.2k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">1 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="生存还是死亡"><a href="#生存还是死亡" class="headerlink" title="生存还是死亡"></a>生存还是死亡</h3><p>对象是否需要被垃圾收集器回收主要有两种方式：<code>引用计数法</code>和<code>可达性分析算法</code></p>
+<h4 id="引用计数法"><a href="#引用计数法" class="headerlink" title="引用计数法"></a>引用计数法</h4><p>给对象添加一个引用计数器，每当有一个地方引用他的时候，计数器的数值就+1，当引用失效时，计数器就-1；任何时候计数器的数值都为0的对象时不可能再被使用的。<br><br>客观的来说，引用计数法实现简单，判定效率高，但是无法解决对象的循环引用的问题。所以现在的虚拟机很少使用这种算法辣判断对象是否存活。</p>
+<h4 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h4><p>基本思路就是：通过一系列称为<code>GC Roots</code>的对象作为起始点，从这些起始点开始向下搜索，搜索所搜过的路径称为引用链<code>Reference Chain</code>，当一个对象到GC Roots没有任何引用链相连接时，则证明此对象时不可用的。如下图所示：4,5就被判定为需要回收的对象<br><br><img src="https://s2.ax1x.com/2019/05/29/Vu5saR.md.png" alt></p>
+<h4 id="GC-Roots"><a href="#GC-Roots" class="headerlink" title="GC Roots"></a>GC Roots</h4><p>在虚拟机中可作为GC Roots的对象包括以下几种：</p>
+<ul>
+<li>虚拟机栈中引用的对象</li>
+<li>方法区中类静态属性引用的对象</li>
+<li>方法区常量引用的对象</li>
+<li>本地方法栈引用的对象<h3 id="GC算法"><a href="#GC算法" class="headerlink" title="GC算法"></a>GC算法</h3>在被<code>可达性分析算法</code>判定为需要被回收的对象时，需要进行垃圾回收操作，垃圾回收算法有以下几种：</li>
+</ul>
+<h4 id="标记清除（mark-sweep）"><a href="#标记清除（mark-sweep）" class="headerlink" title="标记清除（mark-sweep）"></a>标记清除（mark-sweep）</h4><p>最基础的收集算法，如同 它的名字一样，算法分为<code>标记</code>和<code>清除</code>两个阶段：首先标记出需要被回收的对象，在标记完成后统一回收所有被标记的对象，它的标记过程其实就是上面所讲的<code>可达性分析算法</code>被标记为没有GC roots的引用链。过程如下：<br><br><img src="https://s2.ax1x.com/2019/05/29/VuIx1K.md.png" alt></p>
+<h5 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h5><ul>
+<li>效率问题，标记和清除两个过程的效率都不高</li>
+<li>空间问题，标记清除和产生大量不连续的内存碎片，内存碎片过多容易导致以后在程序运行的过程中需要分配大对象时，无法找到足够的连续内存而不得不提前触发一次垃圾收集动作。<h5 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h5>适用于老年代。因为老年代回收的几率小且不频繁能减少内存碎片<h4 id="复制-（coping）"><a href="#复制-（coping）" class="headerlink" title="复制 （coping）"></a>复制 （coping）</h4>为了解决标记-清除得到效率问题，<code>复制</code>算法就出现了；它的原理是将可用内存容量划分为两个大小相等的内存块，每次只使用其中的一个，当这个的容量用完了。就将还存活的对象复制到另外一块上面去，然后再把已使用过的内存空间全部清理掉。这样使得每次都是对整个半区进行内存回收，内存分配就不用考考虑碎片等复杂情况<br><br><img src="https://s2.ax1x.com/2019/05/29/VuHLDO.md.png" alt><br>研究表明，新生代中的对象98%都是朝生夕死的，所以按照并不需要1:1来划分空间。而是将内存分为<code>一块较大的Eden空间和两个较小的Survivor空间</code>，每次使用Eden和其中一款Survivor。一般比例是<code>Eden : Survivor = 8:1</code><h5 id="不足-1"><a href="#不足-1" class="headerlink" title="不足"></a>不足</h5></li>
+<li>空间利用率只有50%，但是经过适当的调整Eden和Survivor的比例能达到70%</li>
+<li>复制收集算法在对象存活率较高时就要进行较多的复制操作，效率将会变低<h5 id="适用场景-1"><a href="#适用场景-1" class="headerlink" title="适用场景"></a>适用场景</h5>使用了对象存活率较低的内存空间，如Eden区。<h4 id="标记整理"><a href="#标记整理" class="headerlink" title="标记整理"></a>标记整理</h4>是标记-清除算法的升级版本。标记过程任然与标记-清除算法一样，但是后续的处理步骤不是直接对可回收对象进行清理，而是让所有存活对象都向一端移动，然后直接清理掉端边界意外的内存、标记-整理算法示意图如下：<br><br><img src="https://s2.ax1x.com/2019/05/29/VuLjVU.md.png" alt></li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -2581,221 +2786,6 @@ b. 消费者能绕过zk来直接发起调用，在使用url标签，直接指定
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://niejian.github.io/2019/05/07/springboot整合jwt权限验证/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jian Nie">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="https://s2.ax1x.com/2019/05/07/Er0DE9.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="code4fun">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/05/07/springboot整合jwt权限验证/" class="post-title-link" itemprop="url">springboot、springsecurity、jwt权限验证</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-05-07 14:19:56 / 修改时间：14:49:09" itemprop="dateCreated datePublished" datetime="2019-05-07T14:19:56+08:00">2019-05-07</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/springboot/" itemprop="url" rel="index"><span itemprop="name">springboot</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">13k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">12 分钟</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="1-背景"><a href="#1-背景" class="headerlink" title="1.背景"></a>1.背景</h2><p>基于前后端分离项目的后端模块；</p>
-<h2 id="2-相关技术"><a href="#2-相关技术" class="headerlink" title="2.相关技术"></a>2.相关技术</h2><ul>
-<li>springboot全家桶<ul>
-<li>web模块</li>
-<li>security模块；用于权限的验证</li>
-<li>mongodb 模块；集成mogodb模块</li>
-</ul>
-</li>
-<li>jwt 用于token的生成</li>
-<li>mongodb</li>
-<li>lomok</li>
-<li>后续会细分出更多的模块。用上springcloud全家桶</li>
-</ul>
-<h2 id="3-权限验证流程"><a href="#3-权限验证流程" class="headerlink" title="3.权限验证流程"></a>3.权限验证流程</h2><h3 id="3-1-构建User对象"><a href="#3-1-构建User对象" class="headerlink" title="3.1 构建User对象"></a>3.1 构建User对象</h3><p>实现security的UserDetail。之后所有权限获取都是从这个对象中返回</p>
-<blockquote>
-<p>重写的默认属性必须返回true，不然在登录那块验证该属性是不是true。如果默认返回false，会报出各种用户相关的异常</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@JsonInclude</span>(JsonInclude.Include.NON_NULL)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JwtUser</span> <span class="keyword">implements</span> <span class="title">UserDetails</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line">    <span class="keyword">private</span> Collection&lt;? extends GrantedAuthority&gt; authorities;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">JwtUser</span><span class="params">(String username, String password, Collection&lt;? extends GrantedAuthority&gt; authorities)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.username = username;</span><br><span class="line">        <span class="keyword">this</span>.password = password;</span><br><span class="line">        <span class="keyword">this</span>.authorities = authorities;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Collection&lt;? extends GrantedAuthority&gt; getAuthorities() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.authorities;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPassword</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUsername</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isAccountNonExpired</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Indicates whether the user is locked or unlocked. A locked user cannot be</span></span><br><span class="line"><span class="comment">     * authenticated.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> &lt;code&gt;true&lt;/code&gt; if the user is not locked, &lt;code&gt;false&lt;/code&gt; otherwise</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isAccountNonLocked</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Indicates whether the user's credentials (password) has expired. Expired</span></span><br><span class="line"><span class="comment">     * credentials prevent authentication.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> &lt;code&gt;true&lt;/code&gt; if the user's credentials are valid (ie non-expired),</span></span><br><span class="line"><span class="comment">     * &lt;code&gt;false&lt;/code&gt; if no longer valid (ie expired)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isCredentialsNonExpired</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Indicates whether the user is enabled or disabled. A disabled user cannot be</span></span><br><span class="line"><span class="comment">     * authenticated.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> &lt;code&gt;true&lt;/code&gt; if the user is enabled, &lt;code&gt;false&lt;/code&gt; otherwise</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEnabled</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-JwtUserDetailsServiceImpl"><a href="#3-JwtUserDetailsServiceImpl" class="headerlink" title="3.JwtUserDetailsServiceImpl"></a>3.JwtUserDetailsServiceImpl</h3><p>重写security的UserDaiService的loadByusername方法，实现自定义的权限验证</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JwtUserDetailsServiceImpl</span> <span class="keyword">implements</span> <span class="title">UserDetailsService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Locates the user based on the username. In the actual implementation, the search</span></span><br><span class="line"><span class="comment">     * may possibly be case sensitive, or case insensitive depending on how the</span></span><br><span class="line"><span class="comment">     * implementation instance is configured. In this case, the &lt;code&gt;UserDetails&lt;/code&gt;</span></span><br><span class="line"><span class="comment">     * object that comes back may have a username that is of a different case than what</span></span><br><span class="line"><span class="comment">     * was actually requested..</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> username the username identifying the user whose data is required.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> a fully populated user record (never &lt;code&gt;null&lt;/code&gt;)</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> UsernameNotFoundException if the user could not be found or the user has no</span></span><br><span class="line"><span class="comment">     *                                   GrantedAuthority</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> UserDetails <span class="title">loadUserByUsername</span><span class="params">(String username)</span> <span class="keyword">throws</span> UsernameNotFoundException</span>&#123;</span><br><span class="line">        <span class="comment">//设置查询条件，邮箱是唯一的</span></span><br><span class="line">        User queryUser = <span class="keyword">new</span> User();</span><br><span class="line">        queryUser.setEmail(username);</span><br><span class="line">        List&lt;User&gt; userList = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            userList = <span class="keyword">this</span>.userService.getUser(queryUser);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (CollectionUtils.isEmpty(userList)) &#123;</span><br><span class="line">                <span class="comment">//return new JwtUser(username, queryUser.getPwd(), authorities);</span></span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> UsernameNotFoundException(<span class="string">"用户账号："</span> + username + <span class="string">"，不存在"</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                queryUser = userList.get(<span class="number">0</span>);</span><br><span class="line">                Set&lt;GrantedAuthority&gt; authorities = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">                <span class="comment">//获取该用户所有的权限信息</span></span><br><span class="line">                <span class="keyword">this</span>.userService.getRoleByUserId(queryUser.getId()).forEach(role -&gt; &#123;</span><br><span class="line">                    authorities.add(<span class="keyword">new</span> SimpleGrantedAuthority(role.getRoleCode()));</span><br><span class="line">                &#125;);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> JwtUser(username, queryUser.getPwd(), authorities);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-3-token生成方法"><a href="#3-3-token生成方法" class="headerlink" title="3.3 token生成方法"></a>3.3 token生成方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JwtTokenUtil</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 密钥</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String secret = <span class="string">"code4fun"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">static</span> Long TIMESTAMP = <span class="number">86400000L</span>;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">static</span> String TOKEN_PREFIX = <span class="string">"Bearer"</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 从数据声明生成令牌</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> claims 数据声明</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 令牌</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">generateToken</span><span class="params">(Map&lt;String, Object&gt; claims)</span> </span>&#123;</span><br><span class="line">        Date expirationDate = <span class="keyword">new</span> Date(System.currentTimeMillis() + TIMESTAMP);</span><br><span class="line">        <span class="keyword">return</span> TOKEN_PREFIX + <span class="string">" "</span> +Jwts.builder().setClaims(claims).setExpiration(expirationDate).signWith(SignatureAlgorithm.HS512, secret).compact();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 从令牌中获取数据声明</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> token 令牌</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 数据声明</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Claims <span class="title">getClaimsFromToken</span><span class="params">(String token)</span> </span>&#123;</span><br><span class="line">        Claims claims;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            claims = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> claims;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 生成令牌</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> userDetails 用户</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 令牌</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">generateToken</span><span class="params">(UserDetails userDetails)</span> </span>&#123;</span><br><span class="line">        Map&lt;String, Object&gt; claims = <span class="keyword">new</span> HashMap&lt;&gt;(<span class="number">2</span>);</span><br><span class="line">        claims.put(<span class="string">"sub"</span>, userDetails.getUsername());</span><br><span class="line">        claims.put(<span class="string">"created"</span>, <span class="keyword">new</span> Date());</span><br><span class="line">        <span class="keyword">return</span> generateToken(claims);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 从令牌中获取用户名</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> token 令牌</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 用户名</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUsernameFromToken</span><span class="params">(String token)</span> </span>&#123;</span><br><span class="line">        String username;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Claims claims = getClaimsFromToken(token);</span><br><span class="line">            username = claims.getSubject();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            username = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 判断令牌是否过期</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> token 令牌</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 是否过期</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Boolean <span class="title">isTokenExpired</span><span class="params">(String token)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Claims claims = getClaimsFromToken(token);</span><br><span class="line">            Date expiration = claims.getExpiration();</span><br><span class="line">            <span class="keyword">return</span> expiration.before(<span class="keyword">new</span> Date());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 刷新令牌</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> token 原令牌</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 新令牌</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">refreshToken</span><span class="params">(String token)</span> </span>&#123;</span><br><span class="line">        String refreshedToken;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Claims claims = getClaimsFromToken(token);</span><br><span class="line">            claims.put(<span class="string">"created"</span>, <span class="keyword">new</span> Date());</span><br><span class="line">            refreshedToken = generateToken(claims);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            refreshedToken = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> refreshedToken;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 验证令牌</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> token       令牌</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> userDetails 用户</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 是否有效</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Boolean <span class="title">validateToken</span><span class="params">(String token, UserDetails userDetails)</span> </span>&#123;</span><br><span class="line">        JwtUser user = (JwtUser) userDetails;</span><br><span class="line">        String username = getUsernameFromToken(token);</span><br><span class="line">        <span class="keyword">return</span> (username.equals(user.getUsername()) &amp;&amp; !isTokenExpired(token));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-4-token校验过滤器"><a href="#3-4-token校验过滤器" class="headerlink" title="3.4 token校验过滤器"></a>3.4 token校验过滤器</h3><p>每次请求的时候都会被该过滤器过滤拦截。主要是校验token的有效性<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JwtAuthenticationTokenFilter</span> <span class="keyword">extends</span> <span class="title">OncePerRequestFilter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> JwtUserDetailsServiceImpl userDetailsService;</span><br><span class="line">    <span class="keyword">private</span> JwtTokenUtil jwtTokenUtil;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">JwtAuthenticationTokenFilter</span><span class="params">(JwtTokenUtil jwtTokenUtil)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.jwtTokenUtil = jwtTokenUtil;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 每个请求都被拦截</span></span><br><span class="line"><span class="comment">     * Same contract as for &#123;<span class="doctag">@code</span> doFilter&#125;, but guaranteed to be</span></span><br><span class="line"><span class="comment">     * just invoked once per request within a single request thread.</span></span><br><span class="line"><span class="comment">     * See &#123;<span class="doctag">@link</span> #shouldNotFilterAsyncDispatch()&#125; for details.</span></span><br><span class="line"><span class="comment">     * &lt;p&gt;Provides HttpServletRequest and HttpServletResponse arguments instead of the</span></span><br><span class="line"><span class="comment">     * default ServletRequest and ServletResponse ones.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> response</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> filterChain</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doFilterInternal</span><span class="params">(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        String authHeader = request.getHeader(<span class="string">"Authorization"</span>);</span><br><span class="line">        String tokenHead = <span class="string">"Bearer "</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (authHeader != <span class="keyword">null</span> &amp;&amp; authHeader.startsWith(tokenHead)) &#123;</span><br><span class="line"></span><br><span class="line">            String authToken = authHeader.substring(tokenHead.length());</span><br><span class="line">            String username = jwtTokenUtil.getUsernameFromToken(authToken);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (username != <span class="keyword">null</span> &amp;&amp; SecurityContextHolder.getContext().getAuthentication() == <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="comment">//返回jwtUser</span></span><br><span class="line">                UserDetails userDetails = <span class="keyword">this</span>.userDetailsService.loadUserByUsername(username);</span><br><span class="line">                <span class="keyword">if</span> (jwtTokenUtil.validateToken(authToken, userDetails)) &#123;</span><br><span class="line">                    UsernamePasswordAuthenticationToken authentication = <span class="keyword">new</span> UsernamePasswordAuthenticationToken(userDetails, <span class="keyword">null</span>, userDetails.getAuthorities());</span><br><span class="line">                    <span class="comment">//将该用户的权限信息存放到threadlocal中</span></span><br><span class="line">                    authentication.setDetails(<span class="keyword">new</span> WebAuthenticationDetailsSource().buildDetails(request));</span><br><span class="line">                    SecurityContextHolder.getContext().setAuthentication(authentication);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        filterChain.doFilter(request, response);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="3-4-webSecurity配置"><a href="#3-4-webSecurity配置" class="headerlink" title="3.4 webSecurity配置"></a>3.4 webSecurity配置</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableWebSecurity</span></span><br><span class="line"><span class="meta">@EnableGlobalMethodSecurity</span>(prePostEnabled = <span class="keyword">true</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebSecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> JwtUserDetailsServiceImpl userDetailsService;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;</span><br><span class="line"><span class="comment">//    private EntryPointUnauthorizedHandler entryPointUnauthorizedHandler;</span></span><br><span class="line"><span class="comment">//    private RestAccessDeniedHandler restAccessDeniedHandler;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configureAuthentication</span><span class="params">(AuthenticationManagerBuilder authenticationManagerBuilder)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        authenticationManagerBuilder.userDetailsService(<span class="keyword">this</span>.userDetailsService).passwordEncoder(passwordEncoder());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 注入密码BCryptPasswordEncoder</span></span><br><span class="line"><span class="comment">    * 在添加用户的时候，要用 BCryptPasswordEncoder.encode()加密</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span>  </span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> PasswordEncoder <span class="title">passwordEncoder</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> BCryptPasswordEncoder();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> AuthenticationManager <span class="title">authenticationManagerBean</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.authenticationManagerBean();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity httpSecurity)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        httpSecurity.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)</span><br><span class="line">                .and().authorizeRequests()</span><br><span class="line">                .antMatchers(HttpMethod.OPTIONS, <span class="string">"/**"</span>).permitAll()</span><br><span class="line">                .antMatchers(<span class="string">"/user/**"</span>, <span class="string">"/login"</span>,</span><br><span class="line">                        <span class="string">"/js/**"</span>, <span class="string">"/bootstrap/**"</span>, <span class="string">"/css/**"</span>, <span class="string">"/images/**"</span>,  <span class="string">"/fonts/**"</span>).permitAll() <span class="comment">//静态文件拦截</span></span><br><span class="line"></span><br><span class="line">                .anyRequest().authenticated()</span><br><span class="line">                .and().headers().cacheControl();</span><br><span class="line">        httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>至此，相关的配置就配置完了。在登录操作的时候需要注意一下:<br>用户信息的验证全部交给spring security来操作，代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 登录操作，返回token</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> userName</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> password</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">login</span><span class="params">(String userName, String password)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    UsernamePasswordAuthenticationToken upToken = <span class="keyword">new</span> UsernamePasswordAuthenticationToken(userName, password);</span><br><span class="line">    Authentication authentication = authenticationManager.authenticate(upToken);</span><br><span class="line">    SecurityContextHolder.getContext().setAuthentication(authentication);</span><br><span class="line">    UserDetails userDetails = userDetailsService.loadUserByUsername(userName);</span><br><span class="line">    <span class="keyword">return</span> jwtTokenUtil.generateToken(userDetails);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-</blockquote>
-<h3 id="3-4-用户验证流程"><a href="#3-4-用户验证流程" class="headerlink" title="3.4 用户验证流程"></a>3.4 用户验证流程</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">UsernamePasswordAuthenticationToken</span><br><span class="line">authenticationManager.authenticate(upToken);</span><br><span class="line"><span class="comment">//通过这个创建一个代理（ProviderManager）对象</span></span><br><span class="line">delegate = <span class="keyword">this</span>.delegateBuilder.getObject();</span><br><span class="line"><span class="comment">//调用代理对象的认证方法</span></span><br><span class="line">delegate.authenticate(authentication)</span><br><span class="line">	<span class="number">1</span>.代理对象调用父类的 parent.authenticate(authentication);认证方法</span><br><span class="line">		<span class="number">1</span>.进到parent.authenticate方法，去定ProvideManager的具体类型是DaoProviderManager</span><br><span class="line">	<span class="number">2</span>.provider.authenticate(authentication);	<span class="comment">//此时的provider是DaoProviderManager</span></span><br><span class="line">		<span class="number">1</span>.判断参数authentication是不是UsernamePasswordAuthenticationToken类型；不是则跑出异常</span><br><span class="line">		<span class="number">2</span>.取出唯一标识字段username</span><br><span class="line">			<span class="number">1</span>.判断userCache是否包含user缓存</span><br><span class="line">				<span class="number">1</span>.不在缓存中，创建user对象并存放到缓存中</span><br><span class="line">					<span class="comment">//调用这个方法转换成user对象</span></span><br><span class="line">					<span class="number">1</span>.user = retrieveUser(username,</span><br><span class="line">						(UsernamePasswordAuthenticationToken) authentication);</span><br><span class="line">						<span class="comment">//调用用户自定义实现了UserDetailService的方法来获得user对象</span></span><br><span class="line">						<span class="number">1</span>.UserDetails loadedUser = <span class="keyword">this</span>.getUserDetailsService().loadUserByUsername(username);</span><br><span class="line">				<span class="number">2</span>.preAuthenticationChecks.check(user);</span><br><span class="line">					<span class="number">1</span>.preAuthenticationChecks.check校验上一部返回的user对象的属性，只要用户实现的userDetail的get，set方法赋上值就好了</span><br><span class="line">				  additionalAuthenticationChecks(user,</span><br><span class="line">					(UsernamePasswordAuthenticationToken) authentication);</span><br><span class="line">					  <span class="number">1</span>.uthentication.getCredentials() == <span class="keyword">null</span>判断密码是不是为空</span><br><span class="line">					  <span class="number">2</span>.presentedPassword = authentication.getCredentials().toString(); 获取页面传递过来的密码</span><br><span class="line">					  <span class="number">3</span>.passwordEncoder.matches(presentedPassword, userDetails.getPassword())判断页面上传递过来的密码跟数据库中的密码是不是一致。</span><br><span class="line">					  	 <span class="number">1</span>.调用BCrypt.checkpw(rawPassword.toString(), encodedPassword)比对</span><br><span class="line">					  	 		<span class="number">1</span>.调用 hashpw 来加密页面传递过来的密码信息。然后与数据库中的密码比对。如果相同则返回成功，不同则报错</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2845,7 +2835,7 @@ b. 消费者能绕过zk来直接发起调用，在使用url标签，直接指定
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-count">13</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2880,7 +2870,9 @@ b. 消费者能绕过zk来直接发起调用，在使用url标签，直接指定
                     
                       
                     
-                    <span class="site-state-item-count">9</span>
+                      
+                    
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -2923,7 +2915,9 @@ b. 消费者能绕过zk来直接发起调用，在使用url标签，直接指定
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -3003,7 +2997,7 @@ b. 消费者能绕过zk来直接发起调用，在使用url标签，直接指定
       <i class="fa fa-area-chart"></i>
     </span>
     
-    <span title="站点总字数">71k</span>
+    <span title="站点总字数">72k</span>
   
 
   
@@ -3012,7 +3006,7 @@ b. 消费者能绕过zk来直接发起调用，在使用url标签，直接指定
       <i class="fa fa-coffee"></i>
     </span>
     
-    <span title="站点阅读时长">1:05</span>
+    <span title="站点阅读时长">1:06</span>
   
 </div>
 
@@ -3141,7 +3135,6 @@ b. 消费者能绕过zk来直接发起调用，在使用url标签，直接指定
   <script src="/js/affix.js?v=7.1.1"></script>
 
   <script src="/js/schemes/pisces.js?v=7.1.1"></script>
-
 
 
 
