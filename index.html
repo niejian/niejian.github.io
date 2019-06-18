@@ -351,6 +351,194 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://niejian.github.io/2019/06/18/kafka知识整理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jian Nie">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://s2.ax1x.com/2019/05/07/Er0DE9.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="code4fun">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/06/18/kafka知识整理/" class="post-title-link" itemprop="url">kafka知识整理</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-06-18 10:59:46 / 修改时间：11:00:33" itemprop="dateCreated datePublished" datetime="2019-06-18T10:59:46+08:00">2019-06-18</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MQ/" itemprop="url" rel="index"><span itemprop="name">MQ</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">6.3k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">6 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <div class="post"><br><br><br><h2>转载自：<a href="https://www.cnblogs.com/sujing/p/10960832.html" target="_blank" rel="noopener">https://www.cnblogs.com/sujing/p/10960832.html</a><br><br><h2 id="为什么需要消息队列">为什么需要消息队列</h2><br><p>　　周末无聊刷着手机，某宝网APP突然蹦出来一条消息“为了回馈老客户，女朋友买一送一，活动仅限今天！”。买一送一还有这种好事，那我可不能错过！忍不住立马点了去。于是选了两个最新款，下单、支付一气呵成！满足的躺在床上，想着马上有女朋友了，竟然幸福的失眠了……<br><br>　　第二天正常上着班，突然接到快递小哥的电话：<br><br>　　小哥：“你是xx吗？你的女朋友到了，我现在在你楼下，你来拿一下吧！”。<br><br>　　我：“这……我在上班呢，可以晚上送过来吗？“。<br><br>　　小哥：“晚上可不行哦，晚上我也下班了呢！”。<br><br>　　于是两个人僵持了很久……<br><br>　　最后小哥说，要不我帮你放到楼下小芳便利店吧，你晚上下班了过来拿，尴尬的局面这才得以缓解！</p><br><p>　　回到正题，如果没有小芳便利店，那快递小哥和我的交互图就应该如下：<br><br>　　<br><br>　　 <img src="https://s2.ax1x.com/2019/06/18/VbOQi9.png"></p><br><p>　　会出现什么情况呢？<br><br>　　1、为了这个女朋友，我请假回去拿（老板不批）。<br><br>　　2、小哥一直在你楼下等（小哥还有其他的快递要送）。<br><br>　　3、周末再送（显然等不及）。<br><br>　　4、这个女朋友我不要了（绝对不可能）！</p><br><p>　　小芳便利店出现后，交互图就应如下：<br><br>　　<br><br>　　<img src="https://s2.ax1x.com/2019/06/18/VbOsQP.png"></p><br><p>　　在上面例子中，“快递小哥”和“买女朋友的我”就是需要交互的两个系统，小芳便利店就是我们本文要讲的-“消息中间件”。总结下来小芳便利店（消息中间件）出现后有如下好处：<br><br>　　<strong>1、 解耦</strong><br><br>　　快递小哥手上有很多快递需要送，他每次都需要先电话一一确认收货人是否有空、哪个时间段有空，然后再确定好送货的方案。这样完全依赖收货人了！如果快递一多，快递小哥估计的忙疯了……如果有了便利店，快递小哥只需要将同一个小区的快递放在同一个便利店，然后通知收货人来取货就可以了，这时候快递小哥和收货人就实现了解耦！</p><br><p>　　<strong>2、 异步</strong><br><br>　　快递小哥打电话给我后需要一直在你楼下等着，直到我拿走你的快递他才能去送其他人的。快递小哥将快递放在小芳便利店后，又可以干其他的活儿去了，不需要等待你到来而一直处于等待状态。提高了工作的效率。</p><br><p>　　<strong>3、 削峰</strong><br><br>　　假设双十一我买了不同店里的各种商品，而恰巧这些店发货的快递都不一样，有中通、圆通、申通、各种通等……更巧的是他们都同时到货了！中通的小哥打来电话叫我去北门取快递、圆通小哥叫我去南门、申通小哥叫我去东门。我一时手忙脚乱……</p><br><p>　　我们能看到在系统需要交互的场景中，使用消息队列中间件真的是好处多多，基于这种思路，就有了丰巢、菜鸟驿站等比小芳便利店更专业的“中间件”了。<br><br>　　最后，上面的故事纯属虚构……</p><br><h1 id="消息队列通信的模式">消息队列通信的模式</h1><br><p>　　通过上面的例子我们引出了消息中间件，并且介绍了消息队列出现后的好处，这里就需要介绍消息队列通信的两种模式了：</p><br><h2 id="一-点对点模式">一、 点对点模式</h2><br><p>　　<img src="https://s2.ax1x.com/2019/06/18/VbX3kQ.png"></p><br><p>　　如上图所示，点对点模式通常是基于拉取或者轮询的消息传送模型，这个模型的特点是发送到队列的消息被一个且只有一个消费者进行处理。生产者将消息放入消息队列后，由消费者主动的去拉取消息进行消费。点对点模型的的优点是消费者拉取消息的频率可以由自己控制。但是消息队列是否有消息需要消费，在消费者端无法感知，所以在消费者端需要额外的线程去监控。</p><br><h2 id="二-发布订阅模式">二、 发布订阅模式</h2><br><p>　　<img src="https://s2.ax1x.com/2019/06/18/VbObeU.png"></p><br><p>　　如上图所示，发布订阅模式是一个基于消息送的消息传送模型，改模型可以有多种不同的订阅者。生产者将消息放入消息队列后，队列会将消息推送给订阅过该类消息的消费者（类似微信公众号）。由于是消费者被动接收推送，所以无需感知消息队列是否有待消费的消息！但是consumer1、consumer2、consumer3由于机器性能不一样，所以处理消息的能力也会不一样，但消息队列却无法感知消费者消费的速度！所以推送的速度成了发布订阅模模式的一个问题！假设三个消费者处理速度分别是8M/s、5M/s、2M/s，如果队列推送的速度为5M/s，则consumer3无法承受！如果队列推送的速度为2M/s，则consumer1、consumer2会出现资源的极大浪费！</p><br><h1 id="kafka">Kafka</h1><br><p>　　上面简单的介绍了为什么需要消息队列以及消息队列通信的两种模式，接下来就到了我们本文的主角——kafka闪亮登场的时候了！Kafka是一种高吞吐量的分布式发布订阅消息系统，它可以处理消费者规模的网站中的所有动作流数据，具有高性能、持久化、多副本备份、横向扩展能力……… 一些基本的介绍这里就不展开了，网上有太多关于这些的介绍了，读者可以自行百度一下！</p><br><h2 id="基础架构及术语">基础架构及术语</h2><br><p>　　话不多说，先看图，通过这张图我们来捋一捋相关的概念及之间的关系：</p><br><p>　　<img src="https://s2.ax1x.com/2019/06/18/Vbv7OP.png"></p><br><p>　　如果看到这张图你很懵逼，木有关系！我们先来分析相关概念<br><br>　　<strong>Producer</strong>：Producer即生产者，消息的产生者，是消息的入口。<br><br>　　<strong>kafka cluster</strong>：<br><br>　　　　<strong>Broker</strong>：Broker是kafka实例，每个服务器上有一个或多个kafka的实例，我们姑且认为每个broker对应一台服务器。每个kafka集群内的broker都有一个<strong>不重复</strong>的编号，如图中的broker-0、broker-1等……<br><br>　　　　<strong>Topic</strong>：消息的主题，可以理解为消息的分类，kafka的数据就保存在topic。在每个broker上都可以创建多个topic。<br><br>　　　　<strong>Partition</strong>：Topic的分区，每个topic可以有多个分区，分区的作用是做负载，提高kafka的吞吐量。同一个topic在不同的分区的数据是不重复的，partition的表现形式就是一个一个的文件夹！<br><br>　　　　<strong>Replication</strong>:每一个分区都有多个副本，副本的作用是做备胎。当主分区（Leader）故障的时候会选择一个备胎（Follower）上位，成为Leader。在kafka中默认副本的最大数量是10个，且副本的数量不能大于Broker的数量，follower和leader绝对是在不同的机器，同一机器对同一个分区也只可能存放一个副本（包括自己）。<br><br>　　　　<strong>Message</strong>：每一条发送的消息主体。<br><br>　　<strong>Consumer</strong>：消费者，即消息的消费方，是消息的出口。<br><br>　　<strong>Consumer Group</strong>：我们可以将多个消费组组成一个消费者组，在kafka的设计中同一个分区的数据只能被消费者组中的某一个消费者消费。同一个消费者组的消费者可以消费同一个topic的不同分区的数据，这也是为了提高kafka的吞吐量！<br><br>　　<strong>Zookeeper</strong>：kafka集群依赖zookeeper来保存集群的的元信息，来保证系统的可用性。</p><br><h2 id="工作流程分析">工作流程分析</h2><br><p>　　上面介绍了kafka的基础架构及基本概念，不知道大家看完有没有对kafka有个大致印象，如果对还比较懵也没关系！我们接下来再结合上面的结构图分析kafka的工作流程，最后再回来整个梳理一遍我相信你会更有收获！</p><br><h3 id="发送数据">发送数据</h3><br><p>　　我们看上面的架构图中，producer就是生产者，是数据的入口。注意看图中的红色箭头，Producer在写入数据的时候<font color="red"><strong>永远的找leader</strong></font>，不会直接将数据写入follower！那leader怎么找呢？写入的流程又是什么样的呢？我们看下图：</p><br><p>　　<img src="https://s2.ax1x.com/2019/06/18/Vbvbef.png"></p><br><p>　　发送的流程就在图中已经说明了，就不单独在文字列出来了！需要注意的一点是，消息写入leader后，follower是主动的去leader进行同步的！producer采用push模式将数据发布到broker，每条消息追加到分区中，顺序写入磁盘，所以保证<font color="red"><strong>同一分区</strong></font>内的数据是有序的！写入示意图如下：</p><br><p>　　<img src="https://s2.ax1x.com/2019/06/18/VbxmlR.png"></p><br><p>　　上面说到数据会写入到不同的分区，那kafka为什么要做分区呢？相信大家应该也能猜到，分区的主要目的是：<br><br>　　<strong>1、 方便扩展</strong>。因为一个topic可以有多个partition，所以我们可以通过扩展机器去轻松的应对日益增长的数据量。<br><br>　　<strong>2、 提高并发</strong>。以partition为读写单位，可以多个消费者同时消费数据，提高了消息的处理效率。</p><br><p>　　熟悉负载均衡的朋友应该知道，当我们向某个服务器发送请求的时候，服务端可能会对请求做一个负载，将流量分发到不同的服务器，那在kafka中，如果某个topic有多个partition，producer又怎么知道该将数据发往哪个partition呢？kafka中有几个原则：<br><br>　　1、 partition在写入的时候可以指定需要写入的partition，如果有指定，则写入对应的partition。<br><br>　　2、 如果没有指定partition，但是设置了数据的key，则会根据key的值hash出一个partition。<br><br>　　3、 如果既没指定partition，又没有设置key，则会轮询选出一个partition。</p><br><p>　　保证消息不丢失是一个消息队列中间件的基本保证，那producer在向kafka写入消息的时候，怎么保证消息不丢失呢？其实上面的写入流程图中有描述出来，那就是通过ACK应答机制！在生产者向队列写入数据的时候可以设置参数来确定是否确认kafka接收到数据，这个参数可设置的值为<strong>0</strong>、<strong>1</strong>、<strong>all</strong>。<br><br>　　0代表producer往集群发送数据不需要等到集群的返回，不确保消息发送成功。安全性最低但是效率最高。<br><br>　　1代表producer往集群发送数据只要leader应答就可以发送下一条，只确保leader发送成功。<br><br>　　all代表producer往集群发送数据需要所有的follower都完成从leader的同步才会发送下一条，确保leader发送成功和所有的副本都完成备份。安全性最高，但是效率最低。</p><br><p>　　最后要注意的是，如果往不存在的topic写数据，能不能写入成功呢？kafka会自动创建topic，分区和副本的数量根据默认配置都是1。</p><br><h3 id="保存数据">保存数据</h3><br><p>　　Producer将数据写入kafka后，集群就需要对数据进行保存了！kafka将数据保存在磁盘，可能在我们的一般的认知里，写入磁盘是比较耗时的操作，不适合这种高并发的组件。Kafka初始会单独开辟一块磁盘空间，顺序写入数据（效率比随机写入高）。</p><br><p><strong>Partition 结构</strong><br><br>　　前面说过了每个topic都可以分为一个或多个partition，如果你觉得topic比较抽象，那partition就是比较具体的东西了！Partition在服务器上的表现形式就是一个一个的文件夹，每个partition的文件夹下面会有多组segment文件，每组segment文件又包含.index文件、.log文件、.timeindex文件（早期版本中没有）三个文件， log文件就实际是存储message的地方，而index和timeindex文件为索引文件，用于检索消息。</p><br><p>　　<img src="https://s2.ax1x.com/2019/06/18/Vbxn61.png"></p><br><p>　　如上图，这个partition有三组segment文件，每个log文件的大小是一样的，但是存储的message数量是不一定相等的（每条的message大小不一致）。文件的命名是以该segment最小offset来命名的，如000.index存储offset为0~368795的消息，kafka就是利用分段+索引的方式来解决查找效率的问题。</p><br><p><strong>Message结构</strong><br><br>上面说到log文件就实际是存储message的地方，我们在producer往kafka写入的也是一条一条的message，那存储在log中的message是什么样子的呢？消息主要包含消息体、消息大小、offset、压缩类型……等等！我们重点需要知道的是下面三个：<br><br>　　1、 offset：offset是一个占8byte的有序id号，它可以唯一确定每条消息在parition内的位置！<br><br>　　2、 消息大小：消息大小占用4byte，用于描述消息的大小。<br><br>　　3、 消息体：消息体存放的是实际的消息数据（被压缩过），占用的空间根据具体的消息而不一样。</p><br><p><strong>存储策略</strong><br><br>　　无论消息是否被消费，kafka都会保存所有的消息。那对于旧数据有什么删除策略呢？<br><br>　　1、 基于时间，默认配置是168小时（7天）。<br><br>　　2、 基于大小，默认配置是1073741824。<br><br>　　需要注意的是，kafka读取特定消息的时间复杂度是O(1)，所以这里删除过期的文件并不会提高kafka的性能！</p><br><h3 id="消费数据">消费数据</h3><br><p>　　消息存储在log文件后，消费者就可以进行消费了。在讲消息队列通信的两种模式的时候讲到过点对点模式和发布订阅模式。Kafka采用的是点对点的模式，消费者主动的去kafka集群拉取消息，与producer相同的是，消费者在拉取消息的时候也是<strong>找leader</strong>去拉取。</p><br><p>　　多个消费者可以组成一个消费者组（consumer group），每个消费者组都有一个组id！同一个消费组者的消费者可以消费同一topic下不同分区的数据，但是不会组内多个消费者消费同一分区的数据！！！是不是有点绕。我们看下图：</p><br><p>　　<img src="https://s2.ax1x.com/2019/06/18/VbxMm6.png"></p><br><p>　　图示是消费者组内的消费者小于partition数量的情况，所以会出现某个消费者消费多个partition数据的情况，消费的速度也就不及只处理一个partition的消费者的处理速度！如果是消费者组的消费者多于partition的数量，那会不会出现多个消费者消费同一个partition的数据呢？上面已经提到过不会出现这种情况！多出来的消费者不消费任何partition的数据。所以在实际的应用中，建议<strong>消费者组的consumer的数量与partition的数量一致</strong>！<br><br>　　在保存数据的小节里面，我们聊到了partition划分为多组segment，每个segment又包含.log、.index、.timeindex文件，存放的每条message包含offset、消息大小、消息体……我们多次提到segment和offset，查找消息的时候是怎么利用segment+offset配合查找的呢？假如现在需要查找一个offset为368801的message是什么样的过程呢？我们先看看下面的图：</p><br><p><img src="https://s2.ax1x.com/2019/06/18/Vbx2Xq.png"></p><br><p>　　1、 先找到offset的368801message所在的segment文件（利用二分法查找），这里找到的就是在第二个segment文件。<br><br>　　2、 打开找到的segment中的.index文件（也就是368796.index文件，该文件起始偏移量为368796+1，我们要查找的offset为368801的message在该index内的偏移量为368796+5=368801，所以这里要查找的<strong>相对offset</strong>为5）。由于该文件采用的是稀疏索引的方式存储着相对offset及对应message物理偏移量的关系，所以直接找相对offset为5的索引找不到，这里同样利用二分法查找相对offset小于或者等于指定的相对offset的索引条目中最大的那个相对offset，所以找到的是相对offset为4的这个索引。<br><br>　　3、 根据找到的相对offset为4的索引确定message存储的物理偏移位置为256。打开数据文件，从位置为256的那个地方开始顺序扫描直到找到offset为368801的那条Message。</p><br><p>　　这套机制是建立在offset为有序的基础上，利用<font color="red"><strong>segment</strong>+<strong>有序offset</strong>+<strong>稀疏索引</strong>+<strong>二分查找</strong>+<strong>顺序查找</strong></font>等多种手段来高效的查找数据！至此，消费者就能拿到需要处理的数据进行处理了。那每个消费者又是怎么记录自己消费的位置呢？在早期的版本中，消费者将消费到的offset维护zookeeper中，consumer每间隔一段时间上报一次，这里容易导致重复消费，且性能不好！在新的版本中消费者消费到的offset已经直接维护在kafk集群的__consumer_offsets这个topic中！</p><br><br></h2></div>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://niejian.github.io/2019/05/30/JAVA-GC算法详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2263,529 +2451,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://niejian.github.io/2019/05/07/JAVA面试整理/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jian Nie">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="https://s2.ax1x.com/2019/05/07/Er0DE9.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="code4fun">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/05/07/JAVA面试整理/" class="post-title-link" itemprop="url">JAVA面试整理</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-05-07 17:00:17 / 修改时间：17:04:24" itemprop="dateCreated datePublished" datetime="2019-05-07T17:00:17+08:00">2019-05-07</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java基础/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">10k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">10 分钟</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="Eureka服务注册和发现原理"><a href="#Eureka服务注册和发现原理" class="headerlink" title="Eureka服务注册和发现原理"></a>Eureka服务注册和发现原理</h5><p><img src="https://s2.ax1x.com/2019/03/12/APDokj.png" alt="eureka服务注册发现架构图"></p>
-<ul>
-<li><p>有三个角色</p>
-<ul>
-<li><p>服务提供者（Eureka client）</p>
-<blockquote>
-<p>向服务注册中心注册自己的信息</p>
-</blockquote>
-</li>
-<li><p>服务消费者 （Eureka client）</p>
-<blockquote>
-<p>向服务注册中心注册自己的信息，并获取自己要消费的服务提供者信息</p>
-</blockquote>
-</li>
-<li><p>注册中心 （Eureka Server）</p>
-<blockquote>
-<p>接收服务消费者和提供者的注册的信息</p>
-</blockquote>
-</li>
-</ul>
-</li>
-</ul>
-<h5 id="dubbo-ZK如何实现CP、Eureka怎么实现AP"><a href="#dubbo-ZK如何实现CP、Eureka怎么实现AP" class="headerlink" title="dubbo + ZK如何实现CP、Eureka怎么实现AP"></a>dubbo + ZK如何实现CP、Eureka怎么实现AP</h5><ul>
-<li>dubbo + zk</li>
-</ul>
-<p>当向注册中心查询服务注册列表时，可以容忍注册中心返回的是几分钟以前的注册信息，但是不能接受服务直接down掉不可用。服务注册功能对可用性的要求高于一致性。<strong><em>在zk选举的时候，整个集群不可用，这样就导致注册服务瘫痪，漫长的选举期间导致整个注册服务长期不可用</em></strong></p>
-<ul>
-<li>Eureka 的AP</li>
-</ul>
-<p>在设计的时候优先保证可用性。eureka的各个节点都是平等的，几个节点down掉不会影响其他节点的提供注册和查询服务的功能。而Eureka的客户端在向牧歌Eureka注册如果链接失败，则会自动切换到其他节点，只要有一台Eureka正常工作，就能保证注册服务可用，只不过查询服务的结果可能不是最新的（不保证强一致性）。除此之外，Eureka还有一种自我保护机制，如果在15分钟内，85%的节点都没有正常的心跳，那么Eureka就认为客户端与注册中心出现了网络故障，此时会出现以下几种情况：</p>
-<ol>
-<li>Eureka不再从注册列表中移除因为长时间没有收到心跳的而过期的服务；</li>
-<li>Eureka仍然能够接收新的服务注册和查询请求，但不会同步到其他节点（保证当前节点依然可用）；</li>
-<li>当网络稳定时，当前实例新的注册信息会同步到其他节点；<br>因此，<strong><em>Eureka可以很好的应对网络故障导致部分节点失去联系的情况，而不会像zk那样因为选举导致整个集群不可用</em></strong></li>
-</ol>
-<p><strong><em>总之，dubbo+zk强调的是CP，强一致性，是zk的特性决定，而Eureka强调的是AP，高可用</em></strong></p>
-<h5 id="Hystrix怎么实现熔断机制"><a href="#Hystrix怎么实现熔断机制" class="headerlink" title="Hystrix怎么实现熔断机制"></a>Hystrix怎么实现熔断机制</h5><blockquote>
-<p>Hystrix包括<code>服务降级</code>， <code>服务熔断</code>, <code>线程合信号隔离</code>，<code>请求缓存</code>, <code>请求合并</code>，<code>服务监控</code></p>
-<ul>
-<li>hystrix对于依赖服务采用依赖隔离的方式主要有线程隔离合信号量隔离<ul>
-<li>线程隔离：卫每个依赖服务创建一个独立的线程，性能上低于信号量隔离</li>
-<li>信号量隔离：用信号量控制单个依赖服务，开销小于线程隔离，但无法异步和设置超时。</li>
-</ul>
-</li>
-<li>定义服务降级<ul>
-<li><code>fallback</code>是实现服务降级的后备方法。只要在<code>fallbackmethod</code>属性指定的对应的方法就可。</li>
-</ul>
-</li>
-<li>异常处理<ul>
-<li>忽略异常：对某个异常，不调用fallback操作，而是抛出<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@HystrixCommand</span>(ignoreExceptions = &#123;需要忽略的异常类.class&#125;)</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-</blockquote>
-<pre><code>* 异常分类降级：根据不同的异常，采用不同的降级处理
-</code></pre><ul>
-<li><p>请求缓存</p>
-<ul>
-<li><p><code>@CacheResult</code>:标记请求命令的结果应该被缓存，必须和<code>@HystrixCommand</code>注解结合使用，所用属性有：<code>cacheKeyMethod</code></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">代码中CacheResult代表开启缓存功能，当调用结果返回后Hystrix缓存，缓存的key值不指定就使用该方法中的所有参数，</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@CacheResult</span>(cacheKeyMethod = <span class="string">"getNameByidCacheKey"</span>)</span><br><span class="line"><span class="meta">@HystrixCommand</span>(fallbackMethod = <span class="string">"hiFallback"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">hiService</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> restTemplate.getForObject(<span class="string">"http://SERVICE-HI/hi?name="</span>+name,String.class);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> Long <span class="title">getNameByidCacheKey</span><span class="params">(Long id)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> id;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>删除缓存：标记请求命令的缓存失效，失效的缓存根据定义的Key决定，常用属性  ：command、cacheKeyMethod</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@CacheResult</span></span><br><span class="line"><span class="meta">@HystrixCommand</span>(fallbackMethod = <span class="string">"hiFallback"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">hiService</span><span class="params">(@CacheKey(<span class="string">"name"</span>)</span> String name) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> restTemplate.getForObject(<span class="string">"http://SERVICE-HI/hi?name="</span>+name,String.class);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@CacheRemove</span>(commandKey = <span class="string">"hiService"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">(@CacheKey(<span class="string">"name"</span>)</span>User user)</span>&#123;</span><br><span class="line"></span><br><span class="line">    restTemplate.getForObject(<span class="string">"http://USER-SERVICE/users"</span>,user,User.class);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<h5 id="redis数据类型，底层是什么。"><a href="#redis数据类型，底层是什么。" class="headerlink" title="redis数据类型，底层是什么。"></a>redis数据类型，底层是什么。</h5><blockquote>
-<p>String</p>
-</blockquote>
-<h5 id="redis集群原理，怎么实现高可用，一致性hash算法。"><a href="#redis集群原理，怎么实现高可用，一致性hash算法。" class="headerlink" title="redis集群原理，怎么实现高可用，一致性hash算法。"></a>redis集群原理，怎么实现高可用，一致性hash算法。</h5><h5 id="redis怎么实现主从同步的。"><a href="#redis怎么实现主从同步的。" class="headerlink" title="redis怎么实现主从同步的。"></a>redis怎么实现主从同步的。</h5><blockquote>
-</blockquote>
-<h5 id="dubbo工作原理，生产者、服务者之间是怎么通信的"><a href="#dubbo工作原理，生产者、服务者之间是怎么通信的" class="headerlink" title="dubbo工作原理，生产者、服务者之间是怎么通信的"></a>dubbo工作原理，生产者、服务者之间是怎么通信的</h5><p><strong><em><a href="http://dubbo.apache.org/zh-cn/docs/user/preface/architecture.html" target="_blank" rel="noopener">摘抄自官网</a></em></strong></p>
-<p><img src="https://s2.ax1x.com/2019/03/12/APrFc6.jpg" alt="dubbo架构原理"></p>
-<ul>
-<li>调用关系说明<ul>
-<li>0:服务容器负责启动，加载，运行服务提供者。</li>
-<li>1.服务提供者在启动时，向注册中心注册自己提供的服务。</li>
-<li>2.服务消费者在启动时，向注册中心订阅自己所需的服务。</li>
-<li>3.注册中心返回服务提供者地址列表给消费者，如果有变更，注册中心将基于长连接推送变更数据给消费者。</li>
-<li>4.服务消费者，从提供者地址列表中，基于软负载均衡算法，选一台提供者进行调用，如果调用失败，再选另一台调用。</li>
-<li>5.服务消费者和提供者，在内存中累计调用次数和调用时间，定时每分钟发送一次统计数据到监控中心。</li>
-</ul>
-</li>
-</ul>
-<h5 id="dubbo负载均衡"><a href="#dubbo负载均衡" class="headerlink" title="dubbo负载均衡"></a>dubbo负载均衡</h5><ul>
-<li><strong>随机负载均衡（RandomLoadBalance）</strong>：先统计所有服务器上该接口方法权重总和，然后再随机nextInt，看生成的随机数落在哪个段内，就调用哪个服务。默认使用的就是随机轮询算法</li>
-<li><strong>轮询（RoundRobinLoadBalance）</strong>：如果所有服务器接口方法的权重都一样，依次调用；</li>
-<li><strong>最少活跃负载均衡（LeastActiveLoadBalance）</strong><h5 id="dubbo容错，服务治理"><a href="#dubbo容错，服务治理" class="headerlink" title="dubbo容错，服务治理"></a>dubbo容错，服务治理</h5></li>
-<li>在dubboAdmin中，可以对具体的服务设置响应的权重、负载均衡等设置<h5 id="dubbo传输协议与序列化方式"><a href="#dubbo传输协议与序列化方式" class="headerlink" title="dubbo传输协议与序列化方式"></a>dubbo传输协议与序列化方式</h5></li>
-</ul>
-<ol>
-<li>dubbo协议<br><br>dubbo默认的传输协议，单一长连接，基于NIO异步通信，hseeian序列化的协议。<br><br>适用场景：传输数据量小，并发量高。</li>
-<li>rmi协议<br><br>走java二进制序列化，多个短链接。<br><br>适用场景：消费者和提供者数量差不多，文件传输，一般比较少用</li>
-<li>hessian协议<br><br>走hessian序列化协议，多个短链接<br><br>适用场景：提供者数量比消费者数量还多，适用于文件传输</li>
-<li>http协议<br><br>json序列化</li>
-<li>SOAP协议<br><br>soap序列化<h5 id="hashmap为什么线程不安全"><a href="#hashmap为什么线程不安全" class="headerlink" title="hashmap为什么线程不安全"></a>hashmap为什么线程不安全</h5></li>
-</ol>
-<blockquote>
-<p>在进行扩容的时候，由于要将原有链表中的数据重新进行rehash运算，原有的链表顺序会由于rehash原因被定位到其他的数组下标下面，在并发多线程的情况下，存在同时其他元素的put操作，如果hash值相同，可能造成环形链表</p>
-</blockquote>
-<h5 id="服务隔离"><a href="#服务隔离" class="headerlink" title="服务隔离"></a>服务隔离</h5><h5 id="垃圾回收算法有哪些，优点和不足"><a href="#垃圾回收算法有哪些，优点和不足" class="headerlink" title="垃圾回收算法有哪些，优点和不足"></a>垃圾回收算法有哪些，优点和不足</h5><ul>
-<li>标记-清除（mark swap）<ul>
-<li>将标记成垃圾的对象清除出内存，容易造成内存空间的不连续性，在分配打对象的时候，由于连续空间的不足而频繁触发内存回收；</li>
-<li>适用于老年代，对象存活时间长的内存区域</li>
-</ul>
-</li>
-<li>复制<ul>
-<li>将内存块等分成相同大小的内存块。一块用于对象存储。当垃圾回收的时候，将未被标记回收的内存复制到另一块 内存块，然后剩下的就全部是要回收的内存</li>
-<li>缺点：只有一半的内存被使用</li>
-<li>优点：未回收的内存块还是连续的</li>
-<li>适用于新生代：朝生暮死的区域。在新生代中，又被分为Eden，survivor区，Eden区分配的对象都是朝生暮死；eden与survivor的比例时8：1；在Eden区，使用的回收算法是复制算法</li>
-</ul>
-</li>
-<li>标记-整理<ul>
-<li>标记-清除的升级版本。将不用回收的内存区域移到一起，然后再集中处理需要回收的区域</li>
-</ul>
-</li>
-</ul>
-<h5 id="在dubbo中，如果zookeeper不工作的话，消费者能否调用到服务者"><a href="#在dubbo中，如果zookeeper不工作的话，消费者能否调用到服务者" class="headerlink" title="在dubbo中，如果zookeeper不工作的话，消费者能否调用到服务者"></a>在dubbo中，如果zookeeper不工作的话，消费者能否调用到服务者</h5><pre><code>a. 能调用到，zookeeper不工作的时候，消费者能取得本地缓存的地址列表直接调用服务者
-b. 消费者能绕过zk来直接发起调用，在使用url标签，直接指定哪个提供者
-</code></pre><h5 id="为什么要用分布式锁分布式锁有哪些，怎么实现"><a href="#为什么要用分布式锁分布式锁有哪些，怎么实现" class="headerlink" title="为什么要用分布式锁分布式锁有哪些，怎么实现"></a>为什么要用分布式锁分布式锁有哪些，怎么实现</h5><h5 id="jvm内存模型，各个模型存储的是什么。"><a href="#jvm内存模型，各个模型存储的是什么。" class="headerlink" title="jvm内存模型，各个模型存储的是什么。"></a>jvm内存模型，各个模型存储的是什么。</h5><h5 id="redis与memcache的相互比较"><a href="#redis与memcache的相互比较" class="headerlink" title="redis与memcache的相互比较"></a>redis与memcache的相互比较<br></h5><ul>
-<li>redis和memcache都是将数据放置到内存中，memcache还能存放图片、视频等数据；</li>
-<li>redis除了K/V类型数据，还支持List，Set，Zset，List，Hash这些数据类型</li>
-<li>在redis中，当内存存满数据后，它会将不常用的value写到磁盘中；</li>
-<li>过期策略-memcache在set时就指定。redis可以只用expire来设定</li>
-<li>集群-memcache利用magent做一主多从；redis可以做一主多从，一可以做一主多从；</li>
-<li>安全性-memcache挂掉后，所有的数据就没了；redis可以定期持久化到磁盘中</li>
-<li>容灾恢复-memcache挂掉后，数据不可恢复，redis可以通过aof恢复</li>
-<li>redis支持数据的备份，即master-slave模式数据备份</li>
-<li><strong><em>redis与memcache的异同点</em></strong><ul>
-<li>存储方式</li>
-<li>数据类型</li>
-<li>底层模型</li>
-<li>运行环境<h5 id="redis为什么这么快"><a href="#redis为什么这么快" class="headerlink" title="redis为什么这么快"></a>redis为什么这么快</h5></li>
-</ul>
-</li>
-<li>单线程</li>
-<li>IO非阻塞多路复用<br><br><font color="red">I/O多路复用实际上是指多个连接的管理可以在同一进程。</font>多路是指网络连接，复用只是同一个线程。在网络服务中，I/O多路复用起的作用是一次性把多个连接的事件通知业务代码处理，处理的方式由业务代码来决定。在I/O多路复用模型中，最重要的函数调用就是I/O 多路复用函数，该方法能同时监控多个文件描述符（fd）的读写情况，当其中的某些fd可读/写时，该方法就会返回可读/写的fd个数。<br><br><font color="red">Redis使用epoll作为I/O多路复用技术的实现，再加上Redis自身的事件处理模型将epoll的read、write、close等都转换成事件，不在网络I/O上浪费过多的时间。</font><h5 id="redis主从备份原理过程"><a href="#redis主从备份原理过程" class="headerlink" title="redis主从备份原理过程"></a>redis主从备份原理过程</h5><img src="https://s2.ax1x.com/2019/03/11/A9byMF.png" alt="主从同步流程图"><blockquote>
-<p>slave发送sync指定，此时master执行bgsave命令进行全量备份，并缓存所有的写命令；等bgsave执行完后，将rbd发送给slave，然后slave将数据写入；写入完所有快照后，master再发送缓存的写指定到slave，slave就写相应的数据，之后的增量的同步的方式同步master数据</p>
-</blockquote>
-</li>
-<li>同步方式<ul>
-<li>bgsave - 全量备份<blockquote>
-</blockquote>
-</li>
-<li>AOF（append only file）- 增量<blockquote>
-</blockquote>
-<h5 id="redis-cluster的高可用和主备切换原理"><a href="#redis-cluster的高可用和主备切换原理" class="headerlink" title="redis cluster的高可用和主备切换原理"></a>redis cluster的高可用和主备切换原理</h5></li>
-</ul>
-</li>
-<li><strong>判断节点宕机</strong><br>如果一个节点认为另外一个节点宕机，那么就是<code>pfail</code> <strong>主观宕机</strong>。如果多个节点认为另外一个节点宕机，那么就是<code>fail</code>，<strong>客观宕机</strong>，跟哨兵原理一致，<code>sdown</code>, <code>odown</code>。</li>
-<li><strong>从节点过滤</strong></li>
-</ul>
-<p>对宕机的master节点，从其所有的slave的节点中选择一个切换成 master节点。<br>检查每个slave节点与，master的断开实践，如果超过了 <code>cluster-node-timeout * cluster-slave-validity-factor</code> 该slave节点就没有资格晋升为master节点了。</p>
-<ul>
-<li><strong>从节点选举</strong><br>每个从节点都根据自己对master复制数据的offset，来设置一个选举时间，offset越大（复制的数据越多）的从节点，选举时间越靠前，优先进行选举。<br>所有的master node开始slave选举投票，给要进行选举的slave进行投票，如果大部分master 节点 <code>(n/2 + 1)</code> 都投票给了某个从节点，那么该从节点就晋升成master。<h5 id="redis节点间的内部通信机制"><a href="#redis节点间的内部通信机制" class="headerlink" title="redis节点间的内部通信机制"></a>redis节点间的内部通信机制</h5></li>
-<li><strong>基本通信原理</strong><br>集群元数据的维护有两种方式：<code>集中式</code>，<code>Gossip协议</code>。redis cluster节点间采用的是gossip协议。<ul>
-<li>集中式是将集群元数据（节点信息，故障etc）集中存储在某个节点上。</li>
-<li>redis集群维护元数据采用<code>gossip</code>协议，所有节点都持有一份元数据，不同节点如果出现了元数据的变更，就不断将元数据发送给其他的节点，让其他节点也进行元数据变更。</li>
-</ul>
-</li>
-<li><code>集中式</code>与<code>Gossip</code>协议的优缺点<ul>
-<li>集中式的好处在于元数据的读取更新时效性非常好，一单出现数据变更，就立刻更新到集中式的存储中，其他节点读取的时候可以随时感知；不足之处是所有的元数据的更新集中于一个地方，可能会导致元数据的存储有压力。</li>
-<li><code>Gossip</code>协议的好处在于元数据比较分散，不是集中在一个地方，更新请求会陆陆续续打到所有节点上去更新，降低压力；不足之处，元数据更新有延迟，可能导致集群中的一些操作会滞后；<ul>
-<li><strong>10000端口</strong>：每个节点都有一个鱼鱼节点间通信的端口。每个节点每隔一段时间会往其他节点发送<code>ping</code>消息，同时其他几个节点接收到<code>ping</code>后返回<code>pong</code>.</li>
-<li>交换信息：交换的信息包括故障信息、节点增加和删除，hash slot 等信息</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>Gossip协议</strong><br>gossip协议包括多种消息，包含<code>ping</code>,<code>pong</code>,<code>fail</code></p>
-<ul>
-<li><p>meet: 某个节点发送meet给新加入的节点，让新节点加入集群，然后新节点会开始与其他节点进行通信。如下指令就是发送meet消息给新加入的节点，通知先加入的节点加入集群</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-trib.rb add-node</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>ping：每个节点会频繁的给其他节点发送ping，其中包含自己的状态还有自己维护的集群元数据，互相通过ping交换元数据。</p>
-</li>
-<li>pong: 返回ping和meet，包含自己的状态和其他信息，也用于信息广播和更新。</li>
-<li>fail：某个节点判断另外一个节点fail后，就发送fail给其他节点，通知其他节点说，某个节点宕机了。<h5 id="redis-cluster的hash-slot算法"><a href="#redis-cluster的hash-slot算法" class="headerlink" title="redis cluster的hash slot算法"></a>redis cluster的hash slot算法</h5>redis cluster有固定的16384个slot。对每个key进行<code>CCR16</code>值，再对16384取模。这样就能获取到可以对应的hash slot。</li>
-</ul>
-</li>
-</ul>
-<p>redis clsuter中队每个master都会持有部分的slot，如果有3个master，那么每个master就持有 16384 /3 个hashslot。hash slot 让节点的增加和移除很简单，增加一个master，就讲其他master的hash slot移出部分过去，减少一个master，就将它的hash slot移动到其他的master上。<strong>任何一台机器宕机，另外两个节点互不影响。因为key找的是hash slot不是机器</strong></p>
-<h5 id="redis线程模型"><a href="#redis线程模型" class="headerlink" title="redis线程模型"></a>redis线程模型</h5><p>redis内部使用文本事件处理器 <code>file event handler</code>。这个文本事件处理器是单线程的，所以说redis的工作模式是单线程的。它采用IO多路复用机制监听多个socket，将产生事件的socket压入内存队列中，时间分派器根据socket上的事件类型来选择对应的时间处理器进行处理；<br><br>文本事件处理器包含四个部分：</p>
-<ol>
-<li>多个socket</li>
-<li>多路IO复用</li>
-<li>文本事件分派器</li>
-<li>事件处理器（连接应答处理器、命令请求处理器、命令回复处理器）<h5 id="redis-单线程模型也能效率这么高？"><a href="#redis-单线程模型也能效率这么高？" class="headerlink" title="redis 单线程模型也能效率这么高？"></a>redis 单线程模型也能效率这么高？</h5></li>
-<li>纯内存操作</li>
-<li>核心是基于非阻塞的 IO 多路复用机制</li>
-<li>单线程反而避免了多线程的频繁上下文切换问题<h5 id="dubbo与springcloud的比较"><a href="#dubbo与springcloud的比较" class="headerlink" title="dubbo与springcloud的比较"></a>dubbo与springcloud的比较</h5></li>
-</ol>
-<ul>
-<li>dubbo是通过二进制传输，占用宽带资源较少；springcloud是通过rest+json传输的，所以在性能上面，dubbo要优于springcloud;</li>
-<li>在多数情况下，dubbo使用的是长连接小数据量的模式工作的，少部分情况下使用的短连接大数据量的工作模式</li>
-</ul>
-<h5 id="redis持久化"><a href="#redis持久化" class="headerlink" title="redis持久化"></a>redis持久化</h5><p><a href="https://www.cnblogs.com/itdragon/p/7906481.html" target="_blank" rel="noopener">参考链接</a></p>
-<ul>
-<li><p>RDB（bgsave）<br><br>RDB 是 Redis默认的持久化方案。在指定的时间间隔内，执行指定次数的写操作，则会将内存中的数据写入到磁盘中。即在指定目录下生成一个dump.rdb文件。Redis重启会通过加载dump.rdb文件恢复数据。</p>
-</li>
-<li><p>AOF</p>
-</li>
-</ul>
-<h5 id="分布式事务"><a href="#分布式事务" class="headerlink" title="分布式事务"></a>分布式事务</h5><ul>
-<li><p>理论</p>
-<ul>
-<li><p>2pc</p>
-<blockquote>
-<p>在2PC的理论中，需要引入一个人协调者来统一掌控所有参与者的操作结果;整个过程有两个阶段</p>
-<ol>
-<li>投票阶段；<strong><em>在投票的阶段中，参与者必须回复协调者，如果其中有一个参与者没有回复，整个阶段将处于阻塞的状态；</em></strong></li>
-<li>提交阶段；<strong><em>将所有参与者的回复提交给其他的参与者；在这个阶段，不仅要锁住所有所有参与者的资源还得锁住协调者资源</em></strong></li>
-</ol>
-</blockquote>
-<p><strong><em>2pc知识一个理论，效率很低</em></strong></p>
-</li>
-<li><p>tcc</p>
-</li>
-</ul>
-</li>
-<li><p>消息最大努力交互</p>
-<h5 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a>RPC</h5></li>
-<li>定义<ul>
-<li>RPC主要功能目标是让构建分布式计算更容易，<strong>在提供强大的远程调用能力时不损失本地调用的语义简洁性</strong></li>
-</ul>
-</li>
-<li>调用方式<ul>
-<li>同步调用：客户端等待调用执行完后并返回结果。</li>
-<li>异步调用：客户方调用后不用等待执行结果返回，但依然可以通过回调通知等方式获取返回结果</li>
-</ul>
-</li>
-<li>结构拆解<br><img src="https://s2.ax1x.com/2019/03/22/A3cGMd.png" alt="结构拆解示意图"><br>RPC服务器通过RPC server去导出远程接口方法，客户方import的方式去引入远程接口方法。客户方像调用本地方法一样调用远程接口方法，RPC框架提供接口的代理实现，实际的调用委托给代理RPCProxy。代理封装调用信息并将调用交给RpcInvoker去实际执行。再客户端的RpcInvoker通过连接器RpcConncecttor去维持与客户端的通道RpcChannel，并使用RpcProtocol执行协议编码并将编码后的请求消息通过通道发给服务方。Rpc服务端接收器RpcAcceptor接收客户端的调用请求，同样使用Rpcprotocol执行协议解码，并将解码后的信息传递给rpcprocessor去控制处理调用过程，最后委托调用Rpcinvoker去执行并返回调用结果。</li>
-<li>主要组件<ul>
-<li>RpcServer: 负责导出（export）远程接口</li>
-<li>RpcClient：负责导入（import）远程接口的代理实现</li>
-<li>RpcInvoker：<ul>
-<li>客户方实现：<strong>负责编码调用信息和发送调用请求到服务方并等待结果返回（同步）</strong></li>
-<li>服务方实现：<strong>负责调用服务端接口的具体实现并返回调用结果</strong></li>
-</ul>
-</li>
-<li>RpcProtocol：负责协议编码/解码</li>
-<li>RpcConnector：负责维护客户方与服务方的连接通道和发送数据到服务方。</li>
-<li>RpcAcceptor：负责接收客户方请求并返回请求结果</li>
-<li>RpcProcessor：负责在服务方控制调用过程，包括姑是哪里调用线程池，超时时间等。</li>
-<li>RpcChannel：数据传输通道。<h5 id="equals-与-hashcode"><a href="#equals-与-hashcode" class="headerlink" title="equals() 与 hashcode()"></a>equals() 与 hashcode()</h5></li>
-</ul>
-</li>
-<li>为什么重写了equals方法必须重写hashcode方法 <br><br><strong><em>相等的对象必须具有相等的散列码。</em></strong><ul>
-<li>覆盖equals方法时，需要遵循以下通用准则<ol>
-<li>自反性<br><br>对于任意非null的引用值x，x.equals(x)必须返回true。</li>
-<li>对称性<br><br>对于任意非null的引用值x、y，当且仅当y.equals(x)返回true时，x.equals(y)必须返回true。</li>
-<li>一致性性<br><br>对于任意非null的引用值x、y，只要equals方法的比较操作在对象中所用的信息没有发生改变，那么多次调用x.equals(y)应该一致的返回true或false。</li>
-<li>传递性<br>对于任意非null的引用值x、y、z，如果x.equals(y)返回true，并且y.equals(z)返回true，那么x.equals(z)必须返回true。</li>
-</ol>
-</li>
-<li>hashcode在java中的通用准则<ol>
-<li><font color="red"><strong>在应用运行期间，只要对象的equals方法的比较操作所用到的信息没有被修改，那么多次调用该对象的equals方法应该始终如一的返回同一个整数</strong>。</font>在同一个应用程序的多次执行过程中，每次执行equals方法所返回的整数可以不一致。</li>
-<li><strong>如果两个对象使用equals(Object)方法比较是相等的，那么调用这两个对象中的任意一个对象的hashCode方法都必须产生相同的一个整数结果。</strong> 重写equals方法就必须重写hashcode方法的原因</li>
-<li><font color="red">如果两个对象使用equals(Object)方法比较是不相等的，那么调用这两个对象中的任意一个对象的hashCode方法，则不一定要产生不同的整数结果。如果给不同的对象产生不同的hash码，有可能提高散列表性能（比如往HashMap中添加数据时，具体添加到哪个桶中，就是根据(table.length - 1) &amp; hash来计算的）</font>。<h5 id="JWT安全性问题"><a href="#JWT安全性问题" class="headerlink" title="JWT安全性问题"></a>JWT安全性问题</h5>对比于 session和cookie安全性，在获取到cookie或者session后，做不了数据被篡改和循环调用的防范措施<h6 id="JWT如何防止篡改数据"><a href="#JWT如何防止篡改数据" class="headerlink" title="JWT如何防止篡改数据"></a>JWT如何防止篡改数据</h6></li>
-</ol>
-</li>
-</ul>
-</li>
-<li><p>JWT的组成部分</p>
-<ul>
-<li><p>header(头部)，头部信息主要包括（参数的类型–JWT,签名的算法–HS256）</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"typ"</span>: <span class="string">"JWT"</span>,</span><br><span class="line">  <span class="attr">"alg"</span>: <span class="string">"HS256"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>poyload(负荷)，负荷基本就是自己想要存放的信息(因为信息会暴露，不应该在载荷里面加入任何敏感的数据)，有两个形式，</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"> <span class="attr">"iss"</span>: <span class="string">"John Wu JWT"</span>,</span><br><span class="line"> <span class="attr">"iat"</span>: <span class="number">1441593502</span>,</span><br><span class="line"> <span class="attr">"exp"</span>: <span class="number">1441594722</span>,</span><br><span class="line"> <span class="attr">"aud"</span>: <span class="string">"www.example.com"</span>,</span><br><span class="line"> <span class="attr">"sub"</span>: <span class="string">"jrocket@example.com"</span>,</span><br><span class="line"> <span class="attr">"from_user"</span>: <span class="string">"B"</span>,</span><br><span class="line"> <span class="attr">"target_user"</span>: <span class="string">"A"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>sign(签名): 将前面两个编码后的字符串用 <code>.</code> 拼装在一起，然后将拼接完后的字符串用<code>header标识的 HS256</code>进行加密，在加密的时候，我们还需要提供一个密钥（secret） 签名的作用就是为了防止恶意篡改数据。<strong><em>只要加密密钥不丢失，就不能踹改请求数据</em></strong></p>
-<h6 id="JWT如何防止在token丢失的情况下重复请求"><a href="#JWT如何防止在token丢失的情况下重复请求" class="headerlink" title="JWT如何防止在token丢失的情况下重复请求"></a>JWT如何防止在token丢失的情况下重复请求</h6><p>可以在playload中加入时间戳并且前后端都来参与解决。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 前端生成token时，在payload里增加当前时间戳</span><br><span class="line">2. 后端接收后，对解析出来的时间戳和当前时间进行判断</span><br><span class="line">3. 如果相差特定时间内（比如2秒），允许请求否则判定为重复攻击</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<h5 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h5><h6 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h6><p>面向对象是模型化的，只要抽象出一个类，里面就有数据和解决问题的方法。需要什么功能直接使用就可以，用户不需要怎么去实现的<br><br>面向对象的三大特性：</p>
-<ol>
-<li>封装<br><br>隐藏对象的属性和实现细节，仅对外提供公共访问方式，将变化隔离，便于使用，提高复用性和安全性。</li>
-<li>继承<br><br>提高代码复用性；继承是多态的前提。</li>
-<li>多态<br><br>父类或接口定义的引用变量可以指向子类或具体实现类的实例对象。提高了程序的拓展性。</li>
-</ol>
-<h5 id="线程相关"><a href="#线程相关" class="headerlink" title="线程相关"></a>线程相关</h5><h6 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h6><ul>
-<li>并发<br><br>多个任务在同一时间段内执行。这些任务不是顺序执行的，而是以交替的方式被执行</li>
-<li>并行<br><br>多个任务在同一时刻被执行</li>
-</ul>
-<h6 id="synchronized-作用域"><a href="#synchronized-作用域" class="headerlink" title="synchronized 作用域"></a>synchronized 作用域</h6><p>synchronized的作用域分为 <code>类锁</code>，<code>对象锁</code></p>
-<ul>
-<li>类锁（针对这个类）</li>
-</ul>
-<ol>
-<li><p>类锁需要 <code>synchronized 来修饰静态 static 方法</code>，写法如下</p>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line"> <span class="comment">// TODO</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>使用代码块，需引用当前的类</p>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (TestSynchronized.class) &#123;</span><br><span class="line">        <span class="comment">// TODO</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p> <strong><font color="red">类锁和对象锁其实是一样的，由于静态方法是类所有对象共用的，所以进行同步后，该静态方法的锁也是所有对象唯一的。每次只能有一个线程来访问对象的该非静态同步方法。 </font>类锁和对象锁是不一样的锁，是互相独立的</strong>    </p>
-</li>
-</ol>
-<ul>
-<li>对象锁 （针对new出来的对象）<br></li>
-</ul>
-<ol>
-<li><p>synchronized修饰的非静态方法，修饰实例方法时，锁定的是当前对象</p>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">// TODO</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>代码块使用 synchronized 修饰的写法，使用代码块，如果传入的参数是 this，那么锁定的也是当前的对象</p>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">        <span class="comment">// TODO</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p> <strong>同步能够使得一个线程执行完毕后，另一个线程才开始执行</strong></p>
-<h6 id="线程同步和线程安全的区别"><a href="#线程同步和线程安全的区别" class="headerlink" title="线程同步和线程安全的区别"></a>线程同步和线程安全的区别</h6></li>
-</ol>
-<ul>
-<li>线程同步 <br><br>线程同步更强调的是多个线程间的执行顺序</li>
-<li>线程安全 <br><br>线程安全更加强调的是对资源的访问控制<h6 id="实现线程同步有哪些方式"><a href="#实现线程同步有哪些方式" class="headerlink" title="实现线程同步有哪些方式"></a>实现线程同步有哪些方式</h6><h6 id="ConcurrentHashMap线程安全"><a href="#ConcurrentHashMap线程安全" class="headerlink" title="ConcurrentHashMap线程安全"></a>ConcurrentHashMap线程安全</h6></li>
-</ul>
-<h5 id="ZK相关"><a href="#ZK相关" class="headerlink" title="ZK相关"></a>ZK相关</h5><p>zk的核心是原子广播，这个机制保证了各个server之间的同步。实现这个机制的协议是<code>Zab</code>协议，他们分别是<code>恢复模式（选主）</code> 和 <code>广播模式（同步）</code>。<br><br>当服务崩溃或者启动的时候，zab就进入恢复模式，当leader被选举出来的，大多数server完成与leader状态同步后，集群就进入广播模式。<strong>状态同步保证了server与leaer之间具有相同的状态</strong><br><br>为了保证事务顺序一致性，zk采用了递增的事务id（zxid）来标识事务，所有提议（propose）提出的时候加上zxid，</p>
-<ul>
-<li><p>节点类型</p>
-<ol>
-<li>EPHEMERAL<br> 临时节点</li>
-<li>EPHEMERAL_SEQUENTIAL<br> 临时顺序节点</li>
-<li><p>PERSISTENT</p>
-</li>
-<li><p>PERSISTENT_SEQUENTIAL</p>
-<h6 id="ZK选举过程"><a href="#ZK选举过程" class="headerlink" title="ZK选举过程"></a>ZK选举过程</h6><p><a href="https://blog.csdn.net/liuj2511981/article/details/42460069" target="_blank" rel="noopener">参考链接</a></p>
-</li>
-</ol>
-</li>
-</ul>
-<p><a href="https://www.sczyh30.com/posts/Java/jvm-metaspace/" target="_blank" rel="noopener">metaspace  permspace</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2835,7 +2500,7 @@ b. 消费者能绕过zk来直接发起调用，在使用url标签，直接指定
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2870,7 +2535,9 @@ b. 消费者能绕过zk来直接发起调用，在使用url标签，直接指定
                     
                       
                     
-                    <span class="site-state-item-count">9</span>
+                      
+                    
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -2915,7 +2582,9 @@ b. 消费者能绕过zk来直接发起调用，在使用url标签，直接指定
                     
                       
                     
-                    <span class="site-state-item-count">14</span>
+                      
+                    
+                    <span class="site-state-item-count">15</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -2995,7 +2664,7 @@ b. 消费者能绕过zk来直接发起调用，在使用url标签，直接指定
       <i class="fa fa-area-chart"></i>
     </span>
     
-    <span title="站点总字数">72k</span>
+    <span title="站点总字数">79k</span>
   
 
   
@@ -3004,7 +2673,7 @@ b. 消费者能绕过zk来直接发起调用，在使用url标签，直接指定
       <i class="fa fa-coffee"></i>
     </span>
     
-    <span title="站点阅读时长">1:06</span>
+    <span title="站点阅读时长">1:11</span>
   
 </div>
 
