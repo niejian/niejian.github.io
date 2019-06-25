@@ -584,12 +584,24 @@
                 
               
 
-              <time title="创建时间：2019-05-30 10:55:33 / 修改时间：10:56:50" itemprop="dateCreated datePublished" datetime="2019-05-30T10:55:33+08:00">2019-05-30</time>
+              <time title="创建时间：2019-05-30 10:55:33" itemprop="dateCreated datePublished" datetime="2019-05-30T10:55:33+08:00">2019-05-30</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-25 16:26:05" itemprop="dateModified" datetime="2019-06-25T16:26:05+08:00">2019-06-25</time>
               
             
           </span>
@@ -686,7 +698,7 @@
 <li>效率问题，标记和清除两个过程的效率都不高</li>
 <li>空间问题，标记清除和产生大量不连续的内存碎片，内存碎片过多容易导致以后在程序运行的过程中需要分配大对象时，无法找到足够的连续内存而不得不提前触发一次垃圾收集动作。<h5 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h5>适用于老年代。因为老年代回收的几率小且不频繁能减少内存碎片<h4 id="复制-（coping）"><a href="#复制-（coping）" class="headerlink" title="复制 （coping）"></a>复制 （coping）</h4>为了解决标记-清除得到效率问题，<code>复制</code>算法就出现了；它的原理是将可用内存容量划分为两个大小相等的内存块，每次只使用其中的一个，当这个的容量用完了。就将还存活的对象复制到另外一块上面去，然后再把已使用过的内存空间全部清理掉。这样使得每次都是对整个半区进行内存回收，内存分配就不用考考虑碎片等复杂情况<br><br><img src="https://s2.ax1x.com/2019/05/29/VuHLDO.md.png" alt><br>研究表明，新生代中的对象98%都是朝生夕死的，所以按照并不需要1:1来划分空间。而是将内存分为<code>一块较大的Eden空间和两个较小的Survivor空间</code>，每次使用Eden和其中一款Survivor。一般比例是<code>Eden : Survivor = 8:1</code><h5 id="不足-1"><a href="#不足-1" class="headerlink" title="不足"></a>不足</h5></li>
 <li>空间利用率只有50%，但是经过适当的调整Eden和Survivor的比例能达到70%</li>
-<li>复制收集算法在对象存活率较高时就要进行较多的复制操作，效率将会变低<h5 id="适用场景-1"><a href="#适用场景-1" class="headerlink" title="适用场景"></a>适用场景</h5>使用了对象存活率较低的内存空间，如Eden区。<h4 id="标记整理"><a href="#标记整理" class="headerlink" title="标记整理"></a>标记整理</h4>是标记-清除算法的升级版本。标记过程任然与标记-清除算法一样，但是后续的处理步骤不是直接对可回收对象进行清理，而是让所有存活对象都向一端移动，然后直接清理掉端边界意外的内存、标记-整理算法示意图如下：<br><br><img src="https://s2.ax1x.com/2019/05/29/VuLjVU.md.png" alt></li>
+<li>复制收集算法在对象存活率较高时就要进行较多的复制操作，效率将会变低<h5 id="适用场景-1"><a href="#适用场景-1" class="headerlink" title="适用场景"></a>适用场景</h5>使用了对象存活率较低的内存空间，如Eden区。<h4 id="标记整理"><a href="#标记整理" class="headerlink" title="标记整理"></a>标记整理</h4>是标记-清除算法的升级版本。标记过程任然与标记-清除算法一样，但是后续的处理步骤不是直接对可回收对象进行清理，而是让所有存活对象都向一端移动，然后直接清理掉端边界意外的内存、标记-整理算法示意图如下：<br><br><img src="https://s2.ax1x.com/2019/06/25/ZVWT9x.png" alt></li>
 </ul>
 
           
