@@ -108,7 +108,7 @@
 <meta property="og:site_name" content="code4fun">
 <meta property="og:description" content="数据库隔离级别数据库四大特性数据库四大特性：ACID；分别是 原子性（Atomicity）,一致性（Consistency）,隔离性（Isolate）,持久性（Durability） 原子性（Atomic）事务操作要么全部成功要么全部失败 一致性（Consistency）事务必须使数据库从一个一致性状态变换到另外一个一致性状态。简单的说就是：假设账户A和账户B总共有2000块，那么不管A，B两个账">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-05-08T03:52:12.546Z">
+<meta property="og:updated_time" content="2019-06-28T09:06:54.567Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据库隔离级别">
 <meta name="twitter:description" content="数据库隔离级别数据库四大特性数据库四大特性：ACID；分别是 原子性（Atomicity）,一致性（Consistency）,隔离性（Isolate）,持久性（Durability） 原子性（Atomic）事务操作要么全部成功要么全部失败 一致性（Consistency）事务必须使数据库从一个一致性状态变换到另外一个一致性状态。简单的说就是：假设账户A和账户B总共有2000块，那么不管A，B两个账">
@@ -400,12 +400,24 @@
                 
               
 
-              <time title="创建时间：2019-05-08 11:51:34 / 修改时间：11:52:12" itemprop="dateCreated datePublished" datetime="2019-05-08T11:51:34+08:00">2019-05-08</time>
+              <time title="创建时间：2019-05-08 11:51:34" itemprop="dateCreated datePublished" datetime="2019-05-08T11:51:34+08:00">2019-05-08</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-28 17:06:54" itemprop="dateModified" datetime="2019-06-28T17:06:54+08:00">2019-06-28</time>
               
             
           </span>
@@ -496,6 +508,7 @@
 <h5 id="原子性（Atomic）"><a href="#原子性（Atomic）" class="headerlink" title="原子性（Atomic）"></a>原子性（Atomic）</h5><p>事务操作要么全部成功要么全部失败</p>
 <h5 id="一致性（Consistency）"><a href="#一致性（Consistency）" class="headerlink" title="一致性（Consistency）"></a>一致性（Consistency）</h5><p>事务必须使数据库从一个一致性状态变换到另外一个一致性状态。<br><br>简单的说就是：假设账户A和账户B总共有2000块，那么不管A，B两个账户间怎么转账，他们两的总额都是2000.</p>
 <h5 id="隔离性（Isolate）"><a href="#隔离性（Isolate）" class="headerlink" title="隔离性（Isolate）"></a>隔离性（Isolate）</h5><p>隔离性是指当多个用户并发访问数据库时，比如操作一张表表时，数据库为每个用户开启事务，不能被其他事务干扰，多个并发事务之间相互隔离。<br><br>要达成这种效果：对于任意两个并发的事务T1和T2，在事务T1看来，T2要么在T1开始之前就已经结束，要么在T1结束之后才开始，这样每个事务都感觉不到有其他事务在并发地执行。</p>
+<a id="more"></a>
 <h5 id="持久性（Durability）"><a href="#持久性（Durability）" class="headerlink" title="持久性（Durability）"></a>持久性（Durability）</h5><p>事务一旦被提交了，对数据库的数据改变就是永久性的</p>
 <h4 id="事务并发问题"><a href="#事务并发问题" class="headerlink" title="事务并发问题"></a>事务并发问题</h4><h5 id="脏读"><a href="#脏读" class="headerlink" title="脏读"></a>脏读</h5><p>事务A读取了事务B中的数据，然后B做回滚操作，那么A读到的数据就是脏数据</p>
 <h5 id="不可重复读"><a href="#不可重复读" class="headerlink" title="不可重复读"></a>不可重复读</h5><p>事务A多次读取同一数据，事务B在事务A读取的过程中，对该数据做了更新并提交。导致事务A在读取同一数据出现不同结果的问题</p>

@@ -100,13 +100,13 @@
 
 
 
-  <meta name="description" content="下载release版本本次构建的是1.4.0的版本 初始化数据库信息数据库表信息 修改注册中心配置初始化数据库表后，需要修改 ApolloConfigDB.ServerConfig表中的注册中心信息，apollo在启动的时候回读取该表的信息然后将服务注册上去。 初始化配置环境信息修改ApolloPortalDB.serverConfig表的apollo.portal.envs 修改对应数据库配置修">
+  <meta name="description" content="下载release版本本次构建的是1.4.0的版本 初始化数据库信息数据库表信息 修改注册中心配置初始化数据库表后，需要修改 ApolloConfigDB.ServerConfig表中的注册中心信息，apollo在启动的时候回读取该表的信息然后将服务注册上去。 初始化配置环境信息修改ApolloPortalDB.serverConfig表的apollo.portal.envs">
 <meta name="keywords" content="apollo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="源码构建Apollo以及改造">
 <meta property="og:url" content="https://niejian.github.io/2019/05/23/源码构建Apollo以及改造/index.html">
 <meta property="og:site_name" content="code4fun">
-<meta property="og:description" content="下载release版本本次构建的是1.4.0的版本 初始化数据库信息数据库表信息 修改注册中心配置初始化数据库表后，需要修改 ApolloConfigDB.ServerConfig表中的注册中心信息，apollo在启动的时候回读取该表的信息然后将服务注册上去。 初始化配置环境信息修改ApolloPortalDB.serverConfig表的apollo.portal.envs 修改对应数据库配置修">
+<meta property="og:description" content="下载release版本本次构建的是1.4.0的版本 初始化数据库信息数据库表信息 修改注册中心配置初始化数据库表后，需要修改 ApolloConfigDB.ServerConfig表中的注册中心信息，apollo在启动的时候回读取该表的信息然后将服务注册上去。 初始化配置环境信息修改ApolloPortalDB.serverConfig表的apollo.portal.envs">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://s2.ax1x.com/2019/05/23/VClTsA.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/05/23/VCMX0P.png">
@@ -115,10 +115,10 @@
 <meta property="og:image" content="https://s2.ax1x.com/2019/05/23/VCQxD1.md.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/05/23/VC1fwq.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/05/23/VC3QXj.md.png">
-<meta property="og:updated_time" content="2019-05-24T01:18:24.606Z">
+<meta property="og:updated_time" content="2019-06-28T09:06:12.284Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="源码构建Apollo以及改造">
-<meta name="twitter:description" content="下载release版本本次构建的是1.4.0的版本 初始化数据库信息数据库表信息 修改注册中心配置初始化数据库表后，需要修改 ApolloConfigDB.ServerConfig表中的注册中心信息，apollo在启动的时候回读取该表的信息然后将服务注册上去。 初始化配置环境信息修改ApolloPortalDB.serverConfig表的apollo.portal.envs 修改对应数据库配置修">
+<meta name="twitter:description" content="下载release版本本次构建的是1.4.0的版本 初始化数据库信息数据库表信息 修改注册中心配置初始化数据库表后，需要修改 ApolloConfigDB.ServerConfig表中的注册中心信息，apollo在启动的时候回读取该表的信息然后将服务注册上去。 初始化配置环境信息修改ApolloPortalDB.serverConfig表的apollo.portal.envs">
 <meta name="twitter:image" content="https://s2.ax1x.com/2019/05/23/VClTsA.png">
 
 
@@ -425,7 +425,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-05-24 09:18:24" itemprop="dateModified" datetime="2019-05-24T09:18:24+08:00">2019-05-24</time>
+                <time title="修改时间：2019-06-28 17:06:12" itemprop="dateModified" datetime="2019-06-28T17:06:12+08:00">2019-06-28</time>
               
             
           </span>
@@ -516,6 +516,7 @@
 <h3 id="初始化数据库信息"><a href="#初始化数据库信息" class="headerlink" title="初始化数据库信息"></a>初始化数据库信息</h3><p><a href="https://github.com/nobodyiam/apollo-build-scripts/blob/master/sql/apolloportaldb.sql" target="_blank" rel="noopener">数据库表信息</a><br><br></p>
 <h4 id="修改注册中心配置"><a href="#修改注册中心配置" class="headerlink" title="修改注册中心配置"></a>修改注册中心配置</h4><p><strong><em>初始化数据库表后，需要修改 <code>ApolloConfigDB.ServerConfig</code>表中的注册中心信息，apollo在启动的时候回读取该表的信息然后将服务注册上去。</em></strong><br></p>
 <h4 id="初始化配置环境信息"><a href="#初始化配置环境信息" class="headerlink" title="初始化配置环境信息"></a>初始化配置环境信息</h4><p>修改ApolloPortalDB.serverConfig表的<code>apollo.portal.envs</code><br><img src="https://s2.ax1x.com/2019/05/23/VClTsA.png" alt="VClTsA.png"></p>
+<a id="more"></a>
 <h3 id="修改对应数据库配置"><a href="#修改对应数据库配置" class="headerlink" title="修改对应数据库配置"></a>修改对应数据库配置</h3><h4 id="修改打包脚本"><a href="#修改打包脚本" class="headerlink" title="修改打包脚本"></a>修改打包脚本</h4><ol>
 <li>位置：<code>scripts/build.sh</code></li>
 <li>修改配置<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># apollo config db info</span><br><span class="line">apollo_config_db_url=jdbc:mysql://yun2:3306/ApolloConfigDB?characterEncoding=utf8</span><br><span class="line">apollo_config_db_username=root</span><br><span class="line">apollo_config_db_password=root</span><br><span class="line"></span><br><span class="line"># apollo portal db info</span><br><span class="line">apollo_portal_db_url=jdbc:mysql://yun2:3306/ApolloPortalDB?characterEncoding=utf8</span><br><span class="line">apollo_portal_db_username=root</span><br><span class="line">apollo_portal_db_password=root</span><br><span class="line"></span><br><span class="line"># meta server url, different environments should have different meta server addresses</span><br><span class="line"># 这里是对应的是各个环境中的configService地址</span><br><span class="line">dev_meta=http://localhost:8080</span><br><span class="line">#fat_meta=http://fill-in-fat-meta-server:8080</span><br><span class="line">uat_meta=http://localhost:8082</span><br><span class="line">pro_meta=http://localhost:8083</span><br></pre></td></tr></table></figure>

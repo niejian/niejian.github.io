@@ -100,21 +100,21 @@
 
 
 
-  <meta name="description" content="内存模型内存模型如下图所示 堆堆是Java虚拟机所管理的内存最大一块。堆是所有线程共享的一块内存区域，在虚拟机启动时创建。此内存区域唯一的目的就是存放对象实例。所有的对象实例都在这里分配内存Java堆是垃圾收集器管理的主要区域。从内存回收的角度来看，由于现在的垃圾收集器采用的是分代收集算法。所以，java堆又分为新生代和老年代。从内存分配的角度来说，线程共享的java对中可能划分出多个线程私有的f">
+  <meta name="description" content="内存模型内存模型如下图所示">
 <meta name="keywords" content="jvm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JVM内存模型详解">
 <meta property="og:url" content="https://niejian.github.io/2019/05/26/JVM内存模型详解/index.html">
 <meta property="og:site_name" content="code4fun">
-<meta property="og:description" content="内存模型内存模型如下图所示 堆堆是Java虚拟机所管理的内存最大一块。堆是所有线程共享的一块内存区域，在虚拟机启动时创建。此内存区域唯一的目的就是存放对象实例。所有的对象实例都在这里分配内存Java堆是垃圾收集器管理的主要区域。从内存回收的角度来看，由于现在的垃圾收集器采用的是分代收集算法。所以，java堆又分为新生代和老年代。从内存分配的角度来说，线程共享的java对中可能划分出多个线程私有的f">
+<meta property="og:description" content="内存模型内存模型如下图所示">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://s2.ax1x.com/2019/05/26/VECQk4.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/05/26/VEoAmt.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/05/26/VEoxun.png">
-<meta property="og:updated_time" content="2019-05-26T14:05:38.778Z">
+<meta property="og:updated_time" content="2019-06-28T09:05:51.729Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM内存模型详解">
-<meta name="twitter:description" content="内存模型内存模型如下图所示 堆堆是Java虚拟机所管理的内存最大一块。堆是所有线程共享的一块内存区域，在虚拟机启动时创建。此内存区域唯一的目的就是存放对象实例。所有的对象实例都在这里分配内存Java堆是垃圾收集器管理的主要区域。从内存回收的角度来看，由于现在的垃圾收集器采用的是分代收集算法。所以，java堆又分为新生代和老年代。从内存分配的角度来说，线程共享的java对中可能划分出多个线程私有的f">
+<meta name="twitter:description" content="内存模型内存模型如下图所示">
 <meta name="twitter:image" content="https://s2.ax1x.com/2019/05/26/VECQk4.png">
 
 
@@ -404,12 +404,24 @@
                 
               
 
-              <time title="创建时间：2019-05-26 12:34:39 / 修改时间：22:05:38" itemprop="dateCreated datePublished" datetime="2019-05-26T12:34:39+08:00">2019-05-26</time>
+              <time title="创建时间：2019-05-26 12:34:39" itemprop="dateCreated datePublished" datetime="2019-05-26T12:34:39+08:00">2019-05-26</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-28 17:05:51" itemprop="dateModified" datetime="2019-06-28T17:05:51+08:00">2019-06-28</time>
               
             
           </span>
@@ -496,7 +508,7 @@
       
 
       
-        <h3 id="内存模型"><a href="#内存模型" class="headerlink" title="内存模型"></a>内存模型</h3><p>内存模型如下图所示<br><br><img src="https://s2.ax1x.com/2019/05/26/VECQk4.png" alt></p>
+        <h3 id="内存模型"><a href="#内存模型" class="headerlink" title="内存模型"></a>内存模型</h3><p>内存模型如下图所示<br><br><img src="https://s2.ax1x.com/2019/05/26/VECQk4.png" alt><br><a id="more"></a></p>
 <h4 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h4><p>堆是Java虚拟机所管理的内存最大一块。<font>堆是所有线程共享的一块内存区域，在虚拟机启动时创建。</font><strong>此内存区域唯一的目的就是存放对象实例。所有的对象实例都在这里分配内存</strong><br><br>Java堆是垃圾收集器管理的主要区域。从内存回收的角度来看，由于现在的垃圾收集器采用的是分代收集算法。所以，java堆又分为<code>新生代</code>和<code>老年代</code>。从内存分配的角度来说，线程共享的java对中可能划分出多个线程私有的fenp缓冲区(Thread Local Allocation Buffer)。<br><br>可以通过 <code>-Xms</code>、<code>-Xmx</code>分别控制堆初始化是最小堆内存和最大堆内存大小。</p>
 <h4 id="虚拟机栈"><a href="#虚拟机栈" class="headerlink" title="虚拟机栈"></a>虚拟机栈</h4><p><strong>与程序计数器一样，java虚拟机栈也是线程私有的，他的生命周期与线程相同</strong>。<br><br>虚拟机栈描述的是Java方法的执行的内存模型：每个方法在执行的同时会创建一个<code>栈桢（stack frame）</code>用于存储<code>局部变量表、操作数栈、动态链表、方法出口等信息</code>。每个方法从调用直至执行完成的过程，就对应着栈桢在虚拟机栈中入栈到出栈的过程。</p>
 <h5 id="虚拟机栈存储的数据类型"><a href="#虚拟机栈存储的数据类型" class="headerlink" title="虚拟机栈存储的数据类型"></a>虚拟机栈存储的数据类型</h5><ul>

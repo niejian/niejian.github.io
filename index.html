@@ -396,7 +396,7 @@
                 
               
 
-              <time title="创建时间：2019-06-28 16:27:47 / 修改时间：16:29:41" itemprop="dateCreated datePublished" datetime="2019-06-28T16:27:47+08:00">2019-06-28</time>
+              <time title="创建时间：2019-06-28 16:27:47 / 修改时间：17:02:00" itemprop="dateCreated datePublished" datetime="2019-06-28T16:27:47+08:00">2019-06-28</time>
             
 
             
@@ -447,7 +447,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">312</span>
+                <span title="本文字数">324</span>
               
 
               
@@ -482,14 +482,16 @@
 
       
         
+          <p>brew更换为国内源</p>
+          <!--noindex-->
           
-            <p>在用brew安装新的软件的时候一直出现：</p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Updating Homebrew...</span><br></pre></td></tr></table></figure>
-<p>主要是因为它试图在连接国外的源，</p>
-<p>改成国内的源就好了：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#替换brew.git:</span></span><br><span class="line"><span class="built_in">cd</span> <span class="string">"<span class="variable">$(brew --repo)</span>"</span></span><br><span class="line">git remote <span class="built_in">set</span>-url origin https://mirrors.ustc.edu.cn/brew.git</span><br><span class="line"><span class="comment">#替换homebrew-core.git:</span></span><br><span class="line"><span class="built_in">cd</span> <span class="string">"<span class="variable">$(brew --repo)</span>/Library/Taps/homebrew/homebrew-core"</span></span><br><span class="line">git remote <span class="built_in">set</span>-url origin https://mirrors.ustc.edu.cn/homebrew-core.git</span><br></pre></td></tr></table></figure>
-
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/06/28/Mac-brew源更新/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
           
+          <!--/noindex-->
         
       
     </div>
@@ -589,12 +591,24 @@
                 
               
 
-              <time title="创建时间：2019-06-18 10:59:46 / 修改时间：11:00:33" itemprop="dateCreated datePublished" datetime="2019-06-18T10:59:46+08:00">2019-06-18</time>
+              <time title="创建时间：2019-06-18 10:59:46" itemprop="dateCreated datePublished" datetime="2019-06-18T10:59:46+08:00">2019-06-18</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-28 17:05:36" itemprop="dateModified" datetime="2019-06-28T17:05:36+08:00">2019-06-28</time>
               
             
           </span>
@@ -675,9 +689,16 @@
 
       
         
+          <p>kafka相关概念介绍。</p>
+          <!--noindex-->
           
-            <div class="post"><br><br><br><h2>转载自：<a href="https://www.cnblogs.com/sujing/p/10960832.html" target="_blank" rel="noopener">https://www.cnblogs.com/sujing/p/10960832.html</a><br><br><h2 id="为什么需要消息队列">为什么需要消息队列</h2><br><p>　　周末无聊刷着手机，某宝网APP突然蹦出来一条消息“为了回馈老客户，女朋友买一送一，活动仅限今天！”。买一送一还有这种好事，那我可不能错过！忍不住立马点了去。于是选了两个最新款，下单、支付一气呵成！满足的躺在床上，想着马上有女朋友了，竟然幸福的失眠了……<br><br>　　第二天正常上着班，突然接到快递小哥的电话：<br><br>　　小哥：“你是xx吗？你的女朋友到了，我现在在你楼下，你来拿一下吧！”。<br><br>　　我：“这……我在上班呢，可以晚上送过来吗？“。<br><br>　　小哥：“晚上可不行哦，晚上我也下班了呢！”。<br><br>　　于是两个人僵持了很久……<br><br>　　最后小哥说，要不我帮你放到楼下小芳便利店吧，你晚上下班了过来拿，尴尬的局面这才得以缓解！</p><br><p>　　回到正题，如果没有小芳便利店，那快递小哥和我的交互图就应该如下：<br><br>　　<br><br>　　 <img src="https://s2.ax1x.com/2019/06/18/VbOQi9.png"></p><br><p>　　会出现什么情况呢？<br><br>　　1、为了这个女朋友，我请假回去拿（老板不批）。<br><br>　　2、小哥一直在你楼下等（小哥还有其他的快递要送）。<br><br>　　3、周末再送（显然等不及）。<br><br>　　4、这个女朋友我不要了（绝对不可能）！</p><br><p>　　小芳便利店出现后，交互图就应如下：<br><br>　　<br><br>　　<img src="https://s2.ax1x.com/2019/06/18/VbOsQP.png"></p><br><p>　　在上面例子中，“快递小哥”和“买女朋友的我”就是需要交互的两个系统，小芳便利店就是我们本文要讲的-“消息中间件”。总结下来小芳便利店（消息中间件）出现后有如下好处：<br><br>　　<strong>1、 解耦</strong><br><br>　　快递小哥手上有很多快递需要送，他每次都需要先电话一一确认收货人是否有空、哪个时间段有空，然后再确定好送货的方案。这样完全依赖收货人了！如果快递一多，快递小哥估计的忙疯了……如果有了便利店，快递小哥只需要将同一个小区的快递放在同一个便利店，然后通知收货人来取货就可以了，这时候快递小哥和收货人就实现了解耦！</p><br><p>　　<strong>2、 异步</strong><br><br>　　快递小哥打电话给我后需要一直在你楼下等着，直到我拿走你的快递他才能去送其他人的。快递小哥将快递放在小芳便利店后，又可以干其他的活儿去了，不需要等待你到来而一直处于等待状态。提高了工作的效率。</p><br><p>　　<strong>3、 削峰</strong><br><br>　　假设双十一我买了不同店里的各种商品，而恰巧这些店发货的快递都不一样，有中通、圆通、申通、各种通等……更巧的是他们都同时到货了！中通的小哥打来电话叫我去北门取快递、圆通小哥叫我去南门、申通小哥叫我去东门。我一时手忙脚乱……</p><br><p>　　我们能看到在系统需要交互的场景中，使用消息队列中间件真的是好处多多，基于这种思路，就有了丰巢、菜鸟驿站等比小芳便利店更专业的“中间件”了。<br><br>　　最后，上面的故事纯属虚构……</p><br><h1 id="消息队列通信的模式">消息队列通信的模式</h1><br><p>　　通过上面的例子我们引出了消息中间件，并且介绍了消息队列出现后的好处，这里就需要介绍消息队列通信的两种模式了：</p><br><h2 id="一-点对点模式">一、 点对点模式</h2><br><p>　　<img src="https://s2.ax1x.com/2019/06/18/VbX3kQ.png"></p><br><p>　　如上图所示，点对点模式通常是基于拉取或者轮询的消息传送模型，这个模型的特点是发送到队列的消息被一个且只有一个消费者进行处理。生产者将消息放入消息队列后，由消费者主动的去拉取消息进行消费。点对点模型的的优点是消费者拉取消息的频率可以由自己控制。但是消息队列是否有消息需要消费，在消费者端无法感知，所以在消费者端需要额外的线程去监控。</p><br><h2 id="二-发布订阅模式">二、 发布订阅模式</h2><br><p>　　<img src="https://s2.ax1x.com/2019/06/18/VbObeU.png"></p><br><p>　　如上图所示，发布订阅模式是一个基于消息送的消息传送模型，改模型可以有多种不同的订阅者。生产者将消息放入消息队列后，队列会将消息推送给订阅过该类消息的消费者（类似微信公众号）。由于是消费者被动接收推送，所以无需感知消息队列是否有待消费的消息！但是consumer1、consumer2、consumer3由于机器性能不一样，所以处理消息的能力也会不一样，但消息队列却无法感知消费者消费的速度！所以推送的速度成了发布订阅模模式的一个问题！假设三个消费者处理速度分别是8M/s、5M/s、2M/s，如果队列推送的速度为5M/s，则consumer3无法承受！如果队列推送的速度为2M/s，则consumer1、consumer2会出现资源的极大浪费！</p><br><h1 id="kafka">Kafka</h1><br><p>　　上面简单的介绍了为什么需要消息队列以及消息队列通信的两种模式，接下来就到了我们本文的主角——kafka闪亮登场的时候了！Kafka是一种高吞吐量的分布式发布订阅消息系统，它可以处理消费者规模的网站中的所有动作流数据，具有高性能、持久化、多副本备份、横向扩展能力……… 一些基本的介绍这里就不展开了，网上有太多关于这些的介绍了，读者可以自行百度一下！</p><br><h2 id="基础架构及术语">基础架构及术语</h2><br><p>　　话不多说，先看图，通过这张图我们来捋一捋相关的概念及之间的关系：</p><br><p>　　<img src="https://s2.ax1x.com/2019/06/18/Vbv7OP.png"></p><br><p>　　如果看到这张图你很懵逼，木有关系！我们先来分析相关概念<br><br>　　<strong>Producer</strong>：Producer即生产者，消息的产生者，是消息的入口。<br><br>　　<strong>kafka cluster</strong>：<br><br>　　　　<strong>Broker</strong>：Broker是kafka实例，每个服务器上有一个或多个kafka的实例，我们姑且认为每个broker对应一台服务器。每个kafka集群内的broker都有一个<strong>不重复</strong>的编号，如图中的broker-0、broker-1等……<br><br>　　　　<strong>Topic</strong>：消息的主题，可以理解为消息的分类，kafka的数据就保存在topic。在每个broker上都可以创建多个topic。<br><br>　　　　<strong>Partition</strong>：Topic的分区，每个topic可以有多个分区，分区的作用是做负载，提高kafka的吞吐量。同一个topic在不同的分区的数据是不重复的，partition的表现形式就是一个一个的文件夹！<br><br>　　　　<strong>Replication</strong>:每一个分区都有多个副本，副本的作用是做备胎。当主分区（Leader）故障的时候会选择一个备胎（Follower）上位，成为Leader。在kafka中默认副本的最大数量是10个，且副本的数量不能大于Broker的数量，follower和leader绝对是在不同的机器，同一机器对同一个分区也只可能存放一个副本（包括自己）。<br><br>　　　　<strong>Message</strong>：每一条发送的消息主体。<br><br>　　<strong>Consumer</strong>：消费者，即消息的消费方，是消息的出口。<br><br>　　<strong>Consumer Group</strong>：我们可以将多个消费组组成一个消费者组，在kafka的设计中同一个分区的数据只能被消费者组中的某一个消费者消费。同一个消费者组的消费者可以消费同一个topic的不同分区的数据，这也是为了提高kafka的吞吐量！<br><br>　　<strong>Zookeeper</strong>：kafka集群依赖zookeeper来保存集群的的元信息，来保证系统的可用性。</p><br><h2 id="工作流程分析">工作流程分析</h2><br><p>　　上面介绍了kafka的基础架构及基本概念，不知道大家看完有没有对kafka有个大致印象，如果对还比较懵也没关系！我们接下来再结合上面的结构图分析kafka的工作流程，最后再回来整个梳理一遍我相信你会更有收获！</p><br><h3 id="发送数据">发送数据</h3><br><p>　　我们看上面的架构图中，producer就是生产者，是数据的入口。注意看图中的红色箭头，Producer在写入数据的时候<font color="red"><strong>永远的找leader</strong></font>，不会直接将数据写入follower！那leader怎么找呢？写入的流程又是什么样的呢？我们看下图：</p><br><p>　　<img src="https://s2.ax1x.com/2019/06/18/Vbvbef.png"></p><br><p>　　发送的流程就在图中已经说明了，就不单独在文字列出来了！需要注意的一点是，消息写入leader后，follower是主动的去leader进行同步的！producer采用push模式将数据发布到broker，每条消息追加到分区中，顺序写入磁盘，所以保证<font color="red"><strong>同一分区</strong></font>内的数据是有序的！写入示意图如下：</p><br><p>　　<img src="https://s2.ax1x.com/2019/06/18/VbxmlR.png"></p><br><p>　　上面说到数据会写入到不同的分区，那kafka为什么要做分区呢？相信大家应该也能猜到，分区的主要目的是：<br><br>　　<strong>1、 方便扩展</strong>。因为一个topic可以有多个partition，所以我们可以通过扩展机器去轻松的应对日益增长的数据量。<br><br>　　<strong>2、 提高并发</strong>。以partition为读写单位，可以多个消费者同时消费数据，提高了消息的处理效率。</p><br><p>　　熟悉负载均衡的朋友应该知道，当我们向某个服务器发送请求的时候，服务端可能会对请求做一个负载，将流量分发到不同的服务器，那在kafka中，如果某个topic有多个partition，producer又怎么知道该将数据发往哪个partition呢？kafka中有几个原则：<br><br>　　1、 partition在写入的时候可以指定需要写入的partition，如果有指定，则写入对应的partition。<br><br>　　2、 如果没有指定partition，但是设置了数据的key，则会根据key的值hash出一个partition。<br><br>　　3、 如果既没指定partition，又没有设置key，则会轮询选出一个partition。</p><br><p>　　保证消息不丢失是一个消息队列中间件的基本保证，那producer在向kafka写入消息的时候，怎么保证消息不丢失呢？其实上面的写入流程图中有描述出来，那就是通过ACK应答机制！在生产者向队列写入数据的时候可以设置参数来确定是否确认kafka接收到数据，这个参数可设置的值为<strong>0</strong>、<strong>1</strong>、<strong>all</strong>。<br><br>　　0代表producer往集群发送数据不需要等到集群的返回，不确保消息发送成功。安全性最低但是效率最高。<br><br>　　1代表producer往集群发送数据只要leader应答就可以发送下一条，只确保leader发送成功。<br><br>　　all代表producer往集群发送数据需要所有的follower都完成从leader的同步才会发送下一条，确保leader发送成功和所有的副本都完成备份。安全性最高，但是效率最低。</p><br><p>　　最后要注意的是，如果往不存在的topic写数据，能不能写入成功呢？kafka会自动创建topic，分区和副本的数量根据默认配置都是1。</p><br><h3 id="保存数据">保存数据</h3><br><p>　　Producer将数据写入kafka后，集群就需要对数据进行保存了！kafka将数据保存在磁盘，可能在我们的一般的认知里，写入磁盘是比较耗时的操作，不适合这种高并发的组件。Kafka初始会单独开辟一块磁盘空间，顺序写入数据（效率比随机写入高）。</p><br><p><strong>Partition 结构</strong><br><br>　　前面说过了每个topic都可以分为一个或多个partition，如果你觉得topic比较抽象，那partition就是比较具体的东西了！Partition在服务器上的表现形式就是一个一个的文件夹，每个partition的文件夹下面会有多组segment文件，每组segment文件又包含.index文件、.log文件、.timeindex文件（早期版本中没有）三个文件， log文件就实际是存储message的地方，而index和timeindex文件为索引文件，用于检索消息。</p><br><p>　　<img src="https://s2.ax1x.com/2019/06/18/Vbxn61.png"></p><br><p>　　如上图，这个partition有三组segment文件，每个log文件的大小是一样的，但是存储的message数量是不一定相等的（每条的message大小不一致）。文件的命名是以该segment最小offset来命名的，如000.index存储offset为0~368795的消息，kafka就是利用分段+索引的方式来解决查找效率的问题。</p><br><p><strong>Message结构</strong><br><br>上面说到log文件就实际是存储message的地方，我们在producer往kafka写入的也是一条一条的message，那存储在log中的message是什么样子的呢？消息主要包含消息体、消息大小、offset、压缩类型……等等！我们重点需要知道的是下面三个：<br><br>　　1、 offset：offset是一个占8byte的有序id号，它可以唯一确定每条消息在parition内的位置！<br><br>　　2、 消息大小：消息大小占用4byte，用于描述消息的大小。<br><br>　　3、 消息体：消息体存放的是实际的消息数据（被压缩过），占用的空间根据具体的消息而不一样。</p><br><p><strong>存储策略</strong><br><br>　　无论消息是否被消费，kafka都会保存所有的消息。那对于旧数据有什么删除策略呢？<br><br>　　1、 基于时间，默认配置是168小时（7天）。<br><br>　　2、 基于大小，默认配置是1073741824。<br><br>　　需要注意的是，kafka读取特定消息的时间复杂度是O(1)，所以这里删除过期的文件并不会提高kafka的性能！</p><br><h3 id="消费数据">消费数据</h3><br><p>　　消息存储在log文件后，消费者就可以进行消费了。在讲消息队列通信的两种模式的时候讲到过点对点模式和发布订阅模式。Kafka采用的是点对点的模式，消费者主动的去kafka集群拉取消息，与producer相同的是，消费者在拉取消息的时候也是<strong>找leader</strong>去拉取。</p><br><p>　　多个消费者可以组成一个消费者组（consumer group），每个消费者组都有一个组id！同一个消费组者的消费者可以消费同一topic下不同分区的数据，但是不会组内多个消费者消费同一分区的数据！！！是不是有点绕。我们看下图：</p><br><p>　　<img src="https://s2.ax1x.com/2019/06/18/VbxMm6.png"></p><br><p>　　图示是消费者组内的消费者小于partition数量的情况，所以会出现某个消费者消费多个partition数据的情况，消费的速度也就不及只处理一个partition的消费者的处理速度！如果是消费者组的消费者多于partition的数量，那会不会出现多个消费者消费同一个partition的数据呢？上面已经提到过不会出现这种情况！多出来的消费者不消费任何partition的数据。所以在实际的应用中，建议<strong>消费者组的consumer的数量与partition的数量一致</strong>！<br><br>　　在保存数据的小节里面，我们聊到了partition划分为多组segment，每个segment又包含.log、.index、.timeindex文件，存放的每条message包含offset、消息大小、消息体……我们多次提到segment和offset，查找消息的时候是怎么利用segment+offset配合查找的呢？假如现在需要查找一个offset为368801的message是什么样的过程呢？我们先看看下面的图：</p><br><p><img src="https://s2.ax1x.com/2019/06/18/Vbx2Xq.png"></p><br><p>　　1、 先找到offset的368801message所在的segment文件（利用二分法查找），这里找到的就是在第二个segment文件。<br><br>　　2、 打开找到的segment中的.index文件（也就是368796.index文件，该文件起始偏移量为368796+1，我们要查找的offset为368801的message在该index内的偏移量为368796+5=368801，所以这里要查找的<strong>相对offset</strong>为5）。由于该文件采用的是稀疏索引的方式存储着相对offset及对应message物理偏移量的关系，所以直接找相对offset为5的索引找不到，这里同样利用二分法查找相对offset小于或者等于指定的相对offset的索引条目中最大的那个相对offset，所以找到的是相对offset为4的这个索引。<br><br>　　3、 根据找到的相对offset为4的索引确定message存储的物理偏移位置为256。打开数据文件，从位置为256的那个地方开始顺序扫描直到找到offset为368801的那条Message。</p><br><p>　　这套机制是建立在offset为有序的基础上，利用<font color="red"><strong>segment</strong>+<strong>有序offset</strong>+<strong>稀疏索引</strong>+<strong>二分查找</strong>+<strong>顺序查找</strong></font>等多种手段来高效的查找数据！至此，消费者就能拿到需要处理的数据进行处理了。那每个消费者又是怎么记录自己消费的位置呢？在早期的版本中，消费者将消费到的offset维护zookeeper中，consumer每间隔一段时间上报一次，这里容易导致重复消费，且性能不好！在新的版本中消费者消费到的offset已经直接维护在kafk集群的__consumer_offsets这个topic中！</p><br><br></h2></div>
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/06/18/kafka知识整理/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
           
+          <!--/noindex-->
         
       
     </div>
@@ -794,7 +815,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-06-25 16:28:10" itemprop="dateModified" datetime="2019-06-25T16:28:10+08:00">2019-06-25</time>
+                <time title="修改时间：2019-06-28 17:06:02" itemprop="dateModified" datetime="2019-06-28T17:06:02+08:00">2019-06-28</time>
               
             
           </span>
@@ -875,29 +896,21 @@
 
       
         
-          
-            <h3 id="生存还是死亡"><a href="#生存还是死亡" class="headerlink" title="生存还是死亡"></a>生存还是死亡</h3><p>对象是否需要被垃圾收集器回收主要有两种方式：<code>引用计数法</code>和<code>可达性分析算法</code></p>
+          <h3 id="生存还是死亡"><a href="#生存还是死亡" class="headerlink" title="生存还是死亡"></a>生存还是死亡</h3><p>对象是否需要被垃圾收集器回收主要有两种方式：<code>引用计数法</code>和<code>可达性分析算法</code></p>
 <h4 id="引用计数法"><a href="#引用计数法" class="headerlink" title="引用计数法"></a>引用计数法</h4><p>给对象添加一个引用计数器，每当有一个地方引用他的时候，计数器的数值就+1，当引用失效时，计数器就-1；任何时候计数器的数值都为0的对象时不可能再被使用的。<br><br>客观的来说，引用计数法实现简单，判定效率高，但是无法解决对象的循环引用的问题。所以现在的虚拟机很少使用这种算法辣判断对象是否存活。</p>
-<h4 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h4><p>基本思路就是：通过一系列称为<code>GC Roots</code>的对象作为起始点，从这些起始点开始向下搜索，搜索所搜过的路径称为引用链<code>Reference Chain</code>，当一个对象到GC Roots没有任何引用链相连接时，则证明此对象时不可用的。如下图所示：4,5就被判定为需要回收的对象<br><br><img src="https://s2.ax1x.com/2019/05/29/Vu5saR.md.png" alt></p>
-<h4 id="GC-Roots"><a href="#GC-Roots" class="headerlink" title="GC Roots"></a>GC Roots</h4><p>在虚拟机中可作为GC Roots的对象包括以下几种：</p>
-<ul>
-<li>虚拟机栈中引用的对象</li>
-<li>方法区中类静态属性引用的对象</li>
-<li>方法区常量引用的对象</li>
-<li>本地方法栈引用的对象<h3 id="GC算法"><a href="#GC算法" class="headerlink" title="GC算法"></a>GC算法</h3>在被<code>可达性分析算法</code>判定为需要被回收的对象时，需要进行垃圾回收操作，垃圾回收算法有以下几种：</li>
-</ul>
-<h4 id="标记清除（mark-sweep）"><a href="#标记清除（mark-sweep）" class="headerlink" title="标记清除（mark-sweep）"></a>标记清除（mark-sweep）</h4><p>最基础的收集算法，如同 它的名字一样，算法分为<code>标记</code>和<code>清除</code>两个阶段：首先标记出需要被回收的对象，在标记完成后统一回收所有被标记的对象，它的标记过程其实就是上面所讲的<code>可达性分析算法</code>被标记为没有GC roots的引用链。过程如下：<br><br><img src="https://s2.ax1x.com/2019/05/29/VuIx1K.md.png" alt></p>
-<h5 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h5><ul>
-<li>效率问题，标记和清除两个过程的效率都不高</li>
-<li>空间问题，标记清除和产生大量不连续的内存碎片，内存碎片过多容易导致以后在程序运行的过程中需要分配大对象时，无法找到足够的连续内存而不得不提前触发一次垃圾收集动作。<h5 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h5>适用于老年代。因为老年代回收的几率小且不频繁能减少内存碎片<h4 id="复制-（coping）"><a href="#复制-（coping）" class="headerlink" title="复制 （coping）"></a>复制 （coping）</h4>为了解决标记-清除得到效率问题，<code>复制</code>算法就出现了；它的原理是将可用内存容量划分为两个大小相等的内存块，每次只使用其中的一个，当这个的容量用完了。就将还存活的对象复制到另外一块上面去，然后再把已使用过的内存空间全部清理掉。这样使得每次都是对整个半区进行内存回收，内存分配就不用考考虑碎片等复杂情况<br><br><img src="https://s2.ax1x.com/2019/05/29/VuHLDO.md.png" alt><br>研究表明，新生代中的对象98%都是朝生夕死的，所以按照并不需要1:1来划分空间。而是将内存分为<code>一块较大的Eden空间和两个较小的Survivor空间</code>，每次使用Eden和其中一款Survivor。一般比例是<code>Eden : Survivor = 8:1</code><h5 id="不足-1"><a href="#不足-1" class="headerlink" title="不足"></a>不足</h5></li>
-<li>空间利用率只有50%，但是经过适当的调整Eden和Survivor的比例能达到70%</li>
-<li>复制收集算法在对象存活率较高时就要进行较多的复制操作，效率将会变低<h5 id="适用场景-1"><a href="#适用场景-1" class="headerlink" title="适用场景"></a>适用场景</h5>使用了对象存活率较低的内存空间，如Eden区。<h4 id="标记整理"><a href="#标记整理" class="headerlink" title="标记整理"></a>标记整理</h4>是标记-清除算法的升级版本。标记过程任然与标记-清除算法一样，但是后续的处理步骤不是直接对可回收对象进行清理，而是让所有存活对象都向一端移动，然后直接清理掉端边界意外的内存、标记-整理算法示意图如下：<br><br><img src="https://s2.ax1x.com/2019/06/25/ZVWT9x.png" alt></li>
-</ul>
-
+<h4 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h4><p>基本思路就是：通过一系列称为<code>GC Roots</code>的对象作为起始点，从这些起始点开始向下搜索，搜索所搜过的路径称为引用链<code>Reference Chain</code>，当一个对象到GC Roots没有任何引用链相连接时，则证明此对象时不可用的。如下图所示：4,5就被判定为需要回收的对象<br><br><img src="https://s2.ax1x.com/2019/05/29/Vu5saR.md.png" alt><br>
+          <!--noindex-->
           
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/05/30/JAVA-GC算法详解/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
-    </div>
+    </p></div>
 
     
 
@@ -994,12 +1007,24 @@
                 
               
 
-              <time title="创建时间：2019-05-26 12:34:39 / 修改时间：22:05:38" itemprop="dateCreated datePublished" datetime="2019-05-26T12:34:39+08:00">2019-05-26</time>
+              <time title="创建时间：2019-05-26 12:34:39" itemprop="dateCreated datePublished" datetime="2019-05-26T12:34:39+08:00">2019-05-26</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-28 17:05:51" itemprop="dateModified" datetime="2019-06-28T17:05:51+08:00">2019-06-28</time>
               
             
           </span>
@@ -1080,30 +1105,19 @@
 
       
         
+          <h3 id="内存模型"><a href="#内存模型" class="headerlink" title="内存模型"></a>内存模型</h3><p>内存模型如下图所示<br><br><img src="https://s2.ax1x.com/2019/05/26/VECQk4.png" alt><br>
+          <!--noindex-->
           
-            <h3 id="内存模型"><a href="#内存模型" class="headerlink" title="内存模型"></a>内存模型</h3><p>内存模型如下图所示<br><br><img src="https://s2.ax1x.com/2019/05/26/VECQk4.png" alt></p>
-<h4 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h4><p>堆是Java虚拟机所管理的内存最大一块。<font>堆是所有线程共享的一块内存区域，在虚拟机启动时创建。</font><strong>此内存区域唯一的目的就是存放对象实例。所有的对象实例都在这里分配内存</strong><br><br>Java堆是垃圾收集器管理的主要区域。从内存回收的角度来看，由于现在的垃圾收集器采用的是分代收集算法。所以，java堆又分为<code>新生代</code>和<code>老年代</code>。从内存分配的角度来说，线程共享的java对中可能划分出多个线程私有的fenp缓冲区(Thread Local Allocation Buffer)。<br><br>可以通过 <code>-Xms</code>、<code>-Xmx</code>分别控制堆初始化是最小堆内存和最大堆内存大小。</p>
-<h4 id="虚拟机栈"><a href="#虚拟机栈" class="headerlink" title="虚拟机栈"></a>虚拟机栈</h4><p><strong>与程序计数器一样，java虚拟机栈也是线程私有的，他的生命周期与线程相同</strong>。<br><br>虚拟机栈描述的是Java方法的执行的内存模型：每个方法在执行的同时会创建一个<code>栈桢（stack frame）</code>用于存储<code>局部变量表、操作数栈、动态链表、方法出口等信息</code>。每个方法从调用直至执行完成的过程，就对应着栈桢在虚拟机栈中入栈到出栈的过程。</p>
-<h5 id="虚拟机栈存储的数据类型"><a href="#虚拟机栈存储的数据类型" class="headerlink" title="虚拟机栈存储的数据类型"></a>虚拟机栈存储的数据类型</h5><ul>
-<li>局部变量表<br><br>存放的是编译器可知得到各种基本数据类型<code>boolean、byte、char、short、int、float、long、double、对象引用（refrence类型，不等同于对象本身，一个指向对象的起始内存位置的引用指针）</code></li>
-<li>操作数栈</li>
-<li>动态链表</li>
-<li>方法出口</li>
-<li>…<h5 id="常见异常"><a href="#常见异常" class="headerlink" title="常见异常"></a>常见异常</h5>在虚拟机规范中，对这个区域规定了两种异常情况：</li>
-</ul>
-<ol>
-<li>如果线程请求的栈深度大于虚拟机所允许的深度，将抛出<code>StackOverflowError</code></li>
-<li>如果虚拟机栈可以动态扩展，扩展时无法申请做够的内存，将会爬出<code>OutOfMemorryError</code><h4 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h4>与虚拟机栈发挥的作用非常类似，他们之间的区别是<strong>虚拟机栈为虚拟机执行java方法服务，而本地方法栈则为虚拟机使用到的<code>native</code>方法服务。</strong>与虚拟机栈一样，本地房发展区域也会抛出<code>StackOverflowError</code>，<code>OutOfMemorryError</code>异常。<h4 id="方法区（1-8后该区域被废弃）"><a href="#方法区（1-8后该区域被废弃）" class="headerlink" title="方法区（1.8后该区域被废弃）"></a>方法区（1.8后该区域被废弃）</h4>方法区与java堆一样，是各个线程所共享的，<font color="green">它用来存储已被虚拟机加载的<code>类信息</code>、<code>常量</code>、<code>静态变量</code>、<code>即时编译后的代码</code>等数据</font>。<br><br>方法区是jvm提出的规范，而<code>永久代</code>就是方法区的具体实现。<br><br>java虚拟机对方法区的限制非常宽松，可以像堆一样不需要连续的内存可可选择的固定大小外，还可以选择不识闲垃圾收集，相对而言，垃圾收集行为在这边区域是比较少出现的。<br><br>在方法区会报出 永久代内存溢出的错误。而java1.8为了解决这个问题，就提出了<code>meta space（元空间）</code>的概念，就是为了解决永久代内存溢出的情况，一般来说，在不指定 <code>meta space</code>大小的情况下，虚拟机方法区内存大小就是宿主主机的内存大小<h4 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h4>程序计数器是一块较小的内存空间，他可以看做是当前线程所执行字节码的行号指示器。在虚拟机的概念模型里，字节码解释器工作时就是通过改变这个计数器的值来选择下一条将要执行的字节码指令。<br><br><font color="red">由于JAVA虚拟机的多线程是通过多线程流转切换并分配处理器执行时间的方式来实现的。</font><strong>在任一一个确定的时刻，一个处理器都只会执行一条线程中的指令。因此，为了线程切换后能恢复到正确的执行位置，每条线程都需要一个独立的程序计数器，各个线程的计数器之间互不影响，独立存储，我们称该类内存区域为<code>线程私有</code></strong><br><br>如果线程正在执行一个Java方法，这个计数器记录的是正在执行的虚拟机字节码指令的地址。<h3 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h3>运行时常量池是方法区的一部分。Class文件除了 有类的版本、字段、方法、接口等描述信息外，还有一项是常量池，<strong>用于存放编译期生成的各种字面量和符号引用，这部分内容在类加载后进入方法区的运行时常量池。</strong><br><br>运行时常量池相对于Class文件常量池的另外一个重要特征是具备<code>动态性</code>.Java语言并不要求常量一定只有在编译器才能产生，依旧是并非预置入Class文件中的常量池的内容才能进入方法区运行时常量池<h3 id="对象创建"><a href="#对象创建" class="headerlink" title="对象创建"></a>对象创建</h3>在语言层面上，创建对象（克隆，反序列化）通常只是一个<code>new</code>关键字。<h4 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h4>虚拟机在遇到一条<code>new</code>指令时，首先去检查这个指令的参数是否能在常量池中定位到这个类的符号引用并且减产这个符号引用代表的类是否已经被加载、解析、和初始化国。如果没有，那必须执行相应的类加载过程。<br><br>在类加载检查通过后，接下来虚拟机将为新生的对象分配内存。对象所需内存的大小在类加载完成后便可完全确定。<h4 id="内存分配"><a href="#内存分配" class="headerlink" title="内存分配"></a>内存分配</h4><code>为对象分配空间的任务等同于把一块确定大小的内存从java堆中划分出来。</code>假设java堆中内存是绝对规整的，所有用过的内存都放在一边，空闲的放在另外一边，中间放着一个指针最为分界点的指示器，那所分配内存就仅仅是把那个指针向空闲的空间那边挪动一段与对象大小相等的距离，这种分配方式称为<code>指针碰撞</code>。<br><br>如果内存不是规整的，已使用的和空闲的内存区域是相互交错的，虚拟机必须维护一个列表，记录哪些内存块是可用的，在分配的时候从列表中找到一块足够大的空间划分给对象实例，并更新这个列表。这种分配方式是<code>空闲列表</code>。<br><br>选择哪种分配分配方式是由java堆是否规整来决定的，而java堆是否规整又是由其所采用 的垃圾收集器是否带有压缩规整的功能决定，因此，使用<code>Serial</code>、<code>ParNew</code>等带来Compat过程的收集器时，分配算法是指针碰撞。而使用<code>CMS</code>这种基于<code>Mark-Swaeep</code>算法，采用的是空闲列表分配方式。<h3 id="对象的内存布局"><a href="#对象的内存布局" class="headerlink" title="对象的内存布局"></a>对象的内存布局</h3>在HotSpot虚拟机中，对象在内存中的存储布局分为3块区域：<code>对象头（Header）</code>、<code>实例数据（Instance Data）</code>、<code>对其补充（Padding）</code><br><h4 id="对象头（Heading）"><a href="#对象头（Heading）" class="headerlink" title="对象头（Heading）"></a>对象头（Heading）</h4>对象头包括两部分信息</li>
-<li>用于存储对象自身运行时数据。<blockquote>
-<p>如哈希码，GC分代年龄、锁状态标志、偏向线程ID。这部分s数据的长度在32位和64位的虚拟机中分别为32bit和64bit。</p>
-</blockquote>
-<h3 id="对象的访问定位"><a href="#对象的访问定位" class="headerlink" title="对象的访问定位"></a>对象的访问定位</h3>创建对象时为了使用对象，<code>java程序需要通过栈上的refrence数据来操作堆上的具体对象</code>。由于refrence类在java虚拟机值规定了一个指向对象的引用，并没有定义这个引用应该通过何种方式去定位、访问堆中的具体位置，所以对象访问方式也取决于虚拟机对这个refrence的具体实现，目前主流的访问凡是是使用<code>句柄</code>、<code>直接指针</code>两种。<h4 id="句柄访问"><a href="#句柄访问" class="headerlink" title="句柄访问"></a>句柄访问</h4>如果使用句柄访问的话，那么java堆中就会划分出一块内存来座位句柄池，refrence中存储的就是对象的句柄地址，而句柄中包含了对象实例数据和类型数据的各自具体的地址信息。<br><br><img src="https://s2.ax1x.com/2019/05/26/VEoAmt.png" alt><h4 id="指针直接访问"><a href="#指针直接访问" class="headerlink" title="指针直接访问"></a>指针直接访问</h4>如果使用指针直接访问，那么java堆对象的布局就必须考虑如何放置访问类型数据的相关信息，而refrence中存储的直接就是对象地址<br><br><img src="https://s2.ax1x.com/2019/05/26/VEoxun.png" alt><br>这个两种访问方式各有优势，使用句柄访问的最大好处就是refrence中存储的是稳定的句柄地址，在对象被移动（垃圾收集时）只会改变句柄中对象实例指针，refrence本省不需要修改。<br><br>使用直接指针访问的方式最大的好处就是速度更快，节省了一次指针定位的事件开销。由于对象的访问在java中非常频繁，一次这类开销积少成多也是一个比较客观的优化。</li>
-</ol>
-
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/05/26/JVM内存模型详解/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
           
+          <!--/noindex-->
         
       
-    </div>
+    </p></div>
 
     
 
@@ -1217,7 +1231,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-05-24 09:18:24" itemprop="dateModified" datetime="2019-05-24T09:18:24+08:00">2019-05-24</time>
+                <time title="修改时间：2019-06-28 17:06:12" itemprop="dateModified" datetime="2019-06-28T17:06:12+08:00">2019-06-28</time>
               
             
           </span>
@@ -1298,44 +1312,19 @@
 
       
         
-          
-            <h3 id="下载release版本"><a href="#下载release版本" class="headerlink" title="下载release版本"></a>下载release版本</h3><p>本次构建的是1.4.0的版本</p>
+          <h3 id="下载release版本"><a href="#下载release版本" class="headerlink" title="下载release版本"></a>下载release版本</h3><p>本次构建的是1.4.0的版本</p>
 <h3 id="初始化数据库信息"><a href="#初始化数据库信息" class="headerlink" title="初始化数据库信息"></a>初始化数据库信息</h3><p><a href="https://github.com/nobodyiam/apollo-build-scripts/blob/master/sql/apolloportaldb.sql" target="_blank" rel="noopener">数据库表信息</a><br><br></p>
 <h4 id="修改注册中心配置"><a href="#修改注册中心配置" class="headerlink" title="修改注册中心配置"></a>修改注册中心配置</h4><p><strong><em>初始化数据库表后，需要修改 <code>ApolloConfigDB.ServerConfig</code>表中的注册中心信息，apollo在启动的时候回读取该表的信息然后将服务注册上去。</em></strong><br></p>
 <h4 id="初始化配置环境信息"><a href="#初始化配置环境信息" class="headerlink" title="初始化配置环境信息"></a>初始化配置环境信息</h4><p>修改ApolloPortalDB.serverConfig表的<code>apollo.portal.envs</code><br><img src="https://s2.ax1x.com/2019/05/23/VClTsA.png" alt="VClTsA.png"></p>
-<h3 id="修改对应数据库配置"><a href="#修改对应数据库配置" class="headerlink" title="修改对应数据库配置"></a>修改对应数据库配置</h3><h4 id="修改打包脚本"><a href="#修改打包脚本" class="headerlink" title="修改打包脚本"></a>修改打包脚本</h4><ol>
-<li>位置：<code>scripts/build.sh</code></li>
-<li>修改配置<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># apollo config db info</span><br><span class="line">apollo_config_db_url=jdbc:mysql://yun2:3306/ApolloConfigDB?characterEncoding=utf8</span><br><span class="line">apollo_config_db_username=root</span><br><span class="line">apollo_config_db_password=root</span><br><span class="line"></span><br><span class="line"># apollo portal db info</span><br><span class="line">apollo_portal_db_url=jdbc:mysql://yun2:3306/ApolloPortalDB?characterEncoding=utf8</span><br><span class="line">apollo_portal_db_username=root</span><br><span class="line">apollo_portal_db_password=root</span><br><span class="line"></span><br><span class="line"># meta server url, different environments should have different meta server addresses</span><br><span class="line"># 这里是对应的是各个环境中的configService地址</span><br><span class="line">dev_meta=http://localhost:8080</span><br><span class="line">#fat_meta=http://fill-in-fat-meta-server:8080</span><br><span class="line">uat_meta=http://localhost:8082</span><br><span class="line">pro_meta=http://localhost:8083</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>从以上脚本可以看出，需要有3个configService和3个adminService。所以需要初始化3个不同的ApolloConfigDB库。</p>
-<ol start="3">
-<li>执行脚本<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./build.sh</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p><strong><font color="red">注意：修改<code>dev_meta</code>的信息要与实际启动的机器相同</font></strong><br></p>
-<h4 id="上传压缩包"><a href="#上传压缩包" class="headerlink" title="上传压缩包"></a>上传压缩包</h4><p>对用户来说，实际有用的包就是三个：<code>configService</code>,<code>adminService</code>,<code>portalService</code>。执行完脚本后可以看到<br><img src="https://s2.ax1x.com/2019/05/23/VCMX0P.png" alt="VCMX0P.png"><br><img src="https://s2.ax1x.com/2019/05/23/VCMOmt.png" alt="VCMOmt.png"><br><img src="https://s2.ax1x.com/2019/05/23/VCMqOI.png" alt="VCMqOI.png"></p>
-<ol>
-<li>解压相应的带github标签的包</li>
-<li>修改相关配置<ol>
-<li>portal，admin包不需要修改</li>
-<li>config包修改</li>
-</ol>
-</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">├── apollo-configservice-1.4.0.jar</span><br><span class="line">├── apollo-configservice-1.4.0-sources.jar</span><br><span class="line">├── apollo-configservice.conf</span><br><span class="line">├── apollo-configservice_dataserverapollo-configservice.pid</span><br><span class="line">├── apollo-configservice.jar</span><br><span class="line">├── config</span><br><span class="line">│   ├── application-github.properties  --&gt;config模块的数据库连接信息</span><br><span class="line">│   └── app.properties</span><br><span class="line">└── scripts</span><br><span class="line">    ├── shutdown.sh</span><br><span class="line">    └── startup.sh  ---&gt;启动端口信息</span><br></pre></td></tr></table></figure>
-<p><strong>所以config模块主要修改压缩包解压后两个部分: config下的数据库配置信息和启动脚本，启动端口要与3.2步骤设置的启动脚本一致</strong></p>
-<h4 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h4><p>修改完后数据库配置信息，和启动脚本的端口后，直接运行启动脚本。</p>
-<h3 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h3><p><img src="https://s2.ax1x.com/2019/05/23/VCQxD1.md.png" alt="VCQxD1.md.png"><br>左侧就能看到对应的不同环境的配置信息了。</p>
-<h3 id="项目依赖"><a href="#项目依赖" class="headerlink" title="项目依赖"></a>项目依赖</h3><p>在运行<code>build.sh</code>脚本的时候，会将apollo运行和依赖相关的jar包打包。apollo服务端运行的话就只需要<code>adminservice</code>,<code>configservice</code>,<code>portal</code>三个模块。如果其它项目需要使用这个配置中心就需要将打包好的client包依赖进去。<br><br>当其它项目想使用这个配置中心，传统的做法是需要在<code>application.yml</code>中添加<code>apollo.meata=xxxx.xxx</code>的配置信息来告诉项目此时该连接哪个配置中心下载哪些配置中心的配置。但是可以优化这个操作，具体步骤如下</p>
-<h4 id="在core模块添加配置中心配置信息"><a href="#在core模块添加配置中心配置信息" class="headerlink" title="在core模块添加配置中心配置信息"></a>在core模块添加配置中心配置信息</h4><p><img src="https://s2.ax1x.com/2019/05/23/VC1fwq.png" alt="VC1fwq.png"></p>
-<p><font color="red"><strong>具体配置信息要跟build.sh脚本指定的一致</strong></font><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dev.meta=http://node3:8080</span><br><span class="line">#fat_meta=http://fill-in-fat-meta-server:8080</span><br><span class="line">uat.meta=http://node3:8082</span><br><span class="line">pro.meta=http://node1:8083</span><br></pre></td></tr></table></figure></p>
-<h4 id="修改core的pom文件打包方式，将配置文件打包进jar中"><a href="#修改core的pom文件打包方式，将配置文件打包进jar中" class="headerlink" title="修改core的pom文件打包方式，将配置文件打包进jar中"></a>修改core的pom文件打包方式，将配置文件打包进jar中</h4><p><img src="https://s2.ax1x.com/2019/05/23/VC3QXj.md.png" alt="VC3QXj.md.png"></p>
-<h4 id="将打包好的client，core上传到私服"><a href="#将打包好的client，core上传到私服" class="headerlink" title="将打包好的client，core上传到私服"></a>将打包好的client，core上传到私服</h4><h3 id="具体使用和改造"><a href="#具体使用和改造" class="headerlink" title="具体使用和改造"></a>具体使用和改造</h3><p>如果就这样引入客户端还是无法读到相关配置的，需要修改core模块的相关代码。<br><br>经调试，如果客户端中没有配置<code>apollo.meta=xxx</code>的配置，他会默认返回<code>http://apollo.meta</code>,具体的实现在<code>LegacyMetaServerProvider</code>中，需要做一下改造，来根据实际环境连接读取相应的configservice<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">LegacyMetaServerProvider</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    initialize();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initialize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Properties prop = <span class="keyword">new</span> Properties();</span><br><span class="line">    prop = ResourceUtils.readConfigFile(<span class="string">"apollo-env.properties"</span>, prop);</span><br><span class="line"></span><br><span class="line">    domains.put(Env.LOCAL, getMetaServerAddress(prop, <span class="string">"local_meta"</span>, <span class="string">"local.meta"</span>));</span><br><span class="line">    domains.put(Env.DEV, getMetaServerAddress(prop, <span class="string">"dev_meta"</span>, <span class="string">"dev.meta"</span>));</span><br><span class="line">    domains.put(Env.FAT, getMetaServerAddress(prop, <span class="string">"fat_meta"</span>, <span class="string">"fat.meta"</span>));</span><br><span class="line">    domains.put(Env.UAT, getMetaServerAddress(prop, <span class="string">"uat_meta"</span>, <span class="string">"uat.meta"</span>));</span><br><span class="line">    domains.put(Env.LPT, getMetaServerAddress(prop, <span class="string">"lpt_meta"</span>, <span class="string">"lpt.meta"</span>));</span><br><span class="line">    domains.put(Env.PRO, getMetaServerAddress(prop, <span class="string">"pro_meta"</span>, <span class="string">"pro.meta"</span>));</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
-<p>配置文件与环境相匹配<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> String <span class="title">getMetaServerAddress</span><span class="params">(Env targetEnv)</span> </span>&#123;</span><br><span class="line">   String metaServerAddress = domains.get(targetEnv);</span><br><span class="line">   <span class="keyword">return</span> metaServerAddress == <span class="keyword">null</span> ? <span class="keyword">null</span> : metaServerAddress.trim();</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="新特性"><a href="#新特性" class="headerlink" title="新特性"></a>新特性</h3><h4 id="自动更新配置"><a href="#自动更新配置" class="headerlink" title="自动更新配置"></a>自动更新配置</h4><p>具体实现在<strong>AutoUpdateConfigChangeListener</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onChange</span><span class="params">(ConfigChangeEvent changeEvent)</span> </span>&#123;</span><br><span class="line">    Set&lt;String&gt; keys = changeEvent.changedKeys();</span><br><span class="line">    <span class="keyword">if</span> (CollectionUtils.isEmpty(keys)) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (String key : keys) &#123;</span><br><span class="line">      <span class="comment">// 1. check whether the changed key is relevant</span></span><br><span class="line">      Collection&lt;SpringValue&gt; targetValues = springValueRegistry.get(beanFactory, key);</span><br><span class="line">      <span class="keyword">if</span> (targetValues == <span class="keyword">null</span> || targetValues.isEmpty()) &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 2. update the value</span></span><br><span class="line">      <span class="keyword">for</span> (SpringValue val : targetValues) &#123;</span><br><span class="line">        updateSpringValue(val);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">updateSpringValue</span><span class="params">(SpringValue springValue)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      Object value = resolvePropertyValue(springValue);</span><br><span class="line">      springValue.update(value);</span><br><span class="line"></span><br><span class="line">      logger.info(<span class="string">"Auto update apollo changed value successfully, new value: &#123;&#125;, &#123;&#125;"</span>, value,</span><br><span class="line">          springValue);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">      logger.error(<span class="string">"Auto update apollo changed value failed, &#123;&#125;"</span>, springValue.toString(), ex);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
-
+          <!--noindex-->
           
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/05/23/源码构建Apollo以及改造/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
@@ -1435,12 +1424,24 @@
                 
               
 
-              <time title="创建时间：2019-05-16 13:50:08 / 修改时间：13:50:49" itemprop="dateCreated datePublished" datetime="2019-05-16T13:50:08+08:00">2019-05-16</time>
+              <time title="创建时间：2019-05-16 13:50:08" itemprop="dateCreated datePublished" datetime="2019-05-16T13:50:08+08:00">2019-05-16</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-28 17:06:34" itemprop="dateModified" datetime="2019-06-28T17:06:34+08:00">2019-06-28</time>
               
             
           </span>
@@ -1521,8 +1522,7 @@
 
       
         
-          
-            <h3 id="整体设计"><a href="#整体设计" class="headerlink" title="整体设计"></a>整体设计</h3><p><img src="http://dubbo.incubator.apache.org/docs/zh-cn/dev/sources/images/dubbo-framework.jpg" alt><br>图例说明：</p>
+          <h3 id="整体设计"><a href="#整体设计" class="headerlink" title="整体设计"></a>整体设计</h3><p><img src="http://dubbo.incubator.apache.org/docs/zh-cn/dev/sources/images/dubbo-framework.jpg" alt><br>图例说明：</p>
 <ul>
 <li>config 配置层：对外配置接口，以 ServiceConfig, ReferenceConfig 为中心，可以直接初始化配置类，也可以通过 spring 解析配置生成配置类</li>
 <li>proxy 服务代理层：服务接口透明代理，生成服务的客户端 Stub 和服务器端 Skeleton, 以 ServiceProxy 为中心，扩展接口为 ProxyFactory</li>
@@ -1532,41 +1532,19 @@
 <li>protocol 远程调用层：封装 RPC 调用，以 Invocation, Result 为中心，扩展接口为 Protocol, Invoker, Exporter</li>
 <li>exchange 信息交换层：封装请求响应模式，同步转异步，以 Request, Response 为中心，扩展接口为 Exchanger, ExchangeChannel, ExchangeClient, ExchangeServer</li>
 <li>transport 网络传输层：抽象 mina 和 netty 为统一接口，以 Message 为中心，扩展接口为 Channel, Transporter, Client, Server, Codec</li>
-<li>serialize 数据序列化层：可复用的一些工具，扩展接口为 Serialization, ObjectInput, ObjectOutput, ThreadPool<h3 id="关系说明"><a href="#关系说明" class="headerlink" title="关系说明"></a>关系说明</h3></li>
-<li>在 RPC 中，Protocol 是核心层，也就是只要有 Protocol + Invoker + Exporter 就可以完成非透明的 RPC 调用，然后在 Invoker 的主过程上 Filter 拦截点。</li>
-<li>图中的 Consumer 和 Provider 是抽象概念，只是想让看图者更直观的了解哪些类分属于客户端与服务器端，不用 Client 和 Server 的原因是 Dubbo 在很多场景下都使用 Provider, Consumer, Registry, Monitor 划分逻辑拓普节点，保持统一概念。</li>
-<li>而 Cluster 是外围概念，所以 Cluster 的目的是将多个 Invoker 伪装成一个 Invoker，这样其它人只要关注 Protocol 层 Invoker 即可，加上 Cluster 或者去掉 Cluster 对其它层都不会造成影响，因为只有一个提供者时，是不需要 Cluster 的。</li>
-<li>Proxy 层封装了所有接口的透明化代理，而在其它层都以 Invoker 为中心，只有到了暴露给用户使用时，才用 Proxy 将 Invoker 转成接口，或将接口实现转成 Invoker，也就是去掉 Proxy 层 RPC 是可以 Run 的，只是不那么透明，不那么看起来像调本地服务一样调远程服务。</li>
-<li>而 Remoting 实现是 Dubbo 协议的实现，如果你选择 RMI 协议，整个 Remoting 都不会用上，Remoting 内部再划为 Transport 传输层和 Exchange 信息交换层，Transport 层只负责单向消息传输，是对 Mina, Netty, Grizzly 的抽象，它也可以扩展 UDP 传输，而 Exchange 层是在传输层之上封装了 Request-Response 语义。</li>
-<li>Registry 和 Monitor 实际上不算一层，而是一个独立的节点，只是为了全局概览，用层的方式画在一起。</li>
-</ul>
-<h3 id="模块分包"><a href="#模块分包" class="headerlink" title="模块分包"></a>模块分包</h3><ul>
-<li>dubbo-common 公共逻辑模块：包括 Util 类和通用模型。</li>
-<li>dubbo-remoting 远程通讯模块：相当于 Dubbo 协议的实现，如果 RPC 用 RMI协议则不需要使用此包。</li>
-<li>dubbo-rpc 远程调用模块：抽象各种协议，以及动态代理，只包含一对一的调用，不关心集群的管理。<br>dubbo-cluster 集群模块：将多个服务提供方伪装为一个提供方，包括：负载均衡, 容错，路由等，集群的地址列表可以是静态配置的，也可以是由注册中心下发。</li>
-<li>dubbo-registry 注册中心模块：基于注册中心下发地址的集群方式，以及对各种注册中心的抽象。</li>
-<li>dubbo-monitor 监控模块：统计服务调用次数，调用时间的，调用链跟踪的服务。</li>
-<li>dubbo-config 配置模块：是 Dubbo 对外的 API，用户通过 Config 使用Dubbo，隐藏 Dubbo 所有细节。</li>
-<li>dubbo-container 容器模块：是一个 Standlone 的容器，以简单的 Main 加载 Spring 启动，因为服务通常不需要 Tomcat/JBoss 等 Web 容器的特性，没必要用 Web 容器去加载服务。<br>整体上按照分层结构进行分包，与分层的不同点在于：</li>
-</ul>
-<p>container 为服务容器，用于部署运行服务，没有在层中画出。</p>
-<ul>
-<li>protocol 层和 proxy 层都放在 rpc 模块中，这两层是 rpc 的核心，在不需要集群也就是只有一个提供者时，可以只使用这两层完成 rpc 调用。</li>
-<li>transport 层和 exchange 层都放在 remoting 模块中，为 rpc 调用的通讯基础。</li>
-<li>serialize 层放在 common模块中，以便更大程度复用。</li>
-</ul>
-<h3 id="依赖关系"><a href="#依赖关系" class="headerlink" title="依赖关系"></a>依赖关系</h3><p><img src="http://dubbo.incubator.apache.org/docs/zh-cn/dev/sources/images/dubbo-relation.jpg" alt><br>图例说明</p>
-<ul>
-<li>图中小方块 Protocol, Cluster, Proxy, Service, Container, Registry, Monitor 代表层或模块，蓝色的表示与业务有交互，绿色的表示只对 Dubbo 内部交互。</li>
-<li>图中背景方块 Consumer, Provider, Registry, Monitor 代表部署逻辑拓扑节点。</li>
-<li>图中蓝色虚线为初始化时调用，红色虚线为运行时异步调用，红色实线为运行时同步调用。</li>
-<li>图中只包含 RPC 的层，不包含 Remoting 的层，Remoting 整体都隐含在 Protocol 中。</li>
-</ul>
-
+<li>serialize 数据序列化层：可复用的一些工具，扩展接口为 Serialization, ObjectInput, ObjectOutput, ThreadPool
+          <!--noindex-->
           
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/05/16/dubbo框架设计简介/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
-    </div>
+    </li></ul></div>
 
     
 
@@ -1663,12 +1641,24 @@
                 
               
 
-              <time title="创建时间：2019-05-15 15:48:39 / 修改时间：15:49:06" itemprop="dateCreated datePublished" datetime="2019-05-15T15:48:39+08:00">2019-05-15</time>
+              <time title="创建时间：2019-05-15 15:48:39" itemprop="dateCreated datePublished" datetime="2019-05-15T15:48:39+08:00">2019-05-15</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-28 17:06:24" itemprop="dateModified" datetime="2019-06-28T17:06:24+08:00">2019-06-28</time>
               
             
           </span>
@@ -1749,56 +1739,16 @@
 
       
         
+          <h4 id="寻找起源"><a href="#寻找起源" class="headerlink" title="寻找起源"></a>寻找起源</h4><p>先来看springmv中，web.xml的配置<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">listener</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">description</span>&gt;</span>Spring监听器<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">listener-class</span>&gt;</span>org.springframework.web.context.ContextLoaderListener<span class="tag">&lt;/<span class="name">listener-class</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">listener</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- ContextLoaderListener初始化Spring上下文时需要使用到的contextConfigLocation参数 --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">context-param</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">param-name</span>&gt;</span>contextConfigLocation<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 配置spring.xml和spring-mybatis.xml这两个配置文件的位置，固定写法 ,classpath:dubbo-provider.xml--&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">param-value</span>&gt;</span>classpath:spring.xml,classpath:spring-mybatis.xml,classpath:spring-redis.xml,classpath:dubbo-provider.xml<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">context-param</span>&gt;</span></span><br><span class="line">	</span><br><span class="line">	<span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>encodingFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.springframework.web.filter.CharacterEncodingFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">param-name</span>&gt;</span>encoding<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">param-value</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">param-name</span>&gt;</span>forceEncoding<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">param-value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>encodingFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">&lt;!-- 配置log4j配置文件路径 --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">listener</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">listener-class</span>&gt;</span>org.springframework.web.util.Log4jConfigListener<span class="tag">&lt;/<span class="name">listener-class</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">listener</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">context-param</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">param-name</span>&gt;</span>log4jConfigLocation<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">param-value</span>&gt;</span>classpath:property/log4j.properties<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">context-param</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>springServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>org.springframework.web.servlet.DispatcherServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">param-name</span>&gt;</span>contextConfigLocation<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">param-value</span>&gt;</span>/WEB-INF/spring-mvc.xml<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>springServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="tag">&lt;<span class="name">session-config</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">session-timeout</span>&gt;</span>10000<span class="tag">&lt;/<span class="name">session-timeout</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">session-config</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
           
-            <h4 id="寻找起源"><a href="#寻找起源" class="headerlink" title="寻找起源"></a>寻找起源</h4><p>先来看springmv中，web.xml的配置<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">listener</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">description</span>&gt;</span>Spring监听器<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">listener-class</span>&gt;</span>org.springframework.web.context.ContextLoaderListener<span class="tag">&lt;/<span class="name">listener-class</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">listener</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- ContextLoaderListener初始化Spring上下文时需要使用到的contextConfigLocation参数 --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">context-param</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">param-name</span>&gt;</span>contextConfigLocation<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 配置spring.xml和spring-mybatis.xml这两个配置文件的位置，固定写法 ,classpath:dubbo-provider.xml--&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">param-value</span>&gt;</span>classpath:spring.xml,classpath:spring-mybatis.xml,classpath:spring-redis.xml,classpath:dubbo-provider.xml<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">context-param</span>&gt;</span></span><br><span class="line">	</span><br><span class="line">	<span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>encodingFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.springframework.web.filter.CharacterEncodingFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">param-name</span>&gt;</span>encoding<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">param-value</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">param-name</span>&gt;</span>forceEncoding<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">param-value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>encodingFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">&lt;!-- 配置log4j配置文件路径 --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">listener</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">listener-class</span>&gt;</span>org.springframework.web.util.Log4jConfigListener<span class="tag">&lt;/<span class="name">listener-class</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">listener</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">context-param</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">param-name</span>&gt;</span>log4jConfigLocation<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">param-value</span>&gt;</span>classpath:property/log4j.properties<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">context-param</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>springServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>org.springframework.web.servlet.DispatcherServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">param-name</span>&gt;</span>contextConfigLocation<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">param-value</span>&gt;</span>/WEB-INF/spring-mvc.xml<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>springServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="tag">&lt;<span class="name">session-config</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">session-timeout</span>&gt;</span>10000<span class="tag">&lt;/<span class="name">session-timeout</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">session-config</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>web.xml加载的顺序</p>
-<ol>
-<li>context-param<blockquote>
-<p>初始化运行环境需要的配置信息</p>
-</blockquote>
-</li>
-<li>listener<blockquote>
-<p>监听器</p>
-</blockquote>
-</li>
-<li>filter<blockquote>
-<p>过滤器</p>
-</blockquote>
-</li>
-<li>servlet<blockquote>
-<p>处理</p>
-</blockquote>
-</li>
-</ol>
-<p><br><br>构造一个 <code>无参ContextLoadListener</code><br><br></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Alice-&gt;Bob: Hello Bob, how are you?</span><br><span class="line">Note right of Bob: Bob thinks</span><br><span class="line">Bob--&gt;Alice: I am good thanks!</span><br></pre></td></tr></table></figure>
-<p>类图<br><img src="https://s2.ax1x.com/2019/05/15/ETJPc4.png" alt="contextLoader类图"></p>
-<ol>
-<li>根据加载顺序构造一个无参的<code>ContextLoadListener</code><br> 初始化spring的解析策略</li>
-</ol>
-<p><img src="https://s2.ax1x.com/2019/05/15/ETsqiQ.png" alt><br>实际就是将<code>WebApplicationContext</code>初始化为<code>XmlWebApplicationContext</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># Default WebApplicationContext implementation class for ContextLoader.</span><br><span class="line"># Used as fallback when no explicit context implementation has been specified as context-param.</span><br><span class="line"># Not meant to be customized by application developers.</span><br><span class="line"></span><br><span class="line">org.springframework.web.context.WebApplicationContext</span><br><span class="line">=</span><br><span class="line">org.springframework.web.context.support.XmlWebApplicationContext</span><br></pre></td></tr></table></figure></p>
-<ol start="2">
-<li>因为<code>ContextLoadListener</code>继承 <code>ServletContextListener</code> 所以在tomcat容器启动的时候，会调用<code>contextInitialized</code>。<br><img src="https://s2.ax1x.com/2019/05/15/ETJm4K.png" alt="contextInitialized"><h4 id="详细说下-ContextLoader-initWebApplicationContext"><a href="#详细说下-ContextLoader-initWebApplicationContext" class="headerlink" title="详细说下 ContextLoader.initWebApplicationContext"></a>详细说下 ContextLoader.initWebApplicationContext</h4></li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> WebApplicationContext <span class="title">initWebApplicationContext</span><span class="params">(ServletContext servletContext)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE) != <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(</span><br><span class="line">					<span class="string">"Cannot initialize context because there is already a root application context present - "</span> +</span><br><span class="line">					<span class="string">"check whether you have multiple ContextLoader* definitions in your web.xml!"</span>);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		servletContext.log(<span class="string">"Initializing Spring root WebApplicationContext"</span>);</span><br><span class="line">		Log logger = LogFactory.getLog(ContextLoader.class);</span><br><span class="line">		<span class="keyword">if</span> (logger.isInfoEnabled()) &#123;</span><br><span class="line">			logger.info(<span class="string">"Root WebApplicationContext: initialization started"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">long</span> startTime = System.currentTimeMillis();</span><br><span class="line"></span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">// Store context in local instance variable, to guarantee that</span></span><br><span class="line">			<span class="comment">// it is available on ServletContext shutdown.</span></span><br><span class="line">			<span class="comment">// 如果当前context为空，则创建servletcontext</span></span><br><span class="line">			<span class="keyword">if</span> (<span class="keyword">this</span>.context == <span class="keyword">null</span>) &#123;</span><br><span class="line">				<span class="comment">/*</span></span><br><span class="line"><span class="comment">				 *  返回</span></span><br><span class="line"><span class="comment">				 *  (ConfigurableWebApplicationContext) BeanUtils.instantiateClass(servletContext);</span></span><br><span class="line"><span class="comment">				 */</span></span><br><span class="line">				<span class="keyword">this</span>.context = createWebApplicationContext(servletContext);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> (<span class="keyword">this</span>.context <span class="keyword">instanceof</span> ConfigurableWebApplicationContext) &#123;</span><br><span class="line">				ConfigurableWebApplicationContext cwac = (ConfigurableWebApplicationContext) <span class="keyword">this</span>.context;</span><br><span class="line">				<span class="keyword">if</span> (!cwac.isActive()) &#123;</span><br><span class="line">					<span class="comment">// The context has not yet been refreshed -&gt; provide services such as</span></span><br><span class="line">					<span class="comment">// setting the parent context, setting the application context id, etc</span></span><br><span class="line">					<span class="comment">// cwac.getParent() 第一次进入结果返回 null</span></span><br><span class="line">					<span class="keyword">if</span> (cwac.getParent() == <span class="keyword">null</span>) &#123;</span><br><span class="line">						<span class="comment">// The context instance was injected without an explicit parent -&gt;</span></span><br><span class="line">						<span class="comment">// determine parent for root web application context, if any.</span></span><br><span class="line">						<span class="comment">// loadParentContext 直接返回 null</span></span><br><span class="line">						</span><br><span class="line">						ApplicationContext parent = loadParentContext(servletContext);</span><br><span class="line">						cwac.setParent(parent);</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="comment">// 开始装载 Applicationcontextle</span></span><br><span class="line">					configureAndRefreshWebApplicationContext(cwac, servletContext);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, <span class="keyword">this</span>.context);</span><br><span class="line"></span><br><span class="line">			ClassLoader ccl = Thread.currentThread().getContextClassLoader();</span><br><span class="line">			<span class="keyword">if</span> (ccl == ContextLoader.class.getClassLoader()) &#123;</span><br><span class="line">				currentContext = <span class="keyword">this</span>.context;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (ccl != <span class="keyword">null</span>) &#123;</span><br><span class="line">				currentContextPerThread.put(ccl, <span class="keyword">this</span>.context);</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> (logger.isInfoEnabled()) &#123;</span><br><span class="line">				<span class="keyword">long</span> elapsedTime = System.currentTimeMillis() - startTime;</span><br><span class="line">				logger.info(<span class="string">"Root WebApplicationContext initialized in "</span> + elapsedTime + <span class="string">" ms"</span>);</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">this</span>.context;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span> (RuntimeException | Error ex) &#123;</span><br><span class="line">			logger.error(<span class="string">"Context initialization failed"</span>, ex);</span><br><span class="line">			servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, ex);</span><br><span class="line">			<span class="keyword">throw</span> ex;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<p>configureAndRefreshWebApplicationContext的处理逻辑<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configureAndRefreshWebApplicationContext</span><span class="params">(ConfigurableWebApplicationContext wac, ServletContext sc)</span> </span>&#123;</span><br><span class="line">       .......</span><br><span class="line">	<span class="comment">// 获取web.xml中标签是context-param并且 param-name 是contextConfigLocation的配置值</span></span><br><span class="line">	String configLocationParam = sc.getInitParameter(CONFIG_LOCATION_PARAM);</span><br><span class="line">	<span class="keyword">if</span> (configLocationParam != <span class="keyword">null</span>) &#123;</span><br><span class="line">		<span class="comment">// 奖这些配置文件缓存到webApplicationContext中</span></span><br><span class="line">		wac.setConfigLocation(configLocationParam);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// The wac environment's #initPropertySources will be called in any case when the context</span></span><br><span class="line">	<span class="comment">// is refreshed; do it eagerly here to ensure servlet property sources are in place for</span></span><br><span class="line">	<span class="comment">// use in any post-processing or initialization that occurs below prior to #refresh</span></span><br><span class="line">	ConfigurableEnvironment env = wac.getEnvironment();</span><br><span class="line">	<span class="keyword">if</span> (env <span class="keyword">instanceof</span> ConfigurableWebEnvironment) &#123;</span><br><span class="line">		((ConfigurableWebEnvironment) env).initPropertySources(sc, <span class="keyword">null</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 定制化设置applicationcontext</span></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	* 步骤</span></span><br><span class="line"><span class="comment">	* 1、判断web.xml中是否配置了 globalInitializerClasses，contextInitializerClasses</span></span><br><span class="line"><span class="comment">	* 如果有的话就他们放到 List&lt;Class&lt;ApplicationContextInitializer&lt;ConfigurableApplicationContext&gt;&gt;&gt;中</span></span><br><span class="line"><span class="comment">	* 2、循环1的结果实例化每个class后放到 contextInitializers</span></span><br><span class="line"><span class="comment">	* 3、对contextInitializers排序</span></span><br><span class="line"><span class="comment">	* 4、循环3结果，然后对每个元素调用initialize(wac);</span></span><br><span class="line"><span class="comment">	*</span></span><br><span class="line"><span class="comment">	* */</span></span><br><span class="line">	customizeContext(sc, wac);</span><br><span class="line">	wac.refresh();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>refresh的步骤<br><img src="https://s2.ax1x.com/2019/05/15/ETgGl9.md.png" alt="refresh步骤"></p>
-<h4 id="步骤分析"><a href="#步骤分析" class="headerlink" title="步骤分析"></a>步骤分析</h4><h5 id="1、prepareRefresh"><a href="#1、prepareRefresh" class="headerlink" title="1、prepareRefresh()"></a>1、prepareRefresh()</h5><p>准备刷新，里面主要是加载一些系统配置信息<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Initialize any placeholder property sources in the context environment.</span></span><br><span class="line">		initPropertySources();</span><br><span class="line"><span class="comment">// 具体实现是返回null</span></span><br></pre></td></tr></table></figure></p>
-<h5 id="2、ConfigurableListableBeanFactory-beanFactory-obtainFreshBeanFactory"><a href="#2、ConfigurableListableBeanFactory-beanFactory-obtainFreshBeanFactory" class="headerlink" title="2、ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory()"></a>2、ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory()</h5><p>构建beanFactory信息<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> ConfigurableListableBeanFactory <span class="title">obtainFreshBeanFactory</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		refreshBeanFactory();</span><br><span class="line">		ConfigurableListableBeanFactory beanFactory = getBeanFactory();</span><br><span class="line">		<span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</span><br><span class="line">			logger.debug(<span class="string">"Bean factory for "</span> + getDisplayName() + <span class="string">": "</span> + beanFactory);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> beanFactory;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">refreshBeanFactory</span><span class="params">()</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (hasBeanFactory()) &#123;</span><br><span class="line">		destroyBeans();</span><br><span class="line">		closeBeanFactory();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// beanFactory类型：DefaultListableBeanFactory</span></span><br><span class="line">	DefaultListableBeanFactory beanFactory = createBeanFactory();</span><br><span class="line">	beanFactory.setSerializationId(getId());</span><br><span class="line">	customizeBeanFactory(beanFactory);</span><br><span class="line">	<span class="comment">// 通过xml加载声明的bean信息</span></span><br><span class="line">	loadBeanDefinitions(beanFactory);</span><br><span class="line">	<span class="keyword">synchronized</span> (<span class="keyword">this</span>.beanFactoryMonitor) &#123;</span><br><span class="line">		<span class="keyword">this</span>.beanFactory = beanFactory;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<p>loadBeanDefinitions过程<br><img src="https://s2.ax1x.com/2019/05/15/ETRC8g.md.png" alt="ETRC8g.md.png"></p>
-<h6 id="2-1-装载context-param文件信息"><a href="#2-1-装载context-param文件信息" class="headerlink" title="2.1 装载context-param文件信息"></a>2.1 装载context-param文件信息</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">loadBeanDefinitions</span><span class="params">(XmlBeanDefinitionReader reader)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">// 获取 context-param里的配置信息</span></span><br><span class="line">	String[] configLocations = getConfigLocations();</span><br><span class="line">	<span class="keyword">if</span> (configLocations != <span class="keyword">null</span>) &#123;</span><br><span class="line">		<span class="keyword">for</span> (String configLocation : configLocations) &#123;</span><br><span class="line">			reader.loadBeanDefinitions(configLocation);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h6 id="2-2-实例化bean信息"><a href="#2-2-实例化bean信息" class="headerlink" title="2.2 实例化bean信息"></a>2.2 实例化bean信息</h6><p><img src="https://s2.ax1x.com/2019/05/15/ET4pes.md.png" alt></p>
-<h4 id="3、prepareBeanFactory"><a href="#3、prepareBeanFactory" class="headerlink" title="3、prepareBeanFactory"></a>3、prepareBeanFactory</h4><p>如下图所示，往beanfactory中注册，排除一些系统环境必须的bean信息<br><img src="https://s2.ax1x.com/2019/05/15/EToQkn.md.png" alt><br><img src="https://s2.ax1x.com/2019/05/15/EToU0J.md.png" alt></p>
-<h4 id="4、postProcessBeanFactory"><a href="#4、postProcessBeanFactory" class="headerlink" title="4、postProcessBeanFactory"></a>4、postProcessBeanFactory</h4><p>注册后置处理器<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Register request/session scopes, a &#123;<span class="doctag">@link</span> ServletContextAwareProcessor&#125;, etc.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">postProcessBeanFactory</span><span class="params">(ConfigurableListableBeanFactory beanFactory)</span> </span>&#123;</span><br><span class="line">		beanFactory.addBeanPostProcessor(<span class="keyword">new</span> ServletContextAwareProcessor(<span class="keyword">this</span>.servletContext, <span class="keyword">this</span>.servletConfig));</span><br><span class="line">		beanFactory.ignoreDependencyInterface(ServletContextAware.class);</span><br><span class="line">		beanFactory.ignoreDependencyInterface(ServletConfigAware.class);</span><br><span class="line"></span><br><span class="line">		WebApplicationContextUtils.registerWebApplicationScopes(beanFactory, <span class="keyword">this</span>.servletContext);</span><br><span class="line">		WebApplicationContextUtils.registerEnvironmentBeans(beanFactory, <span class="keyword">this</span>.servletContext, <span class="keyword">this</span>.servletConfig);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
-<p>对 <code>ServletContextAwareProcessor</code>的说明：<strong>Web application contexts will automatically register this with their<br>  underlying bean factory. Applications do not use this directly.</strong></p>
-<h4 id="5、invokeBeanFactoryPostProcessors"><a href="#5、invokeBeanFactoryPostProcessors" class="headerlink" title="5、invokeBeanFactoryPostProcessors"></a>5、invokeBeanFactoryPostProcessors</h4><blockquote>
-<p>Instantiate and invoke all registered BeanFactoryPostProcessor beans,<br>实例化并注册所有注册的<code>BeanFactoryPostProcessor</code></p>
-</blockquote>
-<h6 id="5-1-获取所有beanFactoryPostprocess"><a href="#5-1-获取所有beanFactoryPostprocess" class="headerlink" title="5.1 获取所有beanFactoryPostprocess"></a>5.1 获取所有beanFactoryPostprocess</h6> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* Return the list of BeanFactoryPostProcessors that will get applied</span></span><br><span class="line"><span class="comment"> * to the internal BeanFactory.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;BeanFactoryPostProcessor&gt; <span class="title">getBeanFactoryPostProcessors</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>.beanFactoryPostProcessors;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h6 id="5-2-注入BeanFactoryPostProcessors"><a href="#5-2-注入BeanFactoryPostProcessors" class="headerlink" title="5.2 注入BeanFactoryPostProcessors"></a>5.2 注入BeanFactoryPostProcessors</h6><p> invokeBeanFactoryPostProcessors<br><br> 它有个先后顺序。首先注入实现了<code>PriorityOrdered</code>,然后注入实现了<code>Ordered</code></p>
-<h5 id="6、registerBeanPostProcessors"><a href="#6、registerBeanPostProcessors" class="headerlink" title="6、registerBeanPostProcessors"></a>6、registerBeanPostProcessors</h5>
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/05/15/SpringMvc-启动过程源码分析/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
           
+          <!--/noindex-->
         
       
     </div>
@@ -1898,12 +1848,24 @@
                 
               
 
-              <time title="创建时间：2019-05-13 16:51:15 / 修改时间：16:52:20" itemprop="dateCreated datePublished" datetime="2019-05-13T16:51:15+08:00">2019-05-13</time>
+              <time title="创建时间：2019-05-13 16:51:15" itemprop="dateCreated datePublished" datetime="2019-05-13T16:51:15+08:00">2019-05-13</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-28 17:06:45" itemprop="dateModified" datetime="2019-06-28T17:06:45+08:00">2019-06-28</time>
               
             
           </span>
@@ -1984,8 +1946,7 @@
 
       
         
-          
-            <h4 id="ReentrantLock简介"><a href="#ReentrantLock简介" class="headerlink" title="ReentrantLock简介"></a>ReentrantLock简介</h4><p>可重入锁，作用是使线程安全。对比于<code>sychronized</code>，它能具有以下特点</p>
+          <h4 id="ReentrantLock简介"><a href="#ReentrantLock简介" class="headerlink" title="ReentrantLock简介"></a>ReentrantLock简介</h4><p>可重入锁，作用是使线程安全。对比于<code>sychronized</code>，它能具有以下特点</p>
 <ul>
 <li>减小资源锁的力度 <br></li>
 <li>更可控，减少发生死锁的概率 <br><ul>
@@ -1996,12 +1957,15 @@
 </ul>
 </li>
 </ul>
-<h5 id="实现可定时的锁"><a href="#实现可定时的锁" class="headerlink" title="实现可定时的锁"></a>实现可定时的锁</h5><p>当使用内部锁时，一旦开始请求，锁就不能停止了，所以内部锁给实现具有时限的活动带来了风险。为了解决这一问题，可以使用定时锁。当具有时限的活<br>动调用了阻塞方法，定时锁能够在时间预算内设定相应的超时。如果活动在期待的时间内没能获得结果，定时锁能使程序提前返回。可定时的锁获取模式，由<code>tryLock(long, TimeUnit)</code>方法实现。 </p>
-<h5 id="实现可中断的锁获取请求"><a href="#实现可中断的锁获取请求" class="headerlink" title="实现可中断的锁获取请求"></a>实现可中断的锁获取请求</h5><p>可中断的锁获取操作允许在可取消的活动中使用。lockInterruptibly()方法能够使你获得锁的时候响应中断。</p>
-<h4 id="ReentrantLock-与-synchronized的比较"><a href="#ReentrantLock-与-synchronized的比较" class="headerlink" title="ReentrantLock 与 synchronized的比较"></a>ReentrantLock 与 synchronized的比较</h4><h5 id="相同点"><a href="#相同点" class="headerlink" title="相同点"></a>相同点</h5><p>ReentrantLock提供了synchronized类似的功能和内存语义。（提供了对资源加锁的功能）</p>
-<h5 id="不同点"><a href="#不同点" class="headerlink" title="不同点"></a>不同点</h5><h6 id="与synchronized相比，ReentrantLock提供了更多，更加全面的功能，具备更强的扩展性。例如：时间锁等候，可中断锁等候，锁投票。"><a href="#与synchronized相比，ReentrantLock提供了更多，更加全面的功能，具备更强的扩展性。例如：时间锁等候，可中断锁等候，锁投票。" class="headerlink" title="与synchronized相比，ReentrantLock提供了更多，更加全面的功能，具备更强的扩展性。例如：时间锁等候，可中断锁等候，锁投票。"></a>与synchronized相比，ReentrantLock提供了更多，更加全面的功能，具备更强的扩展性。例如：时间锁等候，可中断锁等候，锁投票。</h6><h6 id="ReentrantLock还提供了条件Condition，对线程的等待、唤醒操作更加详细和灵活，所以在多个条件变量和高度竞争锁的地方，ReentrantLock更加适合（下面会阐述Condition）。"><a href="#ReentrantLock还提供了条件Condition，对线程的等待、唤醒操作更加详细和灵活，所以在多个条件变量和高度竞争锁的地方，ReentrantLock更加适合（下面会阐述Condition）。" class="headerlink" title="ReentrantLock还提供了条件Condition，对线程的等待、唤醒操作更加详细和灵活，所以在多个条件变量和高度竞争锁的地方，ReentrantLock更加适合（下面会阐述Condition）。"></a>ReentrantLock还提供了条件Condition，对线程的等待、唤醒操作更加详细和灵活，所以在多个条件变量和高度竞争锁的地方，ReentrantLock更加适合（下面会阐述Condition）。</h6><h6 id="ReentrantLock提供了可轮询的锁请求。它会尝试着去获取锁，如果成功则继续，否则可以等到下次运行时处理，而synchronized则一旦进入锁请求要么成功，要么一直阻塞，所以相比synchronized而言，ReentrantLock会不容易产生死锁些。"><a href="#ReentrantLock提供了可轮询的锁请求。它会尝试着去获取锁，如果成功则继续，否则可以等到下次运行时处理，而synchronized则一旦进入锁请求要么成功，要么一直阻塞，所以相比synchronized而言，ReentrantLock会不容易产生死锁些。" class="headerlink" title="ReentrantLock提供了可轮询的锁请求。它会尝试着去获取锁，如果成功则继续，否则可以等到下次运行时处理，而synchronized则一旦进入锁请求要么成功，要么一直阻塞，所以相比synchronized而言，ReentrantLock会不容易产生死锁些。"></a>ReentrantLock提供了可轮询的锁请求。它会尝试着去获取锁，如果成功则继续，否则可以等到下次运行时处理，而synchronized则一旦进入锁请求要么成功，要么一直阻塞，所以相比synchronized而言，ReentrantLock会不容易产生死锁些。</h6><h6 id="ReentrantLock支持更加灵活的同步代码块，但是使用synchronized时，只能在同一个synchronized块结构中获取和释放。注：ReentrantLock的锁释放一定要在finally中处理，否则可能会产生严重的后果。"><a href="#ReentrantLock支持更加灵活的同步代码块，但是使用synchronized时，只能在同一个synchronized块结构中获取和释放。注：ReentrantLock的锁释放一定要在finally中处理，否则可能会产生严重的后果。" class="headerlink" title="ReentrantLock支持更加灵活的同步代码块，但是使用synchronized时，只能在同一个synchronized块结构中获取和释放。注：ReentrantLock的锁释放一定要在finally中处理，否则可能会产生严重的后果。"></a>ReentrantLock支持更加灵活的同步代码块，但是使用synchronized时，只能在同一个synchronized块结构中获取和释放。注：ReentrantLock的锁释放一定要在finally中处理，否则可能会产生严重的后果。</h6><h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>当使用lock的时候，不能使用 CountDownLatch 来进行倒计时操作，会报出<code>IllegalMonitorStateException</code>异常。因为当线程被唤醒后，资源信息与lock对象已经不是一一对应的关系，可能出现资源被A线程加锁，但是线程B尝试去解锁。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: n</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: 2019/5/13:上午11:41</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReentrentLockTest</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ReentrentLockDemo demo = <span class="keyword">new</span> ReentrentLockDemo(<span class="number">10</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ReentrantLock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">    <span class="keyword">static</span> CountDownLatch begin = <span class="keyword">new</span> CountDownLatch(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">static</span> CountDownLatch end = <span class="keyword">new</span> CountDownLatch(<span class="number">10</span>);</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            String threadName = Thread.currentThread().getName();</span><br><span class="line">            System.out.println(threadName + <span class="string">"--&gt;调用run方法被阻塞跳出run线程回到main方法线程"</span>);</span><br><span class="line">            <span class="comment">//</span></span><br><span class="line">            begin.await();</span><br><span class="line">            <span class="comment">//lock.tryLock();</span></span><br><span class="line">            <span class="keyword">int</span> num = demo.splice();</span><br><span class="line">            System.out.println(threadName + <span class="string">"---&gt;"</span> + num);</span><br><span class="line">            end.countDown();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="comment">//lock.unlock();</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        ReentrentLockTest test = <span class="keyword">new</span> ReentrentLockTest();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            Thread t  = <span class="keyword">new</span> Thread(test);</span><br><span class="line">            <span class="comment">/**</span></span><br><span class="line"><span class="comment">             * 进入到run方法，run方法被begin阻塞。run方法退出，重新回到main中。从而完成对所有线程的初始化</span></span><br><span class="line"><span class="comment">             *</span></span><br><span class="line"><span class="comment">             *</span></span><br><span class="line"><span class="comment">              */</span></span><br><span class="line"><span class="comment">//            System.out.println(“”);</span></span><br><span class="line">            t.start();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 调用countDown。所有线程被唤醒，开始执行run方法</span></span><br><span class="line">        begin.countDown();</span><br><span class="line">        end.await();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"end"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
+          <!--noindex-->
           
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/05/13/Java并发ReentrantLock/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
@@ -2101,12 +2065,24 @@
                 
               
 
-              <time title="创建时间：2019-05-12 11:33:52 / 修改时间：11:34:38" itemprop="dateCreated datePublished" datetime="2019-05-12T11:33:52+08:00">2019-05-12</time>
+              <time title="创建时间：2019-05-12 11:33:52" itemprop="dateCreated datePublished" datetime="2019-05-12T11:33:52+08:00">2019-05-12</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-28 17:07:10" itemprop="dateModified" datetime="2019-06-28T17:07:10+08:00">2019-06-28</time>
               
             
           </span>
@@ -2187,29 +2163,19 @@
 
       
         
+          <h3 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h3><h4 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h4><p>为什么要使用单例模式？不用重复创建的变量，例如数据库连接、缓存连接等信息。通过单例模式来减少系统的创建变量的开销。<br>
+          <!--noindex-->
           
-            <h3 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h3><h4 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h4><p>为什么要使用单例模式？不用重复创建的变量，例如数据库连接、缓存连接等信息。通过单例模式来减少系统的创建变量的开销。</p>
-<h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><ol>
-<li>单例类只能有一个实例</li>
-<li>单例类必须是自己创建自己的唯一实例</li>
-<li>单例类必须给其它所有对象提供徐和谊实例</li>
-</ol>
-<h4 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h4><h5 id="单例模式分类"><a href="#单例模式分类" class="headerlink" title="单例模式分类"></a>单例模式分类</h5><p>单例模式又分为两种：<code>懒汉模式</code>,<code>饱汉模式</code>。懒汉模式可以理解只能在其它对象获取该单例对象的时候才实例化，以至于非常饿。饱汉模式相反</p>
-<h5 id="懒汉-饱汉模式"><a href="#懒汉-饱汉模式" class="headerlink" title="懒汉/饱汉模式"></a>懒汉/饱汉模式</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 懒汉/饱汉模式</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: nj</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: 2019/5/12:上午11:13</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LazySingleton</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> LazySingleton instance = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LazySingleton</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> LazySingleton instance = <span class="keyword">null</span>;</span><br><span class="line">    <span class="comment">// 如果是饱汉模式</span></span><br><span class="line">    <span class="comment">//private static LazySingleton instance = new LazySingleton();</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">LazySingleton</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> LazySingleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (instance) &#123;</span><br><span class="line">            <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">                instance = <span class="keyword">new</span> LazySingleton();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> LazySingleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (instance) &#123;</span><br><span class="line">            <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">                instance = <span class="keyword">new</span> LazySingleton();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>懒汉式其实是一种比较形象的称谓。既然懒，那么在创建对象实例的时候就不着急。会一直等到马上要使用对象实例的时候才会创建，懒人嘛，总是推脱不开的时候才会真正去执行工作，因此在装载对象的时候不创建对象实例。上述创建的单例虽然是线程安全的，但是每次经过同步块的检查会降低访问速度</p>
-<h5 id="创建单例类的双重检查机制"><a href="#创建单例类的双重检查机制" class="headerlink" title="创建单例类的双重检查机制"></a>创建单例类的双重检查机制</h5><p>变量上加上<code>volatile</code>关键字。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LazySingletonV2</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 加上 volatile 关键字使这个变量在多线程的环境下，所有线程都能观察到他的值</span></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> LazySingletonV2 lazySingletonV2 = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="title">LazySingletonV2</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> LazySingletonV2 <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (lazySingletonV2 == <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">synchronized</span> (LazySingletonV2.class) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (lazySingletonV2 == <span class="keyword">null</span>) &#123;</span><br><span class="line">                        lazySingletonV2 = <span class="keyword">new</span> LazySingletonV2();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> lazySingletonV2;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<h5 id="更优方案"><a href="#更优方案" class="headerlink" title="更优方案"></a>更优方案</h5><p>上述的两个创建方式中还是不可避免的使用了同步块，在多线程的环境中有没有在保证线程安全的前提下的更优的解决方案？<strong>在某些情况下，Jvm霍隐形的执行同步，从而不需要自己来执行同步控制</strong></p>
-<ol>
-<li>静态初始化器（在静态字段上或者static修饰的初始化）</li>
-<li>final类型字段</li>
-<li>在创建线程之前创建对象时</li>
-<li>线程可以看到它将要处理的对象时<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *    类级的内部类，也就是静态的成员式内部类，该内部类的实例与外部类的实例</span></span><br><span class="line"><span class="comment">     *    没有绑定关系，而且只有被调用到时才会装载，从而实现了延迟加载。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonHolder</span></span>&#123;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 静态初始化器，由JVM来保证线程安全</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> SingletonHolder.instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ol>
-
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/05/12/单例模式总结/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
           
+          <!--/noindex-->
         
       
-    </div>
+    </p></div>
 
     
 
@@ -2306,12 +2272,24 @@
                 
               
 
-              <time title="创建时间：2019-05-08 11:51:34 / 修改时间：11:52:12" itemprop="dateCreated datePublished" datetime="2019-05-08T11:51:34+08:00">2019-05-08</time>
+              <time title="创建时间：2019-05-08 11:51:34" itemprop="dateCreated datePublished" datetime="2019-05-08T11:51:34+08:00">2019-05-08</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-28 17:06:54" itemprop="dateModified" datetime="2019-06-28T17:06:54+08:00">2019-06-28</time>
               
             
           </span>
@@ -2392,58 +2370,19 @@
 
       
         
-          
-            <h3 id="数据库隔离级别"><a href="#数据库隔离级别" class="headerlink" title="数据库隔离级别"></a>数据库隔离级别</h3><h4 id="数据库四大特性"><a href="#数据库四大特性" class="headerlink" title="数据库四大特性"></a>数据库四大特性</h4><p>数据库四大特性：ACID；分别是 <code>原子性（Atomicity）</code>,<code>一致性（Consistency）</code>,<code>隔离性（Isolate）</code>,<code>持久性（Durability）</code></p>
+          <h3 id="数据库隔离级别"><a href="#数据库隔离级别" class="headerlink" title="数据库隔离级别"></a>数据库隔离级别</h3><h4 id="数据库四大特性"><a href="#数据库四大特性" class="headerlink" title="数据库四大特性"></a>数据库四大特性</h4><p>数据库四大特性：ACID；分别是 <code>原子性（Atomicity）</code>,<code>一致性（Consistency）</code>,<code>隔离性（Isolate）</code>,<code>持久性（Durability）</code></p>
 <h5 id="原子性（Atomic）"><a href="#原子性（Atomic）" class="headerlink" title="原子性（Atomic）"></a>原子性（Atomic）</h5><p>事务操作要么全部成功要么全部失败</p>
 <h5 id="一致性（Consistency）"><a href="#一致性（Consistency）" class="headerlink" title="一致性（Consistency）"></a>一致性（Consistency）</h5><p>事务必须使数据库从一个一致性状态变换到另外一个一致性状态。<br><br>简单的说就是：假设账户A和账户B总共有2000块，那么不管A，B两个账户间怎么转账，他们两的总额都是2000.</p>
 <h5 id="隔离性（Isolate）"><a href="#隔离性（Isolate）" class="headerlink" title="隔离性（Isolate）"></a>隔离性（Isolate）</h5><p>隔离性是指当多个用户并发访问数据库时，比如操作一张表表时，数据库为每个用户开启事务，不能被其他事务干扰，多个并发事务之间相互隔离。<br><br>要达成这种效果：对于任意两个并发的事务T1和T2，在事务T1看来，T2要么在T1开始之前就已经结束，要么在T1结束之后才开始，这样每个事务都感觉不到有其他事务在并发地执行。</p>
-<h5 id="持久性（Durability）"><a href="#持久性（Durability）" class="headerlink" title="持久性（Durability）"></a>持久性（Durability）</h5><p>事务一旦被提交了，对数据库的数据改变就是永久性的</p>
-<h4 id="事务并发问题"><a href="#事务并发问题" class="headerlink" title="事务并发问题"></a>事务并发问题</h4><h5 id="脏读"><a href="#脏读" class="headerlink" title="脏读"></a>脏读</h5><p>事务A读取了事务B中的数据，然后B做回滚操作，那么A读到的数据就是脏数据</p>
-<h5 id="不可重复读"><a href="#不可重复读" class="headerlink" title="不可重复读"></a>不可重复读</h5><p>事务A多次读取同一数据，事务B在事务A读取的过程中，对该数据做了更新并提交。导致事务A在读取同一数据出现不同结果的问题</p>
-<h5 id="幻读"><a href="#幻读" class="headerlink" title="幻读"></a>幻读</h5><p>系统管理员A将数据库中所有学生的成绩从具体分数改为ABCDE等级，但是系统管理员B就在这个时候插入了一条具体分数的记录，当系统管理员A改结束后发现还有一条记录没有改过来，就好像发生了幻觉一样，这就叫幻读。</p>
-<p><strong><font color="red">不可重复读侧重的是update后对结果的影响</font>，<font color="green">而幻读侧重的是insert，delete后对结果产生的影响</font></strong></p>
-<h4 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h4><h5 id="读未提交（read-uncommit）"><a href="#读未提交（read-uncommit）" class="headerlink" title="读未提交（read uncommit）"></a>读未提交（read uncommit）</h5><p>可能出现任何事务并发问题。 </p>
-<h5 id="读已经提交（read-commit）"><a href="#读已经提交（read-commit）" class="headerlink" title="读已经提交（read commit）"></a>读已经提交（read commit）</h5><p>一个事务要等另一个事务提交后下能读取数据<br><br>防止产生脏读</p>
-<h5 id="可重复读（repeatable-read）"><a href="#可重复读（repeatable-read）" class="headerlink" title="可重复读（repeatable read）"></a>可重复读（repeatable read）</h5><p>开始读取数据（事务开启）时候， <strong>不再允许修改数据</strong><br><br>放置产生脏读和不可重复读。不能处理幻读（mysql 默认）</p>
-<h5 id="串行化（serializable）"><a href="#串行化（serializable）" class="headerlink" title="串行化（serializable）"></a>串行化（serializable）</h5><p>不会出现任何并发问题，因为对同一数据的访问是串行的，非并发访问的。<br>事务隔离级别可能出现情况</p>
-<table>
-<thead>
-<tr>
-<th>隔离级别</th>
-<th>脏读</th>
-<th>不可重复读</th>
-<th>幻读</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>读未提交（read uncommit）</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>读已经提交（read commit）</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>可重复读（repeatable read）</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-</tr>
-<tr>
-<td>串行化（serializable）</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-
+          <!--noindex-->
           
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/05/08/数据库隔离级别/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
