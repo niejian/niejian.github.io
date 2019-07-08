@@ -108,7 +108,7 @@
 <meta property="og:site_name" content="code4fun">
 <meta property="og:description" content="安装openjdk">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-07-08T03:08:53.497Z">
+<meta property="og:updated_time" content="2019-07-08T03:30:18.072Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="openJdk 安装">
 <meta name="twitter:description" content="安装openjdk">
@@ -400,7 +400,7 @@
                 
               
 
-              <time title="创建时间：2019-07-08 11:01:55 / 修改时间：11:08:53" itemprop="dateCreated datePublished" datetime="2019-07-08T11:01:55+08:00">2019-07-08</time>
+              <time title="创建时间：2019-07-08 11:01:55 / 修改时间：11:30:18" itemprop="dateCreated datePublished" datetime="2019-07-08T11:01:55+08:00">2019-07-08</time>
             
 
             
@@ -458,7 +458,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">453</span>
+                <span title="本文字数">520</span>
               
 
               
@@ -498,7 +498,7 @@
 <h4 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h4><h5 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install java-1.8.0-openjdk java-1.8.0-openjdk-devel</span><br></pre></td></tr></table></figure>
 <h5 id="查看安装位置"><a href="#查看安装位置" class="headerlink" title="查看安装位置"></a>查看安装位置</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dirname $(readlink $(readlink $(<span class="built_in">which</span> java)))</span><br></pre></td></tr></table></figure>
 <h5 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/profile.d/env_export.sh</span><br></pre></td></tr></table></figure>
-<p>添加如下内容<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.212.b04-0.el7_6.x86_64</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$JAVA_HOME</span>/jre/lib:<span class="variable">$JAVA_HOME</span>/lib:<span class="variable">$JAVA_HOME</span>/lib/tools.jar</span><br></pre></td></tr></table></figure></p>
+<p>添加如下内容<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.212.b04-0.el7_6.x86_64</span><br><span class="line">JRE_HOME=<span class="variable">$JAVA_HOME</span>/jre</span><br><span class="line">CLASS_PATH=.:<span class="variable">$JAVA_HOME</span>/lib/dt.jar:<span class="variable">$JAVA_HOME</span>/lib/tools.jar:<span class="variable">$JRE_HOME</span>/lib</span><br><span class="line">PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$JRE_HOME</span>/bin</span><br><span class="line"><span class="built_in">export</span> JAVA_HOME JRE_HOME CLASS_PATH PATH</span><br></pre></td></tr></table></figure></p>
 <h5 id="刷新环境变量"><a href="#刷新环境变量" class="headerlink" title="刷新环境变量"></a>刷新环境变量</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/profile.d/env_export.sh</span><br></pre></td></tr></table></figure>
       
     </div>
