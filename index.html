@@ -396,7 +396,7 @@
                 
               
 
-              <time title="创建时间：2019-07-08 11:01:55 / 修改时间：11:04:25" itemprop="dateCreated datePublished" datetime="2019-07-08T11:01:55+08:00">2019-07-08</time>
+              <time title="创建时间：2019-07-08 11:01:55 / 修改时间：11:08:53" itemprop="dateCreated datePublished" datetime="2019-07-08T11:01:55+08:00">2019-07-08</time>
             
 
             
@@ -447,7 +447,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">442</span>
+                <span title="本文字数">453</span>
               
 
               
@@ -482,14 +482,16 @@
 
       
         
+          <p>安装openjdk</p>
+          <!--noindex-->
           
-            <h4 id="为什么不安装Oracle版本"><a href="#为什么不安装Oracle版本" class="headerlink" title="为什么不安装Oracle版本"></a>为什么不安装Oracle版本</h4><p>oracle jdk 现在下载太恶心了会被登陆拦截。于是就安装openjdk。</p>
-<h4 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h4><h5 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install java-1.8.0-openjdk java-1.8.0-openjdk-devel</span><br></pre></td></tr></table></figure>
-<h5 id="查看安装位置"><a href="#查看安装位置" class="headerlink" title="查看安装位置"></a>查看安装位置</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dirname $(readlink $(readlink $(<span class="built_in">which</span> java)))</span><br></pre></td></tr></table></figure>
-<h5 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/profile.d/env_export.sh</span><br></pre></td></tr></table></figure>
-<p>添加如下内容<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.212.b04-0.el7_6.x86_64</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$JAVA_HOME</span>/jre/lib:<span class="variable">$JAVA_HOME</span>/lib:<span class="variable">$JAVA_HOME</span>/lib/tools.jar</span><br></pre></td></tr></table></figure></p>
-<h5 id="刷新环境变量"><a href="#刷新环境变量" class="headerlink" title="刷新环境变量"></a>刷新环境变量</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/profile.d/env_export.sh</span><br></pre></td></tr></table></figure>
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/07/08/openJdk-安装/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
           
+          <!--/noindex-->
         
       
     </div>
@@ -2616,7 +2618,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
     
-    <span title="站点总字数">82k</span>
+    <span title="站点总字数">83k</span>
   
 
   
