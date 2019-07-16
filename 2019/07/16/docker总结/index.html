@@ -100,22 +100,22 @@
 
 
 
-  <meta name="description" content="内存模型内存模型如下图所示">
-<meta name="keywords" content="jvm">
+  <meta name="description" content="总结视频地址">
+<meta name="keywords" content="docker总结">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JVM内存模型详解">
-<meta property="og:url" content="https://niejian.github.io/2019/05/26/JVM内存模型详解/index.html">
+<meta property="og:title" content="docker总结">
+<meta property="og:url" content="https://niejian.github.io/2019/07/16/docker总结/index.html">
 <meta property="og:site_name" content="code4fun">
-<meta property="og:description" content="内存模型内存模型如下图所示">
+<meta property="og:description" content="总结视频地址">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://s2.ax1x.com/2019/05/26/VECQk4.png">
-<meta property="og:image" content="https://s2.ax1x.com/2019/05/26/VEoAmt.png">
-<meta property="og:image" content="https://s2.ax1x.com/2019/05/26/VEoxun.png">
-<meta property="og:updated_time" content="2019-06-28T09:05:51.729Z">
+<meta property="og:image" content="https://s2.ax1x.com/2019/07/16/Z7bL4O.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/07/16/Z7q8GF.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/07/16/Z7gveH.png">
+<meta property="og:updated_time" content="2019-07-16T09:00:21.939Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JVM内存模型详解">
-<meta name="twitter:description" content="内存模型内存模型如下图所示">
-<meta name="twitter:image" content="https://s2.ax1x.com/2019/05/26/VECQk4.png">
+<meta name="twitter:title" content="docker总结">
+<meta name="twitter:description" content="总结视频地址">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/07/16/Z7bL4O.png">
 
 
 
@@ -123,7 +123,7 @@
 
   
   
-  <link rel="canonical" href="https://niejian.github.io/2019/05/26/JVM内存模型详解/">
+  <link rel="canonical" href="https://niejian.github.io/2019/07/16/docker总结/">
 
 
 
@@ -133,7 +133,7 @@
   };
 </script>
 
-  <title>JVM内存模型详解 | code4fun</title>
+  <title>docker总结 | code4fun</title>
   
 
 
@@ -361,7 +361,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://niejian.github.io/2019/05/26/JVM内存模型详解/">
+    <link itemprop="mainEntityOfPage" href="https://niejian.github.io/2019/07/16/docker总结/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jian Nie">
@@ -378,7 +378,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">JVM内存模型详解
+          <h1 class="post-title" itemprop="name headline">docker总结
 
               
             
@@ -404,46 +404,16 @@
                 
               
 
-              <time title="创建时间：2019-05-26 12:34:39" itemprop="dateCreated datePublished" datetime="2019-05-26T12:34:39+08:00">2019-05-26</time>
+              <time title="创建时间：2019-07-16 16:57:05 / 修改时间：17:00:21" itemprop="dateCreated datePublished" datetime="2019-07-16T16:57:05+08:00">2019-07-16</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-06-28 17:05:51" itemprop="dateModified" datetime="2019-06-28T17:05:51+08:00">2019-06-28</time>
               
             
           </span>
 
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/jvm/" itemprop="url" rel="index"><span itemprop="name">jvm</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -474,7 +444,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">2.9k</span>
+                <span title="本文字数">1.2k</span>
               
 
               
@@ -488,7 +458,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">3 分钟</span>
+                <span title="阅读时长">1 分钟</span>
               
             </div>
           
@@ -508,23 +478,56 @@
       
 
       
-        <h3 id="内存模型"><a href="#内存模型" class="headerlink" title="内存模型"></a>内存模型</h3><p>内存模型如下图所示<br><br><img src="https://s2.ax1x.com/2019/05/26/VECQk4.png" alt><br><a id="more"></a></p>
-<h4 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h4><p>堆是Java虚拟机所管理的内存最大一块。<font>堆是所有线程共享的一块内存区域，在虚拟机启动时创建。</font><strong>此内存区域唯一的目的就是存放对象实例。所有的对象实例都在这里分配内存</strong><br><br>Java堆是垃圾收集器管理的主要区域。从内存回收的角度来看，由于现在的垃圾收集器采用的是分代收集算法。所以，java堆又分为<code>新生代</code>和<code>老年代</code>。从内存分配的角度来说，线程共享的java对中可能划分出多个线程私有的fenp缓冲区(Thread Local Allocation Buffer)。<br><br>可以通过 <code>-Xms</code>、<code>-Xmx</code>分别控制堆初始化是最小堆内存和最大堆内存大小。</p>
-<h4 id="虚拟机栈"><a href="#虚拟机栈" class="headerlink" title="虚拟机栈"></a>虚拟机栈</h4><p><strong>与程序计数器一样，java虚拟机栈也是线程私有的，他的生命周期与线程相同</strong>。<br><br>虚拟机栈描述的是Java方法的执行的内存模型：每个方法在执行的同时会创建一个<code>栈桢（stack frame）</code>用于存储<code>局部变量表、操作数栈、动态链表、方法出口等信息</code>。每个方法从调用直至执行完成的过程，就对应着栈桢在虚拟机栈中入栈到出栈的过程。</p>
-<h5 id="虚拟机栈存储的数据类型"><a href="#虚拟机栈存储的数据类型" class="headerlink" title="虚拟机栈存储的数据类型"></a>虚拟机栈存储的数据类型</h5><ul>
-<li>局部变量表<br><br>存放的是编译器可知得到各种基本数据类型<code>boolean、byte、char、short、int、float、long、double、对象引用（refrence类型，不等同于对象本身，一个指向对象的起始内存位置的引用指针）</code></li>
-<li>操作数栈</li>
-<li>动态链表</li>
-<li>方法出口</li>
-<li>…<h5 id="常见异常"><a href="#常见异常" class="headerlink" title="常见异常"></a>常见异常</h5>在虚拟机规范中，对这个区域规定了两种异常情况：</li>
-</ul>
+        <h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p><a href="https://www.bilibili.com/video/av35847195" target="_blank" rel="noopener">视频地址</a><br><a id="more"></a></p>
+<h5 id="docker特点"><a href="#docker特点" class="headerlink" title="docker特点"></a>docker特点</h5><ol>
+<li>一次编译，导出运行</li>
+<li>1个进程1个容器<h5 id="docker-层级"><a href="#docker-层级" class="headerlink" title="docker 层级"></a>docker 层级</h5></li>
+<li>分层构建<br><ol>
+<li>底层构建的是<code>bootfs</code>如centos、ubuntu、susu、、、等系统镜像<br><img src="https://s2.ax1x.com/2019/07/16/Z7bL4O.png" alt></li>
+<li>上层就是应用。tomcat、nginx、、、</li>
+</ol>
+</li>
+<li>联合挂载<br><br> 底层和上层共同构建成一个完成的镜像<br> <img src="https://s2.ax1x.com/2019/07/16/Z7q8GF.png" alt><h5 id="docker-架构"><a href="#docker-架构" class="headerlink" title="docker 架构"></a>docker 架构</h5><img src="https://s2.ax1x.com/2019/07/16/Z7gveH.png" alt></li>
+<li>docker daemon</li>
+<li>docker client</li>
+<li>docker registry<ol>
+<li>每个应用程序都是一个仓库，程序的版本是通过tag来区分的。<br>镜像是静态的只读的。容器是动态的。类似于程序和进程的关系。<h5 id="docker-镜像加速"><a href="#docker-镜像加速" class="headerlink" title="docker 镜像加速"></a>docker 镜像加速</h5>在<code>/etc/docker/daemon.json</code>添加<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"registry-mirrors"</span>: [<span class="string">"https://registry.docker-cn.com"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ol>
+<p>重启<code>systemclt restart docker.service</code></p>
+<h5 id="docker-基本命令"><a href="#docker-基本命令" class="headerlink" title="docker 基本命令"></a>docker 基本命令</h5><ol>
+<li><p>查看运行的docker镜像信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect &lt;containerid&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>终端进入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it -d 1d15525b4980  /bin/sh</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h5 id="docker-volume"><a href="#docker-volume" class="headerlink" title="docker volume"></a>docker volume</h5><p>docker绑定挂载卷有两种方式</p>
 <ol>
-<li>如果线程请求的栈深度大于虚拟机所允许的深度，将抛出<code>StackOverflowError</code></li>
-<li>如果虚拟机栈可以动态扩展，扩展时无法申请做够的内存，将会爬出<code>OutOfMemorryError</code><h4 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h4>与虚拟机栈发挥的作用非常类似，他们之间的区别是<strong>虚拟机栈为虚拟机执行java方法服务，而本地方法栈则为虚拟机使用到的<code>native</code>方法服务。</strong>与虚拟机栈一样，本地房发展区域也会抛出<code>StackOverflowError</code>，<code>OutOfMemorryError</code>异常。<h4 id="方法区（1-8后该区域被废弃）"><a href="#方法区（1-8后该区域被废弃）" class="headerlink" title="方法区（1.8后该区域被废弃）"></a>方法区（1.8后该区域被废弃）</h4>方法区与java堆一样，是各个线程所共享的，<font color="green">它用来存储已被虚拟机加载的<code>类信息</code>、<code>常量</code>、<code>静态变量</code>、<code>即时编译后的代码</code>等数据</font>。<br><br>方法区是jvm提出的规范，而<code>永久代</code>就是方法区的具体实现。<br><br>java虚拟机对方法区的限制非常宽松，可以像堆一样不需要连续的内存可可选择的固定大小外，还可以选择不识闲垃圾收集，相对而言，垃圾收集行为在这边区域是比较少出现的。<br><br>在方法区会报出 永久代内存溢出的错误。而java1.8为了解决这个问题，就提出了<code>meta space（元空间）</code>的概念，就是为了解决永久代内存溢出的情况，一般来说，在不指定 <code>meta space</code>大小的情况下，虚拟机方法区内存大小就是宿主主机的内存大小<h4 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h4>程序计数器是一块较小的内存空间，他可以看做是当前线程所执行字节码的行号指示器。在虚拟机的概念模型里，字节码解释器工作时就是通过改变这个计数器的值来选择下一条将要执行的字节码指令。<br><br><font color="red">由于JAVA虚拟机的多线程是通过多线程流转切换并分配处理器执行时间的方式来实现的。</font><strong>在任一一个确定的时刻，一个处理器都只会执行一条线程中的指令。因此，为了线程切换后能恢复到正确的执行位置，每条线程都需要一个独立的程序计数器，各个线程的计数器之间互不影响，独立存储，我们称该类内存区域为<code>线程私有</code></strong><br><br>如果线程正在执行一个Java方法，这个计数器记录的是正在执行的虚拟机字节码指令的地址。<h3 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h3>运行时常量池是方法区的一部分。Class文件除了 有类的版本、字段、方法、接口等描述信息外，还有一项是常量池，<strong>用于存放编译期生成的各种字面量和符号引用，这部分内容在类加载后进入方法区的运行时常量池。</strong><br><br>运行时常量池相对于Class文件常量池的另外一个重要特征是具备<code>动态性</code>.Java语言并不要求常量一定只有在编译器才能产生，依旧是并非预置入Class文件中的常量池的内容才能进入方法区运行时常量池<h3 id="对象创建"><a href="#对象创建" class="headerlink" title="对象创建"></a>对象创建</h3>在语言层面上，创建对象（克隆，反序列化）通常只是一个<code>new</code>关键字。<h4 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h4>虚拟机在遇到一条<code>new</code>指令时，首先去检查这个指令的参数是否能在常量池中定位到这个类的符号引用并且减产这个符号引用代表的类是否已经被加载、解析、和初始化国。如果没有，那必须执行相应的类加载过程。<br><br>在类加载检查通过后，接下来虚拟机将为新生的对象分配内存。对象所需内存的大小在类加载完成后便可完全确定。<h4 id="内存分配"><a href="#内存分配" class="headerlink" title="内存分配"></a>内存分配</h4><code>为对象分配空间的任务等同于把一块确定大小的内存从java堆中划分出来。</code>假设java堆中内存是绝对规整的，所有用过的内存都放在一边，空闲的放在另外一边，中间放着一个指针最为分界点的指示器，那所分配内存就仅仅是把那个指针向空闲的空间那边挪动一段与对象大小相等的距离，这种分配方式称为<code>指针碰撞</code>。<br><br>如果内存不是规整的，已使用的和空闲的内存区域是相互交错的，虚拟机必须维护一个列表，记录哪些内存块是可用的，在分配的时候从列表中找到一块足够大的空间划分给对象实例，并更新这个列表。这种分配方式是<code>空闲列表</code>。<br><br>选择哪种分配分配方式是由java堆是否规整来决定的，而java堆是否规整又是由其所采用 的垃圾收集器是否带有压缩规整的功能决定，因此，使用<code>Serial</code>、<code>ParNew</code>等带来Compat过程的收集器时，分配算法是指针碰撞。而使用<code>CMS</code>这种基于<code>Mark-Swaeep</code>算法，采用的是空闲列表分配方式。<h3 id="对象的内存布局"><a href="#对象的内存布局" class="headerlink" title="对象的内存布局"></a>对象的内存布局</h3>在HotSpot虚拟机中，对象在内存中的存储布局分为3块区域：<code>对象头（Header）</code>、<code>实例数据（Instance Data）</code>、<code>对其补充（Padding）</code><br><h4 id="对象头（Heading）"><a href="#对象头（Heading）" class="headerlink" title="对象头（Heading）"></a>对象头（Heading）</h4>对象头包括两部分信息</li>
-<li>用于存储对象自身运行时数据。<blockquote>
-<p>如哈希码，GC分代年龄、锁状态标志、偏向线程ID。这部分s数据的长度在32位和64位的虚拟机中分别为32bit和64bit。</p>
-</blockquote>
-<h3 id="对象的访问定位"><a href="#对象的访问定位" class="headerlink" title="对象的访问定位"></a>对象的访问定位</h3>创建对象时为了使用对象，<code>java程序需要通过栈上的refrence数据来操作堆上的具体对象</code>。由于refrence类在java虚拟机值规定了一个指向对象的引用，并没有定义这个引用应该通过何种方式去定位、访问堆中的具体位置，所以对象访问方式也取决于虚拟机对这个refrence的具体实现，目前主流的访问凡是是使用<code>句柄</code>、<code>直接指针</code>两种。<h4 id="句柄访问"><a href="#句柄访问" class="headerlink" title="句柄访问"></a>句柄访问</h4>如果使用句柄访问的话，那么java堆中就会划分出一块内存来座位句柄池，refrence中存储的就是对象的句柄地址，而句柄中包含了对象实例数据和类型数据的各自具体的地址信息。<br><br><img src="https://s2.ax1x.com/2019/05/26/VEoAmt.png" alt><h4 id="指针直接访问"><a href="#指针直接访问" class="headerlink" title="指针直接访问"></a>指针直接访问</h4>如果使用指针直接访问，那么java堆对象的布局就必须考虑如何放置访问类型数据的相关信息，而refrence中存储的直接就是对象地址<br><br><img src="https://s2.ax1x.com/2019/05/26/VEoxun.png" alt><br>这个两种访问方式各有优势，使用句柄访问的最大好处就是refrence中存储的是稳定的句柄地址，在对象被移动（垃圾收集时）只会改变句柄中对象实例指针，refrence本省不需要修改。<br><br>使用直接指针访问的方式最大的好处就是速度更快，节省了一次指针定位的事件开销。由于对象的访问在java中非常频繁，一次这类开销积少成多也是一个比较客观的优化。</li>
+<li><p>docker manage volumn<br><br>docker内部指定需要挂载的目录，宿主机会自动监理一个目录与之对应</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name b2 -it -v /data busybox</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>docker， host<br><br>指定docker内部与宿主机目录的指定关系</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name b2 -it -v --rm /data/volumn/b2:/data busybox</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="dockerfile"><a href="#dockerfile" class="headerlink" title="dockerfile"></a>dockerfile</h4><h5 id="作用路径"><a href="#作用路径" class="headerlink" title="作用路径"></a>作用路径</h5><ol>
+<li>dockerfile的作用目录就是文件dockerfile所在目录下的所有目录。</li>
+<li><code>.dockeringore</code>,可以排除那些不需要编排到容器中的文件<h5 id="文件复制"><a href="#文件复制" class="headerlink" title="文件复制"></a>文件复制</h5>COPY、ADD<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将宿主机的文件或者目录打包到镜像中。</span></span><br><span class="line"><span class="comment"># 如果src是目录，则复制的是src下的所有文件</span></span><br><span class="line">COPY &lt;src&gt; &lt;dest&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h5 id="workdir"><a href="#workdir" class="headerlink" title="workdir"></a>workdir</h5><p>指定镜像工作目录，后续的指令就是以这个目录作为根目录来编排的。</p>
+<h5 id="volumn"><a href="#volumn" class="headerlink" title="volumn"></a>volumn</h5><p>镜像内部卷挂载目录</p>
+<h5 id="expose"><a href="#expose" class="headerlink" title="expose"></a>expose</h5><p>端口暴露<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">expose &lt;port&gt;/&lt;protocol&gt;</span><br></pre></td></tr></table></figure></p>
+<h5 id="ENV-设置镜像环境变量"><a href="#ENV-设置镜像环境变量" class="headerlink" title="ENV 设置镜像环境变量"></a>ENV 设置镜像环境变量</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ENV &lt;key&gt;=&lt;value&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ENV DOC_ROOT=/data/web/html</span><br></pre></td></tr></table></figure>
+<h5 id="启动时设定环境变量"><a href="#启动时设定环境变量" class="headerlink" title="启动时设定环境变量"></a>启动时设定环境变量</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -e</span><br></pre></td></tr></table></figure>
+<h5 id="RUN、CMD"><a href="#RUN、CMD" class="headerlink" title="RUN、CMD"></a>RUN、CMD</h5><ol>
+<li><code>RUN</code> 运行于<code>docker build</code>阶段</li>
+<li><code>CMD</code>运行于 <code>docker run</code>阶段</li>
 </ol>
 
       
@@ -549,7 +552,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/jvm/" <i class="fa fa-tag"> jvm</a>
+            <a href="/tags/docker总结/" <i class="fa fa-tag"> docker总结</a>
           
         </div>
       
@@ -654,8 +657,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/05/23/源码构建Apollo以及改造/" rel="next" title="源码构建Apollo以及改造">
-                <i class="fa fa-chevron-left"></i> 源码构建Apollo以及改造
+              <a href="/2019/07/08/openJdk-安装/" rel="next" title="openJdk 安装">
+                <i class="fa fa-chevron-left"></i> openJdk 安装
               </a>
             
           </div>
@@ -663,10 +666,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/05/30/JAVA-GC算法详解/" rel="prev" title="JAVA GC算法详解">
-                JAVA GC算法详解 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -903,7 +902,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存模型"><span class="nav-number">1.</span> <span class="nav-text">内存模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#堆"><span class="nav-number">1.1.</span> <span class="nav-text">堆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#虚拟机栈"><span class="nav-number">1.2.</span> <span class="nav-text">虚拟机栈</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#虚拟机栈存储的数据类型"><span class="nav-number">1.2.1.</span> <span class="nav-text">虚拟机栈存储的数据类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常见异常"><span class="nav-number">1.2.2.</span> <span class="nav-text">常见异常</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本地方法栈"><span class="nav-number">1.3.</span> <span class="nav-text">本地方法栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法区（1-8后该区域被废弃）"><span class="nav-number">1.4.</span> <span class="nav-text">方法区（1.8后该区域被废弃）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#程序计数器"><span class="nav-number">1.5.</span> <span class="nav-text">程序计数器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时常量池"><span class="nav-number">2.</span> <span class="nav-text">运行时常量池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对象创建"><span class="nav-number">3.</span> <span class="nav-text">对象创建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#过程"><span class="nav-number">3.1.</span> <span class="nav-text">过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存分配"><span class="nav-number">3.2.</span> <span class="nav-text">内存分配</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对象的内存布局"><span class="nav-number">4.</span> <span class="nav-text">对象的内存布局</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#对象头（Heading）"><span class="nav-number">4.1.</span> <span class="nav-text">对象头（Heading）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对象的访问定位"><span class="nav-number">5.</span> <span class="nav-text">对象的访问定位</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#句柄访问"><span class="nav-number">5.1.</span> <span class="nav-text">句柄访问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#指针直接访问"><span class="nav-number">5.2.</span> <span class="nav-text">指针直接访问</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">1.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#docker特点"><span class="nav-number">1.1.</span> <span class="nav-text">docker特点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#docker-层级"><span class="nav-number">1.2.</span> <span class="nav-text">docker 层级</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#docker-架构"><span class="nav-number">1.3.</span> <span class="nav-text">docker 架构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#docker-镜像加速"><span class="nav-number">1.4.</span> <span class="nav-text">docker 镜像加速</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#docker-基本命令"><span class="nav-number">1.5.</span> <span class="nav-text">docker 基本命令</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#docker-volume"><span class="nav-number">1.6.</span> <span class="nav-text">docker volume</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dockerfile"><span class="nav-number">2.</span> <span class="nav-text">dockerfile</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#作用路径"><span class="nav-number">2.1.</span> <span class="nav-text">作用路径</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#文件复制"><span class="nav-number">2.2.</span> <span class="nav-text">文件复制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#workdir"><span class="nav-number">2.3.</span> <span class="nav-text">workdir</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#volumn"><span class="nav-number">2.4.</span> <span class="nav-text">volumn</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#expose"><span class="nav-number">2.5.</span> <span class="nav-text">expose</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ENV-设置镜像环境变量"><span class="nav-number">2.6.</span> <span class="nav-text">ENV 设置镜像环境变量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#启动时设定环境变量"><span class="nav-number">2.7.</span> <span class="nav-text">启动时设定环境变量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#RUN、CMD"><span class="nav-number">2.8.</span> <span class="nav-text">RUN、CMD</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -1101,7 +1100,7 @@
   
     <script>
   window.livereOptions = {
-    refer: '2019/05/26/JVM内存模型详解/'
+    refer: '2019/07/16/docker总结/'
   };
   (function(d, s) {
     var j, e = d.getElementsByTagName(s)[0];
