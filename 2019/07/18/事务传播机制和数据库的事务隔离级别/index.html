@@ -100,22 +100,18 @@
 
 
 
-  <meta name="description" content="总结视频地址">
-<meta name="keywords" content="docker总结">
+  <meta name="description" content="Spring事务传播机制和事务隔离级别">
+<meta name="keywords" content="事务传播,事务隔离级别">
 <meta property="og:type" content="article">
-<meta property="og:title" content="docker总结">
-<meta property="og:url" content="https://niejian.github.io/2019/07/16/docker总结/index.html">
+<meta property="og:title" content="事务传播机制和数据库的事务隔离级别">
+<meta property="og:url" content="https://niejian.github.io/2019/07/18/事务传播机制和数据库的事务隔离级别/index.html">
 <meta property="og:site_name" content="code4fun">
-<meta property="og:description" content="总结视频地址">
+<meta property="og:description" content="Spring事务传播机制和事务隔离级别">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://s2.ax1x.com/2019/07/16/Z7bL4O.png">
-<meta property="og:image" content="https://s2.ax1x.com/2019/07/16/Z7q8GF.png">
-<meta property="og:image" content="https://s2.ax1x.com/2019/07/16/Z7gveH.png">
-<meta property="og:updated_time" content="2019-07-16T09:00:21.939Z">
+<meta property="og:updated_time" content="2019-07-18T02:28:39.440Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="docker总结">
-<meta name="twitter:description" content="总结视频地址">
-<meta name="twitter:image" content="https://s2.ax1x.com/2019/07/16/Z7bL4O.png">
+<meta name="twitter:title" content="事务传播机制和数据库的事务隔离级别">
+<meta name="twitter:description" content="Spring事务传播机制和事务隔离级别">
 
 
 
@@ -123,7 +119,7 @@
 
   
   
-  <link rel="canonical" href="https://niejian.github.io/2019/07/16/docker总结/">
+  <link rel="canonical" href="https://niejian.github.io/2019/07/18/事务传播机制和数据库的事务隔离级别/">
 
 
 
@@ -133,7 +129,7 @@
   };
 </script>
 
-  <title>docker总结 | code4fun</title>
+  <title>事务传播机制和数据库的事务隔离级别 | code4fun</title>
   
 
 
@@ -361,7 +357,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://niejian.github.io/2019/07/16/docker总结/">
+    <link itemprop="mainEntityOfPage" href="https://niejian.github.io/2019/07/18/事务传播机制和数据库的事务隔离级别/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jian Nie">
@@ -378,7 +374,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">docker总结
+          <h1 class="post-title" itemprop="name headline">事务传播机制和数据库的事务隔离级别
 
               
             
@@ -404,7 +400,7 @@
                 
               
 
-              <time title="创建时间：2019-07-16 16:57:05 / 修改时间：17:00:21" itemprop="dateCreated datePublished" datetime="2019-07-16T16:57:05+08:00">2019-07-16</time>
+              <time title="创建时间：2019-07-18 10:25:51 / 修改时间：10:28:39" itemprop="dateCreated datePublished" datetime="2019-07-18T10:25:51+08:00">2019-07-18</time>
             
 
             
@@ -414,6 +410,24 @@
             
           </span>
 
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/spring/" itemprop="url" rel="index"><span itemprop="name">spring</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -444,7 +458,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">1.2k</span>
+                <span title="本文字数">1.9k</span>
               
 
               
@@ -458,7 +472,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">1 分钟</span>
+                <span title="阅读时长">2 分钟</span>
               
             </div>
           
@@ -478,57 +492,93 @@
       
 
       
-        <h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p><a href="https://www.bilibili.com/video/av35847195" target="_blank" rel="noopener">视频地址</a><br><a id="more"></a></p>
-<h5 id="docker特点"><a href="#docker特点" class="headerlink" title="docker特点"></a>docker特点</h5><ol>
-<li>一次编译，导出运行</li>
-<li>1个进程1个容器<h5 id="docker-层级"><a href="#docker-层级" class="headerlink" title="docker 层级"></a>docker 层级</h5></li>
-<li>分层构建<br><ol>
-<li>底层构建的是<code>bootfs</code>如centos、ubuntu、susu、、、等系统镜像<br><img src="https://s2.ax1x.com/2019/07/16/Z7bL4O.png" alt></li>
-<li>上层就是应用。tomcat、nginx、、、</li>
-</ol>
-</li>
-<li>联合挂载<br><br> 底层和上层共同构建成一个完成的镜像<br> <img src="https://s2.ax1x.com/2019/07/16/Z7q8GF.png" alt><h5 id="docker-架构"><a href="#docker-架构" class="headerlink" title="docker 架构"></a>docker 架构</h5><img src="https://s2.ax1x.com/2019/07/16/Z7gveH.png" alt></li>
-<li>docker daemon</li>
-<li>docker client</li>
-<li>docker registry<ol>
-<li>每个应用程序都是一个仓库，程序的版本是通过tag来区分的。<br>镜像是静态的只读的。容器是动态的。类似于程序和进程的关系。<h5 id="docker-镜像加速"><a href="#docker-镜像加速" class="headerlink" title="docker 镜像加速"></a>docker 镜像加速</h5>在<code>/etc/docker/daemon.json</code>添加<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"registry-mirrors"</span>: [<span class="string">"https://registry.docker-cn.com"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-</li>
-</ol>
-<p>重启<code>systemclt restart docker.service</code></p>
-<h5 id="docker-基本命令"><a href="#docker-基本命令" class="headerlink" title="docker 基本命令"></a>docker 基本命令</h5><ol>
-<li><p>查看运行的docker镜像信息</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect &lt;containerid&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>终端进入</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it -d 1d15525b4980  /bin/sh</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h5 id="docker-volume"><a href="#docker-volume" class="headerlink" title="docker volume"></a>docker volume</h5><p>docker绑定挂载卷有两种方式</p>
-<ol>
-<li><p>docker manage volumn<br><br>docker内部指定需要挂载的目录，宿主机会自动监理一个目录与之对应</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name b2 -it -v /data busybox</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>docker， host<br><br>指定docker内部与宿主机目录的指定关系</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name b2 -it -v --rm /data/volumn/b2:/data busybox</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h4 id="dockerfile"><a href="#dockerfile" class="headerlink" title="dockerfile"></a>dockerfile</h4><h5 id="作用路径"><a href="#作用路径" class="headerlink" title="作用路径"></a>作用路径</h5><ol>
-<li>dockerfile的作用目录就是文件dockerfile所在目录下的所有目录。</li>
-<li><code>.dockeringore</code>,可以排除那些不需要编排到容器中的文件<h5 id="文件复制"><a href="#文件复制" class="headerlink" title="文件复制"></a>文件复制</h5>COPY、ADD<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将宿主机的文件或者目录打包到镜像中。</span></span><br><span class="line"><span class="comment"># 如果src是目录，则复制的是src下的所有文件</span></span><br><span class="line">COPY &lt;src&gt; &lt;dest&gt;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h5 id="workdir"><a href="#workdir" class="headerlink" title="workdir"></a>workdir</h5><p>指定镜像工作目录，后续的指令就是以这个目录作为根目录来编排的。</p>
-<h5 id="volumn"><a href="#volumn" class="headerlink" title="volumn"></a>volumn</h5><p>镜像内部卷挂载目录</p>
-<h5 id="expose"><a href="#expose" class="headerlink" title="expose"></a>expose</h5><p>端口暴露<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">expose &lt;port&gt;/&lt;protocol&gt;</span><br></pre></td></tr></table></figure></p>
-<h5 id="ENV-设置镜像环境变量"><a href="#ENV-设置镜像环境变量" class="headerlink" title="ENV 设置镜像环境变量"></a>ENV 设置镜像环境变量</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ENV &lt;key&gt;=&lt;value&gt;</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ENV DOC_ROOT=/data/web/html</span><br></pre></td></tr></table></figure>
-<h5 id="启动时设定环境变量"><a href="#启动时设定环境变量" class="headerlink" title="启动时设定环境变量"></a>启动时设定环境变量</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -e</span><br></pre></td></tr></table></figure>
-<h5 id="RUN、CMD"><a href="#RUN、CMD" class="headerlink" title="RUN、CMD"></a>RUN、CMD</h5><ol>
-<li><code>RUN</code> 运行于<code>docker build</code>阶段</li>
-<li><code>CMD</code>运行于 <code>docker run</code>阶段</li>
-</ol>
+        <p>Spring事务传播机制和事务隔离级别</p>
+<a id="more"></a>
+<h4 id="Propagation（事务传播属性）"><a href="#Propagation（事务传播属性）" class="headerlink" title="Propagation（事务传播属性）"></a>Propagation（事务传播属性）</h4><table>
+<thead>
+<tr>
+<th>类别</th>
+<th>传播类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>支持当前事务</td>
+<td>REQUIRED</td>
+<td>如果当前没有事务，就新建一个事务。@Transaction的默认选择</td>
+</tr>
+<tr>
+<td>支持当前事务</td>
+<td>SUPPORTS</td>
+<td>就以非事务的方式运行。</td>
+</tr>
+<tr>
+<td>支持当前事务</td>
+<td>MANDATORY</td>
+<td>如果当前没有事务，就抛出异常。</td>
+</tr>
+<tr>
+<td>不支持当前事务</td>
+<td>REQUIRES_NEW （隔离）</td>
+<td>如果当前存在事务，就把当前事务挂起，执行当前新建十五完成后，上下文事务恢复后再执行。</td>
+</tr>
+<tr>
+<td>不支持当前事务</td>
+<td>NOT_SUPPORTED（不支持）</td>
+<td>以非事务的方式执行操作；如果当前存在事务，就把当前事务挂起，执行当前逻辑，结束后恢复上下文的事务。</td>
+</tr>
+<tr>
+<td>不支持当前事务</td>
+<td>NEVER（强制非事务）</td>
+<td>以非事务的方式执行，如果当前存在事务，则抛出异常。</td>
+</tr>
+<tr>
+<td>嵌套事务</td>
+<td>NESTED（嵌套事务）</td>
+<td>如果当前存在事务，则嵌套在事务中执行。类似<strong>RERQUIRED</strong>的特征。</td>
+</tr>
+</tbody>
+</table>
+<h5 id="调用示例"><a href="#调用示例" class="headerlink" title="调用示例"></a>调用示例</h5><p><code>ServiceA</code><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ServiceA &#123;   </span><br><span class="line">     <span class="function"><span class="keyword">void</span> <span class="title">methodA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">         ServiceB.methodB();</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>ServiceB</code><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ServiceB &#123; </span><br><span class="line">     <span class="function"><span class="keyword">void</span> <span class="title">methodB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">     &#125;      </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="REQUIRED"><a href="#REQUIRED" class="headerlink" title="REQUIRED"></a>REQUIRED</h5><p>假设当前运行的事务不在另外一个事务里，那么久新起一个事务；比如，ServiceB.methodB的事务定义级别是<code>PROPAGATION_REQUIRED</code>，那么在执行ServiceA.methodA的时候，ServiceA.methodA已经起了事务。这是调用ServiceB.methodB，ServiceB.methodB看到自己已经执行在ServiceA.methodA的事务内部，就不再启动新事物。如果ServiceA.methodA没有事务，那么B回自己启动一个事务。这样A、B两个方法不管哪个方法发生异常，他们都会一起回滚，一荣俱荣。</p>
+<h5 id="SUPPORTS"><a href="#SUPPORTS" class="headerlink" title="SUPPORTS"></a>SUPPORTS</h5><p>假设当前在事务中。即以事务的形式执行。假设当前不在一个事务中，那么就以非事务的形式执行</p>
+<h5 id="MANDATORY"><a href="#MANDATORY" class="headerlink" title="MANDATORY"></a>MANDATORY</h5><p>必须在同一个事务中执行。也就是说它仅仅能被一个父事务调用。否则它就要抛出异常。</p>
+<h5 id="REQUIRED-NEW"><a href="#REQUIRED-NEW" class="headerlink" title="REQUIRED_NEW"></a>REQUIRED_NEW</h5><p>与REQUIRED相反的是，B方法不管调用它的有没有事务开启，他都会自己开启事务，管好他自己的一某三分地。A，B分别处于两个不同的事务中，两方法的结果互不影响。</p>
+<h5 id="NOT-SUPPORTED"><a href="#NOT-SUPPORTED" class="headerlink" title="NOT_SUPPORTED"></a>NOT_SUPPORTED</h5><p>当前不支持事务。比方ServiceA.methodA的事务级别是PROPAGATION_REQUIRED 。而ServiceB.methodB的事务级别是PROPAGATION_NOT_SUPPORTED ，那么当执行到ServiceB.methodB时。ServiceA.methodA的事务挂起。而他以非事务的状态执行完，再继续ServiceA.methodA的事务。</p>
+<h5 id="NEVER"><a href="#NEVER" class="headerlink" title="NEVER"></a>NEVER</h5><p>不能在事务中执行。<br>如果ServiceA.methodA的事务级别是PROPAGATION_REQUIRED。 而ServiceB.methodB的事务级别是PROPAGATION_NEVER ，那么ServiceB.methodB就要抛出异常了。</p>
+<h5 id="NESTED"><a href="#NESTED" class="headerlink" title="NESTED"></a>NESTED</h5><p>如果当前存在事务，则在嵌套事务内执行。如果当前没有事务，则执行与PROPAGATION_REQUIRED类似的操作。</p>
+<h4 id="Spring事务的隔离级别"><a href="#Spring事务的隔离级别" class="headerlink" title="Spring事务的隔离级别"></a>Spring事务的隔离级别</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ISOLATION_DEFAULT</td>
+<td>这是一个PlatfromTransactionManager默认的隔离级别，使用数据库默认的事务隔离级别。另外四个与JDBC的隔离级别相对应</td>
+</tr>
+<tr>
+<td>ISOLATION_READ_UNCOMMITTED</td>
+<td>这是事务最低的隔离级别，它充许令外一个事务可以看到这个事务未提交的数据。这种隔离级别会产生脏读，不可重复读和幻像读。</td>
+</tr>
+<tr>
+<td>ISOLATION_READ_COMMITTED</td>
+<td>保证一个事务修改的数据提交后才能被另外一个事务读取。另外一个事务不能读取该事务未提交的数据</td>
+</tr>
+<tr>
+<td>ISOLATION_REPEATABLE_READ</td>
+<td>这种事务隔离级别可以防止脏读，不可重复读。但是可能出现幻像读。它除了保证一个事务不能读取另一个事务未提交的数据外，还保证了避免下面的情况产生(不可重复读)。</td>
+</tr>
+<tr>
+<td>ISOLATION_SERIALIZABLE</td>
+<td>是花费最高代价但是最可靠的事务隔离级别。事务被处理为顺序执行。除了防止脏读，不可重复读外，还避免了幻像读。</td>
+</tr>
+</tbody>
+</table>
 
       
     </div>
@@ -552,7 +602,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/docker总结/" <i class="fa fa-tag"> docker总结</a>
+            <a href="/tags/事务传播/" <i class="fa fa-tag"> 事务传播</a>
+          
+            <a href="/tags/事务隔离级别/" <i class="fa fa-tag"> 事务隔离级别</a>
           
         </div>
       
@@ -657,8 +709,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/07/08/openJdk-安装/" rel="next" title="openJdk 安装">
-                <i class="fa fa-chevron-left"></i> openJdk 安装
+              <a href="/2019/07/16/docker总结/" rel="next" title="docker总结">
+                <i class="fa fa-chevron-left"></i> docker总结
               </a>
             
           </div>
@@ -666,10 +718,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/07/18/事务传播机制和数据库的事务隔离级别/" rel="prev" title="事务传播机制和数据库的事务隔离级别">
-                事务传播机制和数据库的事务隔离级别 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -912,7 +960,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">1.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#docker特点"><span class="nav-number">1.1.</span> <span class="nav-text">docker特点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#docker-层级"><span class="nav-number">1.2.</span> <span class="nav-text">docker 层级</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#docker-架构"><span class="nav-number">1.3.</span> <span class="nav-text">docker 架构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#docker-镜像加速"><span class="nav-number">1.4.</span> <span class="nav-text">docker 镜像加速</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#docker-基本命令"><span class="nav-number">1.5.</span> <span class="nav-text">docker 基本命令</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#docker-volume"><span class="nav-number">1.6.</span> <span class="nav-text">docker volume</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dockerfile"><span class="nav-number">2.</span> <span class="nav-text">dockerfile</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#作用路径"><span class="nav-number">2.1.</span> <span class="nav-text">作用路径</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#文件复制"><span class="nav-number">2.2.</span> <span class="nav-text">文件复制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#workdir"><span class="nav-number">2.3.</span> <span class="nav-text">workdir</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#volumn"><span class="nav-number">2.4.</span> <span class="nav-text">volumn</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#expose"><span class="nav-number">2.5.</span> <span class="nav-text">expose</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ENV-设置镜像环境变量"><span class="nav-number">2.6.</span> <span class="nav-text">ENV 设置镜像环境变量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#启动时设定环境变量"><span class="nav-number">2.7.</span> <span class="nav-text">启动时设定环境变量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#RUN、CMD"><span class="nav-number">2.8.</span> <span class="nav-text">RUN、CMD</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Propagation（事务传播属性）"><span class="nav-number">1.</span> <span class="nav-text">Propagation（事务传播属性）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#调用示例"><span class="nav-number">1.1.</span> <span class="nav-text">调用示例</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#REQUIRED"><span class="nav-number">1.2.</span> <span class="nav-text">REQUIRED</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SUPPORTS"><span class="nav-number">1.3.</span> <span class="nav-text">SUPPORTS</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#MANDATORY"><span class="nav-number">1.4.</span> <span class="nav-text">MANDATORY</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#REQUIRED-NEW"><span class="nav-number">1.5.</span> <span class="nav-text">REQUIRED_NEW</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#NOT-SUPPORTED"><span class="nav-number">1.6.</span> <span class="nav-text">NOT_SUPPORTED</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#NEVER"><span class="nav-number">1.7.</span> <span class="nav-text">NEVER</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#NESTED"><span class="nav-number">1.8.</span> <span class="nav-text">NESTED</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring事务的隔离级别"><span class="nav-number">2.</span> <span class="nav-text">Spring事务的隔离级别</span></a></li></ol></div>
             
 
           </div>
@@ -1110,7 +1158,7 @@
   
     <script>
   window.livereOptions = {
-    refer: '2019/07/16/docker总结/'
+    refer: '2019/07/18/事务传播机制和数据库的事务隔离级别/'
   };
   (function(d, s) {
     var j, e = d.getElementsByTagName(s)[0];
