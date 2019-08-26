@@ -100,18 +100,20 @@
 
 
 
-  <meta name="description" content="k8s 部署yaml描述参数详解">
-<meta name="keywords" content="k8s部署参数">
+  <meta name="description" content="###  定义对象之间定义一对多的依赖，当一这个对象状态发生变化，它所依赖的对象都能得到变化后的状态值。（简单的来说，就类似消息系统的发布订阅模式。其中消息系统中的消费者就是观察者，消息系统中的生产者就是被观察者。当生产者的状态发生变化，那么订阅该消息的消费者就将全部接收到变化的信息）">
+<meta name="keywords" content="观察者模式">
 <meta property="og:type" content="article">
-<meta property="og:title" content="k8s yml部署文件详解">
-<meta property="og:url" content="https://niejian.github.io/2019/06/28/k8s-yml部署文件详解/index.html">
+<meta property="og:title" content="观察者模式">
+<meta property="og:url" content="https://niejian.github.io/2019/08/26/观察者模式/index.html">
 <meta property="og:site_name" content="code4fun">
-<meta property="og:description" content="k8s 部署yaml描述参数详解">
+<meta property="og:description" content="###  定义对象之间定义一对多的依赖，当一这个对象状态发生变化，它所依赖的对象都能得到变化后的状态值。（简单的来说，就类似消息系统的发布订阅模式。其中消息系统中的消费者就是观察者，消息系统中的生产者就是被观察者。当生产者的状态发生变化，那么订阅该消息的消费者就将全部接收到变化的信息）">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-06-28T09:26:42.832Z">
+<meta property="og:image" content="https://s2.ax1x.com/2019/08/26/mWtKW6.png">
+<meta property="og:updated_time" content="2019-08-26T06:24:32.538Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="k8s yml部署文件详解">
-<meta name="twitter:description" content="k8s 部署yaml描述参数详解">
+<meta name="twitter:title" content="观察者模式">
+<meta name="twitter:description" content="###  定义对象之间定义一对多的依赖，当一这个对象状态发生变化，它所依赖的对象都能得到变化后的状态值。（简单的来说，就类似消息系统的发布订阅模式。其中消息系统中的消费者就是观察者，消息系统中的生产者就是被观察者。当生产者的状态发生变化，那么订阅该消息的消费者就将全部接收到变化的信息）">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/08/26/mWtKW6.png">
 
 
 
@@ -119,7 +121,7 @@
 
   
   
-  <link rel="canonical" href="https://niejian.github.io/2019/06/28/k8s-yml部署文件详解/">
+  <link rel="canonical" href="https://niejian.github.io/2019/08/26/观察者模式/">
 
 
 
@@ -129,7 +131,7 @@
   };
 </script>
 
-  <title>k8s yml部署文件详解 | code4fun</title>
+  <title>观察者模式 | code4fun</title>
   
 
 
@@ -357,7 +359,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://niejian.github.io/2019/06/28/k8s-yml部署文件详解/">
+    <link itemprop="mainEntityOfPage" href="https://niejian.github.io/2019/08/26/观察者模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jian Nie">
@@ -374,7 +376,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">k8s yml部署文件详解
+          <h1 class="post-title" itemprop="name headline">观察者模式
 
               
             
@@ -400,7 +402,7 @@
                 
               
 
-              <time title="创建时间：2019-06-28 17:24:15 / 修改时间：17:26:42" itemprop="dateCreated datePublished" datetime="2019-06-28T17:24:15+08:00">2019-06-28</time>
+              <time title="创建时间：2019-08-26 14:22:15 / 修改时间：14:24:32" itemprop="dateCreated datePublished" datetime="2019-08-26T14:22:15+08:00">2019-08-26</time>
             
 
             
@@ -422,7 +424,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/k8s/" itemprop="url" rel="index"><span itemprop="name">k8s</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/设计模式/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a></span>
 
                 
                 
@@ -458,7 +460,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">3.1k</span>
+                <span title="本文字数">2.5k</span>
               
 
               
@@ -472,7 +474,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">3 分钟</span>
+                <span title="阅读时长">2 分钟</span>
               
             </div>
           
@@ -492,10 +494,36 @@
       
 
       
-        <p>k8s 部署yaml描述参数详解</p>
+        <p>### </p>
+<h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p>对象之间定义一对多的依赖，当<code>一</code>这个对象状态发生变化，它所依赖的对象都能得到变化后的状态值。（简单的来说，就类似消息系统的发布订阅模式。其中消息系统中的<code>消费者</code>就是<code>观察者</code>，消息系统中的<code>生产者</code>就是被观察者。当生产者的状态发生变化，那么订阅该消息的消费者就将全部接收到变化的信息）</p>
 <a id="more"></a>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># yaml格式的pod定义文件完整内容：</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span>       <span class="comment">#必选，版本号，例如v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span>       <span class="comment">#必选，Pod</span></span><br><span class="line"><span class="attr">metadata:</span>       <span class="comment">#必选，元数据</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">string</span>       <span class="comment">#必选，Pod名称</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">string</span>    <span class="comment">#必选，Pod所属的命名空间</span></span><br><span class="line">  <span class="attr">labels:</span>      <span class="comment">#自定义标签</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">string</span>     <span class="comment">#自定义标签名字</span></span><br><span class="line">  <span class="attr">annotations:</span>       <span class="comment">#自定义注释列表</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">string</span></span><br><span class="line"><span class="attr">spec:</span>         <span class="comment">#必选，Pod中容器的详细定义</span></span><br><span class="line">  <span class="attr">containers:</span>      <span class="comment">#必选，Pod中容器列表</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">string</span>     <span class="comment">#必选，容器名称</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">string</span>    <span class="comment">#必选，容器的镜像名称</span></span><br><span class="line">    <span class="attr">imagePullPolicy:</span> <span class="string">[Always</span> <span class="string">| Never | IfNotPresent] #获取镜像的策略 Alawys表示下载镜像 IfnotPresent表示优先使用本地镜像，否则下载镜像，Nerver表示仅使用本地镜像</span></span><br><span class="line"><span class="string">    command: [string]    #容器的启动命令列表，如不指定，使用打包时使用的启动命令</span></span><br><span class="line"><span class="string">    args: [string]     #容器的启动命令参数列表</span></span><br><span class="line"><span class="string">    workingDir: string     #容器的工作目录</span></span><br><span class="line"><span class="string">    volumeMounts:    #挂载到容器内部的存储卷配置</span></span><br><span class="line"><span class="string">    - name: string     #引用pod定义的共享存储卷的名称，需用volumes[]部分定义的的卷名</span></span><br><span class="line"><span class="string">      mountPath: string    #存储卷在容器内mount的绝对路径，应少于512字符</span></span><br><span class="line"><span class="string">      readOnly: boolean    #是否为只读模式</span></span><br><span class="line"><span class="string">    ports:       #需要暴露的端口库号列表</span></span><br><span class="line"><span class="string">    - name: string     #端口号名称</span></span><br><span class="line"><span class="string">      containerPort: int   #容器需要监听的端口号</span></span><br><span class="line"><span class="string">      hostPort: int    #容器所在主机需要监听的端口号，默认与Container相同</span></span><br><span class="line"><span class="string">      protocol: string     #端口协议，支持TCP和UDP，默认TCP</span></span><br><span class="line"><span class="string">    env:       #容器运行前需设置的环境变量列表</span></span><br><span class="line"><span class="string">    - name: string     #环境变量名称</span></span><br><span class="line"><span class="string">      value: string    #环境变量的值</span></span><br><span class="line"><span class="string">    resources:       #资源限制和请求的设置</span></span><br><span class="line"><span class="string">      limits:      #资源限制的设置</span></span><br><span class="line"><span class="string">        cpu: string    #Cpu的限制，单位为core数，将用于docker run --cpu-shares参数</span></span><br><span class="line"><span class="string">        memory: string     #内存限制，单位可以为Mib/Gib，将用于docker run --memory参数</span></span><br><span class="line"><span class="string">      requests:      #资源请求的设置</span></span><br><span class="line"><span class="string">        cpu: string    #Cpu请求，容器启动的初始可用数量</span></span><br><span class="line"><span class="string">        memory: string     #内存清楚，容器启动的初始可用数量</span></span><br><span class="line"><span class="string">    livenessProbe:     #对Pod内个容器健康检查的设置，当探测无响应几次后将自动重启该容器，检查方法有exec、httpGet和tcpSocket，对一个容器只需设置其中一种方法即可</span></span><br><span class="line"><span class="string">      exec:      #对Pod容器内检查方式设置为exec方式</span></span><br><span class="line"><span class="string">        command: [string]  #exec方式需要制定的命令或脚本</span></span><br><span class="line"><span class="string">      httpGet:       #对Pod内个容器健康检查方法设置为HttpGet，需要制定Path、port</span></span><br><span class="line"><span class="string">        path: string</span></span><br><span class="line"><span class="string">        port: number</span></span><br><span class="line"><span class="string">        host: string</span></span><br><span class="line"><span class="string">        scheme: string</span></span><br><span class="line"><span class="string">        HttpHeaders:</span></span><br><span class="line"><span class="string">        - name: string</span></span><br><span class="line"><span class="string">          value: string</span></span><br><span class="line"><span class="string">      tcpSocket:     #对Pod内个容器健康检查方式设置为tcpSocket方式</span></span><br><span class="line"><span class="string">         port: number</span></span><br><span class="line"><span class="string">       initialDelaySeconds: 0  #容器启动完成后首次探测的时间，单位为秒</span></span><br><span class="line"><span class="string">       timeoutSeconds: 0   #对容器健康检查探测等待响应的超时时间，单位秒，默认1秒</span></span><br><span class="line"><span class="string">       periodSeconds: 0    #对容器监控检查的定期探测时间设置，单位秒，默认10秒一次</span></span><br><span class="line"><span class="string">       successThreshold: 0</span></span><br><span class="line"><span class="string">       failureThreshold: 0</span></span><br><span class="line"><span class="string">       securityContext:</span></span><br><span class="line"><span class="string">         privileged:false</span></span><br><span class="line"><span class="string">    restartPolicy: [Always | Never | OnFailure]#Pod的重启策略，Always表示一旦不管以何种方式终止运行，kubelet都将重启，OnFailure表示只有Pod以非0退出码退出才重启，Nerver表示不再重启该Pod</span></span><br><span class="line"><span class="string">    nodeSelector: obeject  #设置NodeSelector表示将该Pod调度到包含这个label的node上，以key：value的格式指定</span></span><br><span class="line"><span class="string">    imagePullSecrets:    #Pull镜像时使用的secret名称，以key：secretkey格式指定</span></span><br><span class="line"><span class="string">    - name: string</span></span><br><span class="line"><span class="string">    hostNetwork:false      #是否使用主机网络模式，默认为false，如果设置为true，表示使用宿主机网络</span></span><br><span class="line"><span class="string">    volumes:       #在该pod上定义共享存储卷列表</span></span><br><span class="line"><span class="string">    - name: string     #共享存储卷名称 （volumes类型有很多种）</span></span><br><span class="line"><span class="string">      emptyDir: &#123;&#125;     #类型为emtyDir的存储卷，与Pod同生命周期的一个临时目录。为空值</span></span><br><span class="line"><span class="string">      hostPath: string     #类型为hostPath的存储卷，表示挂载Pod所在宿主机的目录</span></span><br><span class="line"><span class="string">        path: string     #Pod所在宿主机的目录，将被用于同期中mount的目录</span></span><br><span class="line"><span class="string">      secret:      #类型为secret的存储卷，挂载集群与定义的secre对象到容器内部</span></span><br><span class="line"><span class="string">        scretname: string  </span></span><br><span class="line"><span class="string">        items:     </span></span><br><span class="line"><span class="string">        - key: string</span></span><br><span class="line"><span class="string">          path: string</span></span><br><span class="line"><span class="string">      configMap:     #类型为configMap的存储卷，挂载预定义的configMap对象到容器内部</span></span><br><span class="line"><span class="string">        name: string</span></span><br><span class="line"><span class="string">        items:</span></span><br><span class="line"><span class="string">        - key: string</span></span><br><span class="line"><span class="string">          path: string</span></span><br></pre></td></tr></table></figure>
-
+<h4 id="类图"><a href="#类图" class="headerlink" title="类图"></a>类图</h4><p><img src="https://s2.ax1x.com/2019/08/26/mWtKW6.png" alt="观察者模式UML"></p>
+<h5 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h5><p>由UML可以看出，该模式由四个对象组成：</p>
+<ul>
+<li>抽象被观察者角色：也就是一个抽象主题，它把所有对观察者对象的引用保存在一个集合中，每个主题都可以有任意数量的观察者。抽象主题提供一个接口，可以增加和删除观察者角色。一般用一个抽象类和接口来实现。</li>
+<li>抽象观察者角色：为所有的具体观察者定义一个接口，在得到主题通知时更新自己。</li>
+<li>具体被观察者角色：也就是一个具体的主题，在集体主题的内部状态改变时，所有登记过的观察者发出通知。</li>
+<li>具体观察者角色：实现抽象观察者角色所需要的更新接口，一边使本身的状态与制图的状态相协调。<br></li>
+</ul>
+<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><ol>
+<li><p>Subject<br></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Subject</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">initMsg</span><span class="params">(String msg)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addObserver</span><span class="params">(Observer observer)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">removeObserver</span><span class="params">(Observer observer)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">notifyObserver</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Observer<br></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Observer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateMsg</span><span class="params">(String msg)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>MsgSubject<br></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MsgSubject</span> <span class="keyword">implements</span> <span class="title">Subject</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Observer&gt; observerList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">private</span> String msg;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initMsg</span><span class="params">(String msg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.msg = msg;</span><br><span class="line">        System.out.println(<span class="string">"收到消息："</span> + <span class="keyword">this</span>.msg);</span><br><span class="line">        <span class="comment">// 通知观察者</span></span><br><span class="line">        <span class="keyword">this</span>.notifyObserver();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addObserver</span><span class="params">(Observer observer)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.observerList.add(observer);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">removeObserver</span><span class="params">(Observer observer)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.observerList.remove(observer);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">notifyObserver</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        observerList.forEach(o -&gt; &#123;</span><br><span class="line">            o.updateMsg(<span class="keyword">this</span>.msg);</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>MsgObserver<br></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MsgObserver</span> <span class="keyword">implements</span> <span class="title">Observer</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String userName;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MsgObserver</span><span class="params">(String userName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.userName = userName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateMsg</span><span class="params">(String msg)</span> </span>&#123;</span><br><span class="line">        System.out.println(userName + <span class="string">"收到消息: "</span> + msg);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.hashCode();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.equals(obj);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>测试<br></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Observer observer = <span class="keyword">new</span> MsgObserver(<span class="string">"a"</span>);</span><br><span class="line">        Observer observer1 = <span class="keyword">new</span> MsgObserver(<span class="string">"b"</span>);</span><br><span class="line">        Observer observer2 = <span class="keyword">new</span> MsgObserver(<span class="string">"c"</span>);</span><br><span class="line">        Subject subject = <span class="keyword">new</span> MsgSubject();</span><br><span class="line">        subject.addObserver(observer);</span><br><span class="line">        subject.addObserver(observer1);</span><br><span class="line">        subject.addObserver(observer2);</span><br><span class="line">        subject.initMsg(<span class="string">"sds"</span>);</span><br><span class="line">        subject.removeObserver(observer1);</span><br><span class="line">        subject.initMsg(<span class="string">"adsd"</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><br></p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">收到消息：sds</span><br><span class="line">a收到消息: sds</span><br><span class="line">b收到消息: sds</span><br><span class="line">c收到消息: sds</span><br><span class="line">收到消息：adsd</span><br><span class="line">a收到消息: adsd</span><br><span class="line">c收到消息: adsd</span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -518,7 +546,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/k8s部署参数/" <i class="fa fa-tag"> k8s部署参数</a>
+            <a href="/tags/观察者模式/" <i class="fa fa-tag"> 观察者模式</a>
           
         </div>
       
@@ -623,8 +651,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/06/28/Mac-brew源更新/" rel="next" title="Mac brew源更新">
-                <i class="fa fa-chevron-left"></i> Mac brew源更新
+              <a href="/2019/08/14/分布式事务-Seata简介/" rel="next" title="分布式事务-Seata简介">
+                <i class="fa fa-chevron-left"></i> 分布式事务-Seata简介
               </a>
             
           </div>
@@ -632,10 +660,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/07/08/openJdk-安装/" rel="prev" title="openJdk 安装">
-                openJdk 安装 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -685,8 +709,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -864,6 +897,23 @@
         </div>
       </div>
 
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类图"><span class="nav-number">2.</span> <span class="nav-text">类图</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#说明"><span class="nav-number">2.1.</span> <span class="nav-text">说明</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码实现"><span class="nav-number">3.</span> <span class="nav-text">代码实现</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
       
 
       
@@ -1056,7 +1106,7 @@
   
     <script>
   window.livereOptions = {
-    refer: '2019/06/28/k8s-yml部署文件详解/'
+    refer: '2019/08/26/观察者模式/'
   };
   (function(d, s) {
     var j, e = d.getElementsByTagName(s)[0];
