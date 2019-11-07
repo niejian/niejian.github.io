@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Dubbo中@Service工作过程解析Spring中的BeanPostProcessor首先我们应当了解到在spring体系中BeanPostProcessor是什么、加载流程 它是什么BeanPostProcessor也也称为后置处理器。在spring容加载流程。 spring容器bean加载流程1234567891011121314151617181920212223242526272829">
+<meta name="keywords" content="dubbo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dubbo中@Service工作过程解析">
+<meta property="og:url" content="https://niejian.github.io/2019/11/07/Dubbo中-Service工作过程解析/index.html">
+<meta property="og:site_name" content="code4fun">
+<meta property="og:description" content="Dubbo中@Service工作过程解析Spring中的BeanPostProcessor首先我们应当了解到在spring体系中BeanPostProcessor是什么、加载流程 它是什么BeanPostProcessor也也称为后置处理器。在spring容加载流程。 spring容器bean加载流程1234567891011121314151617181920212223242526272829">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s2.ax1x.com/2019/11/07/MF1bXn.md.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/11/07/MFz3p4.md.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/11/07/MkeJi9.png">
+<meta property="og:updated_time" content="2019-11-07T08:06:27.420Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dubbo中@Service工作过程解析">
+<meta name="twitter:description" content="Dubbo中@Service工作过程解析Spring中的BeanPostProcessor首先我们应当了解到在spring体系中BeanPostProcessor是什么、加载流程 它是什么BeanPostProcessor也也称为后置处理器。在spring容加载流程。 spring容器bean加载流程1234567891011121314151617181920212223242526272829">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/11/07/MF1bXn.md.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://niejian.github.io/2019/11/07/Dubbo中-Service工作过程解析/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Dubbo中@Service工作过程解析 | code4fun</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">code4fun</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-主页">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>主页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-归档">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-标签">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-分类">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-关于">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://niejian.github.io/2019/11/07/Dubbo中-Service工作过程解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jian Nie">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://s2.ax1x.com/2019/05/07/Er0DE9.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="code4fun">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Dubbo中@Service工作过程解析
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-07 16:05:37 / 修改时间：16:06:27" itemprop="dateCreated datePublished" datetime="2019-11-07T16:05:37+08:00">2019-11-07</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/dubbo/" itemprop="url" rel="index"><span itemprop="name">dubbo</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">6.3k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">6 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Dubbo中-Service工作过程解析"><a href="#Dubbo中-Service工作过程解析" class="headerlink" title="Dubbo中@Service工作过程解析"></a>Dubbo中@Service工作过程解析</h2><h3 id="Spring中的BeanPostProcessor"><a href="#Spring中的BeanPostProcessor" class="headerlink" title="Spring中的BeanPostProcessor"></a>Spring中的<code>BeanPostProcessor</code></h3><p>首先我们应当了解到在spring体系中<code>BeanPostProcessor</code>是什么、加载流程</p>
+<h4 id="它是什么"><a href="#它是什么" class="headerlink" title="它是什么"></a>它是什么</h4><p><code>BeanPostProcessor</code>也也称为后置处理器。在spring容加载流程。</p>
+<h5 id="spring容器bean加载流程"><a href="#spring容器bean加载流程" class="headerlink" title="spring容器bean加载流程"></a>spring容器bean加载流程</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Prepare this context for refreshing.</span></span><br><span class="line">prepareRefresh();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取beanFactory并加载容器中定义的bean信息</span></span><br><span class="line">ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Prepare the bean factory for use in this context.</span></span><br><span class="line">prepareBeanFactory(beanFactory);</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">	<span class="comment">// 归类bean工厂的后置处理器</span></span><br><span class="line">	postProcessBeanFactory(beanFactory);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 处理这些bean工厂的后置处理器</span></span><br><span class="line">	invokeBeanFactoryPostProcessors(beanFactory);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 调用所有实现了beanpostprocessor接口的类。（先加载实现了priority接口的，然后加载order的，最后加载剩余的）</span></span><br><span class="line">	registerBeanPostProcessors(beanFactory);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Initialize message source for this context.</span></span><br><span class="line">	initMessageSource();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Initialize event multicaster for this context.</span></span><br><span class="line">	initApplicationEventMulticaster();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Initialize other special beans in specific context subclasses.</span></span><br><span class="line">	onRefresh();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Check for listener beans and register them.</span></span><br><span class="line">	registerListeners();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Instantiate all remaining (non-lazy-init) singletons.</span></span><br><span class="line">	finishBeanFactoryInitialization(beanFactory);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Last step: publish corresponding event.</span></span><br><span class="line">	finishRefresh();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="后置处理器的加载和工作"><a href="#后置处理器的加载和工作" class="headerlink" title="后置处理器的加载和工作"></a>后置处理器的加载和工作</h4><p>所以由上可以看出，在<code>registerBeanPostProcessors</code>这一步的时候会划分容器中各种后置处理器，首先归类有<code>@Priority</code>注解，其次归类有<code>@Order</code>注解。最后划分其它的。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line">sortPostProcessors(priorityOrderedPostProcessors, beanFactory);</span><br><span class="line">registerBeanPostProcessors(beanFactory, priorityOrderedPostProcessors);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line">sortPostProcessors(orderedPostProcessors, beanFactory);</span><br><span class="line">registerBeanPostProcessors(beanFactory, orderedPostProcessors);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line">registerBeanPostProcessors(beanFactory, nonOrderedPostProcessors);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Finally, re-register all internal BeanPostProcessors.</span></span><br><span class="line">sortPostProcessors(internalPostProcessors, beanFactory);</span><br><span class="line">registerBeanPostProcessors(beanFactory, internalPostProcessors);</span><br></pre></td></tr></table></figure></p>
+<p>这样，就将所有的后置处理器注册到容器中。后续在容器启动的过程中，会通过反射的方式调用各个实现了<code>BeanPostProcessor</code>的实现类的<code>beforexxxx</code>和<code>afterxxx</code>的方法来做进一步的处理。</p>
+<blockquote>
+<p>有了以上基础，就可以去dubbo包中找到各自的<code>xxxBeanPostProcessor</code>了。<br><img src="https://s2.ax1x.com/2019/11/07/MF1bXn.md.png" alt="dubbo中提供的各个beanpostprocessor"></p>
+</blockquote>
+<h3 id="dubbo中的ServiceAnnotationBeanPostProcessor"><a href="#dubbo中的ServiceAnnotationBeanPostProcessor" class="headerlink" title="dubbo中的ServiceAnnotationBeanPostProcessor"></a>dubbo中的<code>ServiceAnnotationBeanPostProcessor</code></h3><h4 id="类继承关系"><a href="#类继承关系" class="headerlink" title="类继承关系"></a>类继承关系</h4><p><img src="https://s2.ax1x.com/2019/11/07/MFz3p4.md.png" alt="类图"></p>
+<h4 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h4><blockquote>
+<p><strong>BeanDefinitionRegistryPostProcessor</strong>继承自BeanFactoryPostProcessor，是一种比较特殊的BeanFactoryPostProcessor。BeanDefinitionRegistryPostProcessor中定义的<font color="red"><strong><em>postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry)方法 可以让我们实现自定义的注册bean定义的逻辑。</em></strong></font> <br></p>
+</blockquote>
+<p>从以上论述可以看出实现<code>BeanDefinitionRegistryPostProcessor</code>的作用就是向spring容器中注册响应的bean实例。</p>
+<h4 id="具体分析"><a href="#具体分析" class="headerlink" title="具体分析"></a>具体分析</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postProcessBeanDefinitionRegistry</span><span class="params">(BeanDefinitionRegistry registry)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">    <span class="comment">// 读取配置中声明的dubbo扫描类</span></span><br><span class="line">    Set&lt;String&gt; resolvedPackagesToScan = resolvePackagesToScan(packagesToScan);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!CollectionUtils.isEmpty(resolvedPackagesToScan)) &#123;</span><br><span class="line">        <span class="comment">// 将加有@Service注解的类注册到spring容器中</span></span><br><span class="line">        registerServiceBeans(resolvedPackagesToScan, registry);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (logger.isWarnEnabled()) &#123;</span><br><span class="line">            logger.warn(<span class="string">"packagesToScan is empty , ServiceBean registry will be ignored!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面就分析<code>registerServiceBeans</code>的处理过程。</p>
+<ol>
+<li>扫描系统配置的 <code>basePackages</code>，将<code>@Service</code>注解的类放到一个set集合中。</li>
+<li>找到所有标注<code>@Service</code>的类是否被扫面到。</li>
+<li><code>registerServiceBean</code>循环遍历这个集合，并将它们注入到spring容器中。</li>
+</ol>
+<h3 id="ServiceBean的作用"><a href="#ServiceBean的作用" class="headerlink" title="ServiceBean的作用"></a>ServiceBean的作用</h3><h4 id="类图继承关系"><a href="#类图继承关系" class="headerlink" title="类图继承关系"></a>类图继承关系</h4><p><img src="https://s2.ax1x.com/2019/11/07/MkeJi9.png" alt="ServiceBean的类图继承关系"><br>主要看它实现了<code>InitializingBean</code>。通过实现它来对bean初始化之后做一定操作(调用<code>afterPropertiesSet()</code>)。</p>
+<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><ol>
+<li><p>ServiceBean初始化过程。如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SuppressWarnings</span>(&#123;<span class="string">"unchecked"</span>, <span class="string">"deprecation"</span>&#125;)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterPropertiesSet</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="comment">// 进行大量的操作，来读取对应的@Service组成相应的对象信息.....</span></span><br><span class="line">    .....</span><br><span class="line">    <span class="comment">// 最后一步,导出服务。</span></span><br><span class="line">    export()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>export()导出服务 <br><br>最后得到一系列的URL信息（形如注册在zk上的provider节点信息）</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span>() -&gt; doExportUrlsFor1Protocol()</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li><p>获取暴露的host和端口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取部署主机信息</span></span><br><span class="line"> String host = <span class="keyword">this</span>.findConfigedHosts(protocolConfig, registryURLs, map);</span><br><span class="line"><span class="comment">// 获取配置的端口信息。（默认20880，）</span></span><br><span class="line">Integer port = <span class="keyword">this</span>.findConfigedPorts(protocolConfig, name, map);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>导出有两步</p>
+<ol>
+<li><strong>exportLocal</strong></li>
+<li><strong>exportJVM</strong></li>
+</ol>
+</li>
+<li><p>根据第3步启动相关的服务</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">Exporter&lt;T&gt; <span class="title">export</span><span class="params">(Invoker&lt;T&gt; invoker)</span> <span class="keyword">throws</span> RpcException </span>&#123;</span><br><span class="line">    <span class="comment">// </span></span><br><span class="line">    URL url = invoker.getUrl();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// export service.</span></span><br><span class="line">    String key = serviceKey(url);</span><br><span class="line">    DubboExporter&lt;T&gt; exporter = <span class="keyword">new</span> DubboExporter&lt;T&gt;(invoker, key, exporterMap);</span><br><span class="line">    exporterMap.put(key, exporter);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//export an stub service for dispatching event</span></span><br><span class="line">    Boolean isStubSupportEvent = url.getParameter(STUB_EVENT_KEY, DEFAULT_STUB_EVENT);</span><br><span class="line">    Boolean isCallbackservice = url.getParameter(IS_CALLBACK_SERVICE, <span class="keyword">false</span>);</span><br><span class="line">    <span class="keyword">if</span> (isStubSupportEvent &amp;&amp; !isCallbackservice) &#123;</span><br><span class="line">        String stubServiceMethods = url.getParameter(STUB_EVENT_METHODS_KEY);</span><br><span class="line">        <span class="keyword">if</span> (stubServiceMethods == <span class="keyword">null</span> || stubServiceMethods.length() == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (logger.isWarnEnabled()) &#123;</span><br><span class="line">                logger.warn(<span class="keyword">new</span> IllegalStateException(<span class="string">"consumer ["</span> + url.getParameter(INTERFACE_KEY) +</span><br><span class="line">                        <span class="string">"], has set stubproxy support event ,but no stub methods founded."</span>));</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            stubServiceMethodsMap.put(url.getServiceKey(), stubServiceMethods);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 根据url配置host、port信息启动服务（默认使用netty）</span></span><br><span class="line">    openServer(url);</span><br><span class="line">    optimizeSerialization(url);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> exporter;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> netty服务启动</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">private</span> ExchangeServer <span class="title">createServer</span><span class="params">(URL url)</span> </span>&#123;</span><br><span class="line">    url = URLBuilder.from(url)</span><br><span class="line">            <span class="comment">// send readonly event when server closes, it's enabled by default</span></span><br><span class="line">            .addParameterIfAbsent(CHANNEL_READONLYEVENT_SENT_KEY, Boolean.TRUE.toString())</span><br><span class="line">            <span class="comment">// enable heartbeat by default</span></span><br><span class="line">            .addParameterIfAbsent(HEARTBEAT_KEY, String.valueOf(DEFAULT_HEARTBEAT))</span><br><span class="line">            .addParameter(CODEC_KEY, DubboCodec.NAME)</span><br><span class="line">            .build();</span><br><span class="line">    String str = url.getParameter(SERVER_KEY, DEFAULT_REMOTING_SERVER);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (str != <span class="keyword">null</span> &amp;&amp; str.length() &gt; <span class="number">0</span> &amp;&amp; !ExtensionLoader.getExtensionLoader(Transporter.class).hasExtension(str)) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RpcException(<span class="string">"Unsupported server type: "</span> + str + <span class="string">", url: "</span> + url);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ExchangeServer server;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        server = Exchangers.bind(url, requestHandler);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (RemotingException e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RpcException(<span class="string">"Fail to start server(url: "</span> + url + <span class="string">") "</span> + e.getMessage(), e);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    str = url.getParameter(CLIENT_KEY);</span><br><span class="line">    <span class="keyword">if</span> (str != <span class="keyword">null</span> &amp;&amp; str.length() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        Set&lt;String&gt; supportedTypes = ExtensionLoader.getExtensionLoader(Transporter.class).getSupportedExtensions();</span><br><span class="line">        <span class="keyword">if</span> (!supportedTypes.contains(str)) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RpcException(<span class="string">"Unsupported client type: "</span> + str);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> server;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/dubbo/" <i class="fa fa-tag"> dubbo</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+              <div>
+                
+
+<script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.css">
+
+
+  
+
+
+<div class="likely">
+	
+ 	 	<div class="twitter">Tweet</div>
+	
+ 	 	<div class="facebook">Share</div>
+	
+ 	 	<div class="linkedin">Link</div>
+	
+ 	 	<div class="gplus">Plus</div>
+	
+ 	 	<div class="vkontakte">Share</div>
+	
+ 	 	<div class="odnoklassniki">Class</div>
+	
+ 	 	<div class="telegram">Send</div>
+	
+ 	 	<div class="whatsapp">Send</div>
+	
+ 	 	<div class="pinterest">Pin</div>
+	
+</div>
+
+              </div>
+            
+            
+            
+              <div>
+                
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+              </div>
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/24/dubbo集群容错/" rel="next" title="dubbo集群容错">
+                <i class="fa fa-chevron-left"></i> dubbo集群容错
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80NDEwMC8yMDYzNQ=="></div>
+    </div>
+
+  
+
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://s2.ax1x.com/2019/05/07/Er0DE9.jpg" alt="Jian Nie">
+            
+              <p class="site-author-name" itemprop="name">Jian Nie</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/niejian" title="GitHub &rarr; https://github.com/niejian" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:niejian9001@gmail.com" title="E-Mail &rarr; mailto:niejian9001@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dubbo中-Service工作过程解析"><span class="nav-number">1.</span> <span class="nav-text">Dubbo中@Service工作过程解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring中的BeanPostProcessor"><span class="nav-number">1.1.</span> <span class="nav-text">Spring中的BeanPostProcessor</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#它是什么"><span class="nav-number">1.1.1.</span> <span class="nav-text">它是什么</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#spring容器bean加载流程"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">spring容器bean加载流程</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#后置处理器的加载和工作"><span class="nav-number">1.1.2.</span> <span class="nav-text">后置处理器的加载和工作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dubbo中的ServiceAnnotationBeanPostProcessor"><span class="nav-number">1.2.</span> <span class="nav-text">dubbo中的ServiceAnnotationBeanPostProcessor</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类继承关系"><span class="nav-number">1.2.1.</span> <span class="nav-text">类继承关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#作用"><span class="nav-number">1.2.2.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#具体分析"><span class="nav-number">1.2.3.</span> <span class="nav-text">具体分析</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ServiceBean的作用"><span class="nav-number">1.3.</span> <span class="nav-text">ServiceBean的作用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类图继承关系"><span class="nav-number">1.3.1.</span> <span class="nav-text">类图继承关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码实现"><span class="nav-number">1.3.2.</span> <span class="nav-text">代码实现</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jian Nie</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">96k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">1:28</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.1"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script>
+  window.livereOptions = {
+    refer: '2019/11/07/Dubbo中-Service工作过程解析/'
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+  
+
+
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'a33341b4cfef521eab14',
+    clientSecret: '170044a4d080008acb03edf1d187adde178f3227',
+    repo: 'niejian.github.io',
+    owner: 'niejian',
+    admin: ['niejian'],
+    id: md5(location.pathname),
+    
+      language: 'zh-CN',
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+  <script>
+    
+    
+  </script>
+
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
