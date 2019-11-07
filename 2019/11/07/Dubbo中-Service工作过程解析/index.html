@@ -100,21 +100,21 @@
 
 
 
-  <meta name="description" content="Dubbo中@Service工作过程解析Spring中的BeanPostProcessor首先我们应当了解到在spring体系中BeanPostProcessor是什么、加载流程 它是什么BeanPostProcessor也也称为后置处理器。在spring容加载流程。 spring容器bean加载流程1234567891011121314151617181920212223242526272829">
+  <meta name="description" content="Dubbo中@Service工作过程解析Dubbo @Service注解的加载和启动过程">
 <meta name="keywords" content="dubbo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Dubbo中@Service工作过程解析">
 <meta property="og:url" content="https://niejian.github.io/2019/11/07/Dubbo中-Service工作过程解析/index.html">
 <meta property="og:site_name" content="code4fun">
-<meta property="og:description" content="Dubbo中@Service工作过程解析Spring中的BeanPostProcessor首先我们应当了解到在spring体系中BeanPostProcessor是什么、加载流程 它是什么BeanPostProcessor也也称为后置处理器。在spring容加载流程。 spring容器bean加载流程1234567891011121314151617181920212223242526272829">
+<meta property="og:description" content="Dubbo中@Service工作过程解析Dubbo @Service注解的加载和启动过程">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://s2.ax1x.com/2019/11/07/MF1bXn.md.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/11/07/MFz3p4.md.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/11/07/MkeJi9.png">
-<meta property="og:updated_time" content="2019-11-07T08:06:27.420Z">
+<meta property="og:updated_time" content="2019-11-07T08:07:51.548Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Dubbo中@Service工作过程解析">
-<meta name="twitter:description" content="Dubbo中@Service工作过程解析Spring中的BeanPostProcessor首先我们应当了解到在spring体系中BeanPostProcessor是什么、加载流程 它是什么BeanPostProcessor也也称为后置处理器。在spring容加载流程。 spring容器bean加载流程1234567891011121314151617181920212223242526272829">
+<meta name="twitter:description" content="Dubbo中@Service工作过程解析Dubbo @Service注解的加载和启动过程">
 <meta name="twitter:image" content="https://s2.ax1x.com/2019/11/07/MF1bXn.md.png">
 
 
@@ -404,7 +404,7 @@
                 
               
 
-              <time title="创建时间：2019-11-07 16:05:37 / 修改时间：16:06:27" itemprop="dateCreated datePublished" datetime="2019-11-07T16:05:37+08:00">2019-11-07</time>
+              <time title="创建时间：2019-11-07 16:05:37 / 修改时间：16:07:51" itemprop="dateCreated datePublished" datetime="2019-11-07T16:05:37+08:00">2019-11-07</time>
             
 
             
@@ -496,7 +496,9 @@
       
 
       
-        <h2 id="Dubbo中-Service工作过程解析"><a href="#Dubbo中-Service工作过程解析" class="headerlink" title="Dubbo中@Service工作过程解析"></a>Dubbo中@Service工作过程解析</h2><h3 id="Spring中的BeanPostProcessor"><a href="#Spring中的BeanPostProcessor" class="headerlink" title="Spring中的BeanPostProcessor"></a>Spring中的<code>BeanPostProcessor</code></h3><p>首先我们应当了解到在spring体系中<code>BeanPostProcessor</code>是什么、加载流程</p>
+        <h2 id="Dubbo中-Service工作过程解析"><a href="#Dubbo中-Service工作过程解析" class="headerlink" title="Dubbo中@Service工作过程解析"></a>Dubbo中@Service工作过程解析</h2><p>Dubbo <code>@Service</code>注解的加载和启动过程</p>
+<a id="more"></a>
+<h3 id="Spring中的BeanPostProcessor"><a href="#Spring中的BeanPostProcessor" class="headerlink" title="Spring中的BeanPostProcessor"></a>Spring中的<code>BeanPostProcessor</code></h3><p>首先我们应当了解到在spring体系中<code>BeanPostProcessor</code>是什么、加载流程</p>
 <h4 id="它是什么"><a href="#它是什么" class="headerlink" title="它是什么"></a>它是什么</h4><p><code>BeanPostProcessor</code>也也称为后置处理器。在spring容加载流程。</p>
 <h5 id="spring容器bean加载流程"><a href="#spring容器bean加载流程" class="headerlink" title="spring容器bean加载流程"></a>spring容器bean加载流程</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Prepare this context for refreshing.</span></span><br><span class="line">prepareRefresh();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取beanFactory并加载容器中定义的bean信息</span></span><br><span class="line">ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Prepare the bean factory for use in this context.</span></span><br><span class="line">prepareBeanFactory(beanFactory);</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">	<span class="comment">// 归类bean工厂的后置处理器</span></span><br><span class="line">	postProcessBeanFactory(beanFactory);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 处理这些bean工厂的后置处理器</span></span><br><span class="line">	invokeBeanFactoryPostProcessors(beanFactory);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 调用所有实现了beanpostprocessor接口的类。（先加载实现了priority接口的，然后加载order的，最后加载剩余的）</span></span><br><span class="line">	registerBeanPostProcessors(beanFactory);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Initialize message source for this context.</span></span><br><span class="line">	initMessageSource();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Initialize event multicaster for this context.</span></span><br><span class="line">	initApplicationEventMulticaster();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Initialize other special beans in specific context subclasses.</span></span><br><span class="line">	onRefresh();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Check for listener beans and register them.</span></span><br><span class="line">	registerListeners();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Instantiate all remaining (non-lazy-init) singletons.</span></span><br><span class="line">	finishBeanFactoryInitialization(beanFactory);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Last step: publish corresponding event.</span></span><br><span class="line">	finishRefresh();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="后置处理器的加载和工作"><a href="#后置处理器的加载和工作" class="headerlink" title="后置处理器的加载和工作"></a>后置处理器的加载和工作</h4><p>所以由上可以看出，在<code>registerBeanPostProcessors</code>这一步的时候会划分容器中各种后置处理器，首先归类有<code>@Priority</code>注解，其次归类有<code>@Order</code>注解。最后划分其它的。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line">sortPostProcessors(priorityOrderedPostProcessors, beanFactory);</span><br><span class="line">registerBeanPostProcessors(beanFactory, priorityOrderedPostProcessors);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line">sortPostProcessors(orderedPostProcessors, beanFactory);</span><br><span class="line">registerBeanPostProcessors(beanFactory, orderedPostProcessors);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line">registerBeanPostProcessors(beanFactory, nonOrderedPostProcessors);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Finally, re-register all internal BeanPostProcessors.</span></span><br><span class="line">sortPostProcessors(internalPostProcessors, beanFactory);</span><br><span class="line">registerBeanPostProcessors(beanFactory, internalPostProcessors);</span><br></pre></td></tr></table></figure></p>
