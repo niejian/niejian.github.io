@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Sentinel基于Apollo的持久化改造sentinel默认是将用户在dashboard中编辑过的流控信息保存在内存中，所以在重启后，所有之前配置过的流控规则也就不见了。但是sentinel给用户提供了可扩展的接口，用户可以根据自己熟悉的持久化引擎来做一定的相应的改造（apollo、nacos、zookeeper）。这里首先要了解下sentinel的规则管理和推送方式 规则管理和推送一般来说，">
+<meta name="keywords" content="sentinel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sentinel通过Apollo的规则持久化改造">
+<meta property="og:url" content="https://niejian.github.io/2019/12/02/Sentinel通过Apollo的规则持久化改造/index.html">
+<meta property="og:site_name" content="code4fun">
+<meta property="og:description" content="Sentinel基于Apollo的持久化改造sentinel默认是将用户在dashboard中编辑过的流控信息保存在内存中，所以在重启后，所有之前配置过的流控规则也就不见了。但是sentinel给用户提供了可扩展的接口，用户可以根据自己熟悉的持久化引擎来做一定的相应的改造（apollo、nacos、zookeeper）。这里首先要了解下sentinel的规则管理和推送方式 规则管理和推送一般来说，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/02/QnCFsg.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/02/QnC8eJ.png">
+<meta property="og:updated_time" content="2019-12-02T02:32:01.496Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sentinel通过Apollo的规则持久化改造">
+<meta name="twitter:description" content="Sentinel基于Apollo的持久化改造sentinel默认是将用户在dashboard中编辑过的流控信息保存在内存中，所以在重启后，所有之前配置过的流控规则也就不见了。但是sentinel给用户提供了可扩展的接口，用户可以根据自己熟悉的持久化引擎来做一定的相应的改造（apollo、nacos、zookeeper）。这里首先要了解下sentinel的规则管理和推送方式 规则管理和推送一般来说，">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/12/02/QnCFsg.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://niejian.github.io/2019/12/02/Sentinel通过Apollo的规则持久化改造/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Sentinel通过Apollo的规则持久化改造 | code4fun</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">code4fun</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-主页">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>主页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-归档">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-标签">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-分类">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-关于">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://niejian.github.io/2019/12/02/Sentinel通过Apollo的规则持久化改造/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jian Nie">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://s2.ax1x.com/2019/05/07/Er0DE9.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="code4fun">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Sentinel通过Apollo的规则持久化改造
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-02 10:31:28 / 修改时间：10:32:01" itemprop="dateCreated datePublished" datetime="2019-12-02T10:31:28+08:00">2019-12-02</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/sentinel/" itemprop="url" rel="index"><span itemprop="name">sentinel</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">5.3k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">5 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Sentinel基于Apollo的持久化改造"><a href="#Sentinel基于Apollo的持久化改造" class="headerlink" title="Sentinel基于Apollo的持久化改造"></a>Sentinel基于Apollo的持久化改造</h2><p>sentinel默认是将用户在dashboard中编辑过的流控信息保存在内存中，所以在重启后，所有之前配置过的流控规则也就不见了。但是sentinel给用户提供了可扩展的接口，用户可以根据自己熟悉的持久化引擎来做一定的相应的改造（apollo、nacos、zookeeper）。这里首先要了解下sentinel的规则管理和推送方式</p>
+<h3 id="规则管理和推送"><a href="#规则管理和推送" class="headerlink" title="规则管理和推送"></a>规则管理和推送</h3><p>一般来说，规则的管理和推送有以下三种方式：<br>| 推送模式  | 说明                                                         | 优点                         | 缺点                                                         |      |<br>| ——— | ———————————————————— | —————————- | ———————————————————— | —- |<br>| 默认模式  | API 将规则推送至客户端并直接更新到内存中，扩展写数据源       | 简单，无任何依赖             | 不保证一致性；规则保存在内存中，重启即消失。严重不建议用于生产环境 |      |<br>| pull 模式 | 扩展写数据源（WritableDataSource）， 客户端主动向某个规则管理中心定期轮询拉取规则，这个规则中心可以是 RDBMS、文件（数据库保存） 等 | 简单，无任何依赖；规则持久化 | 不保证一致性；实时性不保证，拉取过于频繁也可能会有性能问题。 |      |<br>| push 模式 | 扩展读数据源（ReadableDataSource），规则中心统一推送，客户端通过注册监听器的方式时刻监听变化，比如使用 Nacos、Zookeeper 等配置中心。这种方式有更好的实时性和一致性保证。生产环境下一般采用 push 模式的数据源。 | 规则持久化；一致性；快速     | 引入第三方依赖                                               |      |</p>
+<p>所以简单的归纳来说，sentinel（基于push）的工作原理是：</p>
+<ol>
+<li>通过dashboard来配置相关的流控信息。</li>
+<li>配置好后的规则信息通过扩展数据源推送到与之连接到客户端。</li>
+<li>客户端在启动的过程中读取这些扩展数据源的相关规则信息，并将它们保存到内存当中。（如果客户端在运行的过程当中，规则发生变动，那么数据源会实时推送已发生变动的规则信息到正在运行的客户端内存当中）。</li>
+<li>有请求过来的时候，客户端会读取内存中的规则信息，来判断是否做限流操作。</li>
+</ol>
+<h3 id="对数据持久化的扩展"><a href="#对数据持久化的扩展" class="headerlink" title="对数据持久化的扩展"></a>对数据持久化的扩展</h3><h4 id="接口描述"><a href="#接口描述" class="headerlink" title="接口描述"></a>接口描述</h4><p>sentinel提供了可扩展的读写接口，在重写这块逻辑的时候，只要重新实现这两个接口就好。</p>
+<h4 id="Provider"><a href="#Provider" class="headerlink" title="Provider"></a>Provider</h4><p><img src="https://s2.ax1x.com/2019/12/02/QnCFsg.png" alt="provider"></p>
+<h4 id="Publisher"><a href="#Publisher" class="headerlink" title="Publisher"></a>Publisher</h4><p><img src="https://s2.ax1x.com/2019/12/02/QnC8eJ.png" alt="publisher"></p>
+<h4 id="Apollo操作的封装。"><a href="#Apollo操作的封装。" class="headerlink" title="Apollo操作的封装。"></a>Apollo操作的封装。</h4><p>不管用zk、nacos还是apollo，我们要做的就是在数据变动的时候，给这些引擎推送相关信息来驱动这些引擎去做操作。所以，可以把这些操作都抽象出来。以<code>AbstractRuleApolloProvider</code>为例。这个抽象类的作用有：</p>
+<ol>
+<li><p>启动的时候初始化apollo环境。</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> ApolloOpenApiClient apolloOpenApiClient;</span><br><span class="line"><span class="meta">@Value</span>(<span class="string">"$&#123;auth.apollo.appId&#125;"</span>)</span><br><span class="line"><span class="keyword">private</span> String appid;</span><br><span class="line"><span class="keyword">private</span> String env;</span><br><span class="line"><span class="keyword">private</span> String clusterName;</span><br><span class="line"><span class="keyword">private</span> String namespaceName;</span><br></pre></td></tr></table></figure>
+<p> @PostConstruct<br> public void init() {</p>
+<pre><code>env = System.getProperty(&quot;env&quot;, ApolloEnvConst.APOLLO_ENV_DEV);
+clusterName = System.getProperty(&quot;cluster&quot;, ApolloEnvConst.APOLLO_DEFAULT_CLUSTER_NAME);
+namespaceName = System.getProperty(&quot;namespace&quot;, ApolloEnvConst.APOLLO_DEFAULT_NAMESPACE);
+</code></pre><p> }</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">2. 封装对apollo通用的增删改查的方法。&lt;br/&gt;</span><br><span class="line">    ```java</span><br><span class="line">     /**</span><br><span class="line">     * 获取配置</span><br><span class="line">     *</span><br><span class="line">     * @param app</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public String getRulesByApollo(String app, String ruleType) &#123;</span><br><span class="line">        String flowDataId = getRuleType(app, ruleType);</span><br><span class="line">        OpenNamespaceDTO openNamespaceDTO = apolloOpenApiClient.getNamespace(appid, env, clusterName, namespaceName);</span><br><span class="line">        return openNamespaceDTO</span><br><span class="line">                .getItems()</span><br><span class="line">                .stream()</span><br><span class="line">                .filter(p -&gt; p.getKey().equals(flowDataId))</span><br><span class="line">                .map(OpenItemDTO::getValue)</span><br><span class="line">                .findFirst()</span><br><span class="line">                .orElse(&quot;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /**</span><br><span class="line">     * 新增修改配置</span><br><span class="line">     *</span><br><span class="line">     * @param app</span><br><span class="line">     * @param rules</span><br><span class="line">     */</span><br><span class="line">    public void publish2Apollo(String app, String ruleType, String rules) &#123;</span><br><span class="line">        // Increase the configuration</span><br><span class="line">        String flowDataId = getRuleType(app, ruleType);</span><br><span class="line">        OpenItemDTO openItemDTO = new OpenItemDTO();</span><br><span class="line">        openItemDTO.setKey(flowDataId);</span><br><span class="line">        openItemDTO.setValue(rules);</span><br><span class="line">        openItemDTO.setComment(&quot;Program auto-join&quot;);</span><br><span class="line">        openItemDTO.setDataChangeCreatedBy(&quot;apollo&quot;);</span><br><span class="line">        apolloOpenApiClient.createOrUpdateItem(appid, env, clusterName, namespaceName, openItemDTO);</span><br><span class="line">    </span><br><span class="line">        // Release configuration</span><br><span class="line">        NamespaceReleaseDTO namespaceReleaseDTO = new NamespaceReleaseDTO();</span><br><span class="line">        namespaceReleaseDTO.setEmergencyPublish(true);</span><br><span class="line">        namespaceReleaseDTO.setReleaseComment(&quot;Modify or add configurations&quot;);</span><br><span class="line">        namespaceReleaseDTO.setReleasedBy(&quot;apollo&quot;);</span><br><span class="line">        namespaceReleaseDTO.setReleaseTitle(&quot;Modify or add configurations&quot;);</span><br><span class="line">        apolloOpenApiClient.publishNamespace(appid, env, clusterName, namespaceName, namespaceReleaseDTO);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>apollo数据序列化（按实际情况传递相应的实体）</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> Converter&lt;List&lt;FlowRuleEntity&gt;, String&gt; flowRuleEntityEncoder() &#123;</span><br><span class="line">    <span class="keyword">return</span> JSON::toJSONString;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> Converter&lt;String, List&lt;FlowRuleEntity&gt;&gt; flowRuleEntityDecoder() &#123;</span><br><span class="line">    <span class="keyword">return</span> s -&gt; JSON.parseArray(s, FlowRuleEntity.class);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="规则保存与推送"><a href="#规则保存与推送" class="headerlink" title="规则保存与推送"></a>规则保存与推送</h4><p>以降级（Degrade）为例</p>
+<h5 id="获取规则信息"><a href="#获取规则信息" class="headerlink" title="获取规则信息"></a>获取规则信息</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(<span class="string">"degradeRuleApolloProvider"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DegradeRuleApolloProvider</span> <span class="keyword">extends</span> <span class="title">AbstractRuleApolloProvider</span> <span class="keyword">implements</span> <span class="title">DynamicRuleProvider</span>&lt;<span class="title">List</span>&lt;<span class="title">DegradeRuleEntity</span>&gt;&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Converter&lt;String, List&lt;DegradeRuleEntity&gt;&gt; converter;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;DegradeRuleEntity&gt; <span class="title">getRules</span><span class="params">(String app)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">        String rules = <span class="keyword">super</span>.getRulesByApollo(app, DEGRADE);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (StringUtil.isEmpty(rules)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> converter.convert(rules);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="获取、推送规则信息"><a href="#获取、推送规则信息" class="headerlink" title="获取、推送规则信息"></a>获取、推送规则信息</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(<span class="string">"degradeRuleApolloPublisher"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DegradeRuleApolloPublisher</span> <span class="keyword">extends</span> <span class="title">AbstractRuleApolloProvider</span> <span class="keyword">implements</span> <span class="title">DynamicRulePublisher</span>&lt;<span class="title">List</span>&lt;<span class="title">DegradeRuleEntity</span>&gt;&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Converter&lt;List&lt;DegradeRuleEntity&gt;, String&gt; converter;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">publish</span><span class="params">(String app, List&lt;DegradeRuleEntity&gt; rules)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        AssertUtil.notEmpty(app, <span class="string">"app name cannot be empty"</span>);</span><br><span class="line">        <span class="keyword">if</span> (rules == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">super</span>.publish2Apollo(app, DEGRADE, converter.convert(rules));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="控制层改造"><a href="#控制层改造" class="headerlink" title="控制层改造"></a>控制层改造</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="meta">@Qualifier</span>(<span class="string">"sentinelApolloApiImpl"</span>)</span><br><span class="line"><span class="keyword">private</span> SentinelPersistenceApiService sentinelApiClient;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/sentinel/" <i class="fa fa-tag"> sentinel</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+              <div>
+                
+
+<script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.css">
+
+
+  
+
+
+<div class="likely">
+	
+ 	 	<div class="twitter">Tweet</div>
+	
+ 	 	<div class="facebook">Share</div>
+	
+ 	 	<div class="linkedin">Link</div>
+	
+ 	 	<div class="gplus">Plus</div>
+	
+ 	 	<div class="vkontakte">Share</div>
+	
+ 	 	<div class="odnoklassniki">Class</div>
+	
+ 	 	<div class="telegram">Send</div>
+	
+ 	 	<div class="whatsapp">Send</div>
+	
+ 	 	<div class="pinterest">Pin</div>
+	
+</div>
+
+              </div>
+            
+            
+            
+              <div>
+                
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+              </div>
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/07/Dubbo中-Service工作过程解析/" rel="next" title="Dubbo中@Service工作过程解析">
+                <i class="fa fa-chevron-left"></i> Dubbo中@Service工作过程解析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80NDEwMC8yMDYzNQ=="></div>
+    </div>
+
+  
+
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://s2.ax1x.com/2019/05/07/Er0DE9.jpg" alt="Jian Nie">
+            
+              <p class="site-author-name" itemprop="name">Jian Nie</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">25</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/niejian" title="GitHub &rarr; https://github.com/niejian" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:niejian9001@gmail.com" title="E-Mail &rarr; mailto:niejian9001@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Sentinel基于Apollo的持久化改造"><span class="nav-number">1.</span> <span class="nav-text">Sentinel基于Apollo的持久化改造</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#规则管理和推送"><span class="nav-number">1.1.</span> <span class="nav-text">规则管理和推送</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对数据持久化的扩展"><span class="nav-number">1.2.</span> <span class="nav-text">对数据持久化的扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#接口描述"><span class="nav-number">1.2.1.</span> <span class="nav-text">接口描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Provider"><span class="nav-number">1.2.2.</span> <span class="nav-text">Provider</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Publisher"><span class="nav-number">1.2.3.</span> <span class="nav-text">Publisher</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Apollo操作的封装。"><span class="nav-number">1.2.4.</span> <span class="nav-text">Apollo操作的封装。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#规则保存与推送"><span class="nav-number">1.2.5.</span> <span class="nav-text">规则保存与推送</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#获取规则信息"><span class="nav-number">1.2.5.1.</span> <span class="nav-text">获取规则信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#获取、推送规则信息"><span class="nav-number">1.2.5.2.</span> <span class="nav-text">获取、推送规则信息</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#控制层改造"><span class="nav-number">1.2.6.</span> <span class="nav-text">控制层改造</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jian Nie</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">102k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">1:32</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.1"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script>
+  window.livereOptions = {
+    refer: '2019/12/02/Sentinel通过Apollo的规则持久化改造/'
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+  
+
+
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'a33341b4cfef521eab14',
+    clientSecret: '170044a4d080008acb03edf1d187adde178f3227',
+    repo: 'niejian.github.io',
+    owner: 'niejian',
+    admin: ['niejian'],
+    id: md5(location.pathname),
+    
+      language: 'zh-CN',
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+  <script>
+    
+    
+  </script>
+
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
