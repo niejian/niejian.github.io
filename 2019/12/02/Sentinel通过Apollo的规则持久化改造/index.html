@@ -100,19 +100,19 @@
 
 
 
-  <meta name="description" content="Sentinel基于Apollo的持久化改造Sentinel基于Apollo的持久化改造说明">
+  <meta name="description" content="Sentinel基于Apollo的持久化改造 title: Sentinel基于Apollo的持久化改造date: 2019-12-02 14:41:03categories: sentinel tags: sentinelSentinel基于Apollo的持久化改造说明">
 <meta property="og:type" content="article">
 <meta property="og:title" content="code4fun">
 <meta property="og:url" content="https://niejian.github.io/2019/12/02/Sentinel通过Apollo的规则持久化改造/index.html">
 <meta property="og:site_name" content="code4fun">
-<meta property="og:description" content="Sentinel基于Apollo的持久化改造Sentinel基于Apollo的持久化改造说明">
+<meta property="og:description" content="Sentinel基于Apollo的持久化改造 title: Sentinel基于Apollo的持久化改造date: 2019-12-02 14:41:03categories: sentinel tags: sentinelSentinel基于Apollo的持久化改造说明">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://s2.ax1x.com/2019/12/02/QnCFsg.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/12/02/QnC8eJ.png">
-<meta property="og:updated_time" content="2019-12-02T06:38:46.850Z">
+<meta property="og:updated_time" content="2019-12-02T06:41:23.690Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="code4fun">
-<meta name="twitter:description" content="Sentinel基于Apollo的持久化改造Sentinel基于Apollo的持久化改造说明">
+<meta name="twitter:description" content="Sentinel基于Apollo的持久化改造 title: Sentinel基于Apollo的持久化改造date: 2019-12-02 14:41:03categories: sentinel tags: sentinelSentinel基于Apollo的持久化改造说明">
 <meta name="twitter:image" content="https://s2.ax1x.com/2019/12/02/QnCFsg.png">
 
 
@@ -402,7 +402,7 @@
                 
               
 
-              <time title="创建时间：2019-12-02 10:31:28 / 修改时间：14:38:46" itemprop="dateCreated datePublished" datetime="2019-12-02T10:31:28+08:00">2019-12-02</time>
+              <time title="创建时间：2019-12-02 10:31:28 / 修改时间：14:41:23" itemprop="dateCreated datePublished" datetime="2019-12-02T10:31:28+08:00">2019-12-02</time>
             
 
             
@@ -442,7 +442,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">5k</span>
+                <span title="本文字数">5.1k</span>
               
 
               
@@ -476,7 +476,9 @@
       
 
       
-        <h2 id="Sentinel基于Apollo的持久化改造"><a href="#Sentinel基于Apollo的持久化改造" class="headerlink" title="Sentinel基于Apollo的持久化改造"></a>Sentinel基于Apollo的持久化改造</h2><p>Sentinel基于Apollo的持久化改造说明</p>
+        <h2 id="Sentinel基于Apollo的持久化改造"><a href="#Sentinel基于Apollo的持久化改造" class="headerlink" title="Sentinel基于Apollo的持久化改造"></a>Sentinel基于Apollo的持久化改造</h2><hr>
+<p>title: Sentinel基于Apollo的持久化改造<br>date: 2019-12-02 14:41:03<br>categories: sentinel</p>
+<h2 id="tags-sentinel"><a href="#tags-sentinel" class="headerlink" title="tags: sentinel"></a>tags: sentinel</h2><p>Sentinel基于Apollo的持久化改造说明</p>
 <a id="more"></a>
 <p>sentinel默认是将用户在dashboard中编辑过的流控信息保存在内存中，所以在重启后，所有之前配置过的流控规则也就不见了。但是sentinel给用户提供了可扩展的接口，用户可以根据自己熟悉的持久化引擎来做一定的相应的改造（apollo、nacos、zookeeper）。这里首先要了解下sentinel的规则管理和推送方式</p>
 <h3 id="规则管理和推送"><a href="#规则管理和推送" class="headerlink" title="规则管理和推送"></a>规则管理和推送</h3><p>一般来说，规则的管理和推送有以下三种方式：</p>
@@ -917,7 +919,7 @@ namespaceName = System.getProperty(&quot;namespace&quot;, ApolloEnvConst.APOLLO_
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Sentinel基于Apollo的持久化改造"><span class="nav-number">1.</span> <span class="nav-text">Sentinel基于Apollo的持久化改造</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#规则管理和推送"><span class="nav-number">1.1.</span> <span class="nav-text">规则管理和推送</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对数据持久化的扩展"><span class="nav-number">1.2.</span> <span class="nav-text">对数据持久化的扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#接口描述"><span class="nav-number">1.2.1.</span> <span class="nav-text">接口描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Provider"><span class="nav-number">1.2.2.</span> <span class="nav-text">Provider</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Publisher"><span class="nav-number">1.2.3.</span> <span class="nav-text">Publisher</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Apollo操作的封装。"><span class="nav-number">1.2.4.</span> <span class="nav-text">Apollo操作的封装。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#规则保存与推送"><span class="nav-number">1.2.5.</span> <span class="nav-text">规则保存与推送</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#获取规则信息"><span class="nav-number">1.2.5.1.</span> <span class="nav-text">获取规则信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#获取、推送规则信息"><span class="nav-number">1.2.5.2.</span> <span class="nav-text">获取、推送规则信息</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#控制层改造"><span class="nav-number">1.2.6.</span> <span class="nav-text">控制层改造</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Sentinel基于Apollo的持久化改造"><span class="nav-number">1.</span> <span class="nav-text">Sentinel基于Apollo的持久化改造</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tags-sentinel"><span class="nav-number">2.</span> <span class="nav-text">tags: sentinel</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#规则管理和推送"><span class="nav-number">2.1.</span> <span class="nav-text">规则管理和推送</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对数据持久化的扩展"><span class="nav-number">2.2.</span> <span class="nav-text">对数据持久化的扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#接口描述"><span class="nav-number">2.2.1.</span> <span class="nav-text">接口描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Provider"><span class="nav-number">2.2.2.</span> <span class="nav-text">Provider</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Publisher"><span class="nav-number">2.2.3.</span> <span class="nav-text">Publisher</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Apollo操作的封装。"><span class="nav-number">2.2.4.</span> <span class="nav-text">Apollo操作的封装。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#规则保存与推送"><span class="nav-number">2.2.5.</span> <span class="nav-text">规则保存与推送</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#获取规则信息"><span class="nav-number">2.2.5.1.</span> <span class="nav-text">获取规则信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#获取、推送规则信息"><span class="nav-number">2.2.5.2.</span> <span class="nav-text">获取、推送规则信息</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#控制层改造"><span class="nav-number">2.2.6.</span> <span class="nav-text">控制层改造</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
