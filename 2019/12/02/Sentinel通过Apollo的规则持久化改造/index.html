@@ -100,19 +100,19 @@
 
 
 
-  <meta name="description" content="Sentinel基于Apollo的持久化改造sentinel默认是将用户在dashboard中编辑过的流控信息保存在内存中，所以在重启后，所有之前配置过的流控规则也就不见了。但是sentinel给用户提供了可扩展的接口，用户可以根据自己熟悉的持久化引擎来做一定的相应的改造（apollo、nacos、zookeeper）。这里首先要了解下sentinel的规则管理和推送方式 规则管理和推送一般来说，">
+  <meta name="description" content="Sentinel基于Apollo的持久化改造Sentinel基于Apollo的持久化改造说明">
 <meta property="og:type" content="article">
 <meta property="og:title" content="code4fun">
 <meta property="og:url" content="https://niejian.github.io/2019/12/02/Sentinel通过Apollo的规则持久化改造/index.html">
 <meta property="og:site_name" content="code4fun">
-<meta property="og:description" content="Sentinel基于Apollo的持久化改造sentinel默认是将用户在dashboard中编辑过的流控信息保存在内存中，所以在重启后，所有之前配置过的流控规则也就不见了。但是sentinel给用户提供了可扩展的接口，用户可以根据自己熟悉的持久化引擎来做一定的相应的改造（apollo、nacos、zookeeper）。这里首先要了解下sentinel的规则管理和推送方式 规则管理和推送一般来说，">
+<meta property="og:description" content="Sentinel基于Apollo的持久化改造Sentinel基于Apollo的持久化改造说明">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://s2.ax1x.com/2019/12/02/QnCFsg.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/12/02/QnC8eJ.png">
-<meta property="og:updated_time" content="2019-12-02T06:36:24.526Z">
+<meta property="og:updated_time" content="2019-12-02T06:38:46.850Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="code4fun">
-<meta name="twitter:description" content="Sentinel基于Apollo的持久化改造sentinel默认是将用户在dashboard中编辑过的流控信息保存在内存中，所以在重启后，所有之前配置过的流控规则也就不见了。但是sentinel给用户提供了可扩展的接口，用户可以根据自己熟悉的持久化引擎来做一定的相应的改造（apollo、nacos、zookeeper）。这里首先要了解下sentinel的规则管理和推送方式 规则管理和推送一般来说，">
+<meta name="twitter:description" content="Sentinel基于Apollo的持久化改造Sentinel基于Apollo的持久化改造说明">
 <meta name="twitter:image" content="https://s2.ax1x.com/2019/12/02/QnCFsg.png">
 
 
@@ -402,7 +402,7 @@
                 
               
 
-              <time title="创建时间：2019-12-02 10:31:28 / 修改时间：14:36:24" itemprop="dateCreated datePublished" datetime="2019-12-02T10:31:28+08:00">2019-12-02</time>
+              <time title="创建时间：2019-12-02 10:31:28 / 修改时间：14:38:46" itemprop="dateCreated datePublished" datetime="2019-12-02T10:31:28+08:00">2019-12-02</time>
             
 
             
@@ -442,7 +442,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">4.9k</span>
+                <span title="本文字数">5k</span>
               
 
               
@@ -456,7 +456,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">4 分钟</span>
+                <span title="阅读时长">5 分钟</span>
               
             </div>
           
@@ -476,7 +476,9 @@
       
 
       
-        <h2 id="Sentinel基于Apollo的持久化改造"><a href="#Sentinel基于Apollo的持久化改造" class="headerlink" title="Sentinel基于Apollo的持久化改造"></a>Sentinel基于Apollo的持久化改造</h2><p>sentinel默认是将用户在dashboard中编辑过的流控信息保存在内存中，所以在重启后，所有之前配置过的流控规则也就不见了。但是sentinel给用户提供了可扩展的接口，用户可以根据自己熟悉的持久化引擎来做一定的相应的改造（apollo、nacos、zookeeper）。这里首先要了解下sentinel的规则管理和推送方式</p>
+        <h2 id="Sentinel基于Apollo的持久化改造"><a href="#Sentinel基于Apollo的持久化改造" class="headerlink" title="Sentinel基于Apollo的持久化改造"></a>Sentinel基于Apollo的持久化改造</h2><p>Sentinel基于Apollo的持久化改造说明</p>
+<a id="more"></a>
+<p>sentinel默认是将用户在dashboard中编辑过的流控信息保存在内存中，所以在重启后，所有之前配置过的流控规则也就不见了。但是sentinel给用户提供了可扩展的接口，用户可以根据自己熟悉的持久化引擎来做一定的相应的改造（apollo、nacos、zookeeper）。这里首先要了解下sentinel的规则管理和推送方式</p>
 <h3 id="规则管理和推送"><a href="#规则管理和推送" class="headerlink" title="规则管理和推送"></a>规则管理和推送</h3><p>一般来说，规则的管理和推送有以下三种方式：</p>
 <table>
 <thead>
