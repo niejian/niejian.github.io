@@ -100,20 +100,19 @@
 
 
 
-  <meta name="description" content="Sentinel基于Apollo的持久化改造Sentinel基于Apollo的持久化改造。">
-<meta name="keywords" content="sentinel">
+  <meta name="description" content="Sentinel基于Apollo的持久化改造sentinel默认是将用户在dashboard中编辑过的流控信息保存在内存中，所以在重启后，所有之前配置过的流控规则也就不见了。但是sentinel给用户提供了可扩展的接口，用户可以根据自己熟悉的持久化引擎来做一定的相应的改造（apollo、nacos、zookeeper）。这里首先要了解下sentinel的规则管理和推送方式 规则管理和推送一般来说，">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Sentinel通过Apollo的规则持久化改造">
+<meta property="og:title" content="code4fun">
 <meta property="og:url" content="https://niejian.github.io/2019/12/02/Sentinel通过Apollo的规则持久化改造/index.html">
 <meta property="og:site_name" content="code4fun">
-<meta property="og:description" content="Sentinel基于Apollo的持久化改造Sentinel基于Apollo的持久化改造。">
+<meta property="og:description" content="Sentinel基于Apollo的持久化改造sentinel默认是将用户在dashboard中编辑过的流控信息保存在内存中，所以在重启后，所有之前配置过的流控规则也就不见了。但是sentinel给用户提供了可扩展的接口，用户可以根据自己熟悉的持久化引擎来做一定的相应的改造（apollo、nacos、zookeeper）。这里首先要了解下sentinel的规则管理和推送方式 规则管理和推送一般来说，">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://s2.ax1x.com/2019/12/02/QnCFsg.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/12/02/QnC8eJ.png">
-<meta property="og:updated_time" content="2019-12-02T02:33:07.236Z">
+<meta property="og:updated_time" content="2019-12-02T06:34:24.850Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Sentinel通过Apollo的规则持久化改造">
-<meta name="twitter:description" content="Sentinel基于Apollo的持久化改造Sentinel基于Apollo的持久化改造。">
+<meta name="twitter:title" content="code4fun">
+<meta name="twitter:description" content="Sentinel基于Apollo的持久化改造sentinel默认是将用户在dashboard中编辑过的流控信息保存在内存中，所以在重启后，所有之前配置过的流控规则也就不见了。但是sentinel给用户提供了可扩展的接口，用户可以根据自己熟悉的持久化引擎来做一定的相应的改造（apollo、nacos、zookeeper）。这里首先要了解下sentinel的规则管理和推送方式 规则管理和推送一般来说，">
 <meta name="twitter:image" content="https://s2.ax1x.com/2019/12/02/QnCFsg.png">
 
 
@@ -132,7 +131,7 @@
   };
 </script>
 
-  <title>Sentinel通过Apollo的规则持久化改造 | code4fun</title>
+  <title> | code4fun</title>
   
 
 
@@ -377,7 +376,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Sentinel通过Apollo的规则持久化改造
+          <h1 class="post-title" itemprop="name headline">
 
               
             
@@ -403,7 +402,7 @@
                 
               
 
-              <time title="创建时间：2019-12-02 10:31:28 / 修改时间：10:33:07" itemprop="dateCreated datePublished" datetime="2019-12-02T10:31:28+08:00">2019-12-02</time>
+              <time title="创建时间：2019-12-02 10:31:28 / 修改时间：14:34:24" itemprop="dateCreated datePublished" datetime="2019-12-02T10:31:28+08:00">2019-12-02</time>
             
 
             
@@ -413,24 +412,6 @@
             
           </span>
 
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/sentinel/" itemprop="url" rel="index"><span itemprop="name">sentinel</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -461,7 +442,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">5.3k</span>
+                <span title="本文字数">4.9k</span>
               
 
               
@@ -475,7 +456,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">5 分钟</span>
+                <span title="阅读时长">4 分钟</span>
               
             </div>
           
@@ -495,10 +476,38 @@
       
 
       
-        <h2 id="Sentinel基于Apollo的持久化改造"><a href="#Sentinel基于Apollo的持久化改造" class="headerlink" title="Sentinel基于Apollo的持久化改造"></a>Sentinel基于Apollo的持久化改造</h2><p>Sentinel基于Apollo的持久化改造。</p>
-<a id="more"></a>
-<p>sentinel默认是将用户在dashboard中编辑过的流控信息保存在内存中，所以在重启后，所有之前配置过的流控规则也就不见了。但是sentinel给用户提供了可扩展的接口，用户可以根据自己熟悉的持久化引擎来做一定的相应的改造（apollo、nacos、zookeeper）。这里首先要了解下sentinel的规则管理和推送方式</p>
-<h3 id="规则管理和推送"><a href="#规则管理和推送" class="headerlink" title="规则管理和推送"></a>规则管理和推送</h3><p>一般来说，规则的管理和推送有以下三种方式：<br>| 推送模式  | 说明                                                         | 优点                         | 缺点                                                         |      |<br>| ——— | ———————————————————— | —————————- | ———————————————————— | —- |<br>| 默认模式  | API 将规则推送至客户端并直接更新到内存中，扩展写数据源       | 简单，无任何依赖             | 不保证一致性；规则保存在内存中，重启即消失。严重不建议用于生产环境 |      |<br>| pull 模式 | 扩展写数据源（WritableDataSource）， 客户端主动向某个规则管理中心定期轮询拉取规则，这个规则中心可以是 RDBMS、文件（数据库保存） 等 | 简单，无任何依赖；规则持久化 | 不保证一致性；实时性不保证，拉取过于频繁也可能会有性能问题。 |      |<br>| push 模式 | 扩展读数据源（ReadableDataSource），规则中心统一推送，客户端通过注册监听器的方式时刻监听变化，比如使用 Nacos、Zookeeper 等配置中心。这种方式有更好的实时性和一致性保证。生产环境下一般采用 push 模式的数据源。 | 规则持久化；一致性；快速     | 引入第三方依赖                                               |      |</p>
+        <h2 id="Sentinel基于Apollo的持久化改造"><a href="#Sentinel基于Apollo的持久化改造" class="headerlink" title="Sentinel基于Apollo的持久化改造"></a>Sentinel基于Apollo的持久化改造</h2><p>sentinel默认是将用户在dashboard中编辑过的流控信息保存在内存中，所以在重启后，所有之前配置过的流控规则也就不见了。但是sentinel给用户提供了可扩展的接口，用户可以根据自己熟悉的持久化引擎来做一定的相应的改造（apollo、nacos、zookeeper）。这里首先要了解下sentinel的规则管理和推送方式</p>
+<h3 id="规则管理和推送"><a href="#规则管理和推送" class="headerlink" title="规则管理和推送"></a>规则管理和推送</h3><p>一般来说，规则的管理和推送有以下三种方式：</p>
+<table>
+<thead>
+<tr>
+<th>推送模式</th>
+<th>说明</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>默认模式</td>
+<td>API 将规则推送至客户端并直接更新到内存中，扩展写数据源</td>
+<td>简单，无任何依赖</td>
+<td>不保证一致性；规则保存在内存中，重启即消失。严重不建议用于生产环境</td>
+</tr>
+<tr>
+<td>pull 模式</td>
+<td>扩展写数据源（WritableDataSource）， 客户端主动向某个规则管理中心定期轮询拉取规则，这个规则中心可以是 RDBMS、文件（数据库保存） 等</td>
+<td>简单，无任何依赖；规则持久化</td>
+<td>不保证一致性；实时性不保证，拉取过于频繁也可能会有性能问题。</td>
+</tr>
+<tr>
+<td>push 模式</td>
+<td>扩展读数据源（ReadableDataSource），规则中心统一推送，客户端通过注册监听器的方式时刻监听变化，比如使用 Nacos、Zookeeper 等配置中心。这种方式有更好的实时性和一致性保证。生产环境下一般采用 push 模式的数据源。</td>
+<td>规则持久化；一致性；快速</td>
+<td>引入第三方依赖</td>
+</tr>
+</tbody>
+</table>
 <p>所以简单的归纳来说，sentinel（基于push）的工作原理是：</p>
 <ol>
 <li>通过dashboard来配置相关的流控信息。</li>
@@ -518,7 +527,7 @@
 clusterName = System.getProperty(&quot;cluster&quot;, ApolloEnvConst.APOLLO_DEFAULT_CLUSTER_NAME);
 namespaceName = System.getProperty(&quot;namespace&quot;, ApolloEnvConst.APOLLO_DEFAULT_NAMESPACE);
 </code></pre><p> }</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">2. 封装对apollo通用的增删改查的方法。&lt;br/&gt;</span><br><span class="line">    ```java</span><br><span class="line">     /**</span><br><span class="line">     * 获取配置</span><br><span class="line">     *</span><br><span class="line">     * @param app</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public String getRulesByApollo(String app, String ruleType) &#123;</span><br><span class="line">        String flowDataId = getRuleType(app, ruleType);</span><br><span class="line">        OpenNamespaceDTO openNamespaceDTO = apolloOpenApiClient.getNamespace(appid, env, clusterName, namespaceName);</span><br><span class="line">        return openNamespaceDTO</span><br><span class="line">                .getItems()</span><br><span class="line">                .stream()</span><br><span class="line">                .filter(p -&gt; p.getKey().equals(flowDataId))</span><br><span class="line">                .map(OpenItemDTO::getValue)</span><br><span class="line">                .findFirst()</span><br><span class="line">                .orElse(&quot;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /**</span><br><span class="line">     * 新增修改配置</span><br><span class="line">     *</span><br><span class="line">     * @param app</span><br><span class="line">     * @param rules</span><br><span class="line">     */</span><br><span class="line">    public void publish2Apollo(String app, String ruleType, String rules) &#123;</span><br><span class="line">        // Increase the configuration</span><br><span class="line">        String flowDataId = getRuleType(app, ruleType);</span><br><span class="line">        OpenItemDTO openItemDTO = new OpenItemDTO();</span><br><span class="line">        openItemDTO.setKey(flowDataId);</span><br><span class="line">        openItemDTO.setValue(rules);</span><br><span class="line">        openItemDTO.setComment(&quot;Program auto-join&quot;);</span><br><span class="line">        openItemDTO.setDataChangeCreatedBy(&quot;apollo&quot;);</span><br><span class="line">        apolloOpenApiClient.createOrUpdateItem(appid, env, clusterName, namespaceName, openItemDTO);</span><br><span class="line">    </span><br><span class="line">        // Release configuration</span><br><span class="line">        NamespaceReleaseDTO namespaceReleaseDTO = new NamespaceReleaseDTO();</span><br><span class="line">        namespaceReleaseDTO.setEmergencyPublish(true);</span><br><span class="line">        namespaceReleaseDTO.setReleaseComment(&quot;Modify or add configurations&quot;);</span><br><span class="line">        namespaceReleaseDTO.setReleasedBy(&quot;apollo&quot;);</span><br><span class="line">        namespaceReleaseDTO.setReleaseTitle(&quot;Modify or add configurations&quot;);</span><br><span class="line">        apolloOpenApiClient.publishNamespace(appid, env, clusterName, namespaceName, namespaceReleaseDTO);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">2. 封装对apollo通用的增删改查的方法。&lt;br/&gt;</span><br><span class="line"></span><br><span class="line">    ```java</span><br><span class="line">     /**</span><br><span class="line">     * 获取配置</span><br><span class="line">     *</span><br><span class="line">     * @param app</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public String getRulesByApollo(String app, String ruleType) &#123;</span><br><span class="line">        String flowDataId = getRuleType(app, ruleType);</span><br><span class="line">        OpenNamespaceDTO openNamespaceDTO = apolloOpenApiClient.getNamespace(appid, env, clusterName, namespaceName);</span><br><span class="line">        return openNamespaceDTO</span><br><span class="line">                .getItems()</span><br><span class="line">                .stream()</span><br><span class="line">                .filter(p -&gt; p.getKey().equals(flowDataId))</span><br><span class="line">                .map(OpenItemDTO::getValue)</span><br><span class="line">                .findFirst()</span><br><span class="line">                .orElse(&quot;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 新增修改配置</span><br><span class="line">     *</span><br><span class="line">     * @param app</span><br><span class="line">     * @param rules</span><br><span class="line">     */</span><br><span class="line">    public void publish2Apollo(String app, String ruleType, String rules) &#123;</span><br><span class="line">        // Increase the configuration</span><br><span class="line">        String flowDataId = getRuleType(app, ruleType);</span><br><span class="line">        OpenItemDTO openItemDTO = new OpenItemDTO();</span><br><span class="line">        openItemDTO.setKey(flowDataId);</span><br><span class="line">        openItemDTO.setValue(rules);</span><br><span class="line">        openItemDTO.setComment(&quot;Program auto-join&quot;);</span><br><span class="line">        openItemDTO.setDataChangeCreatedBy(&quot;apollo&quot;);</span><br><span class="line">        apolloOpenApiClient.createOrUpdateItem(appid, env, clusterName, namespaceName, openItemDTO);</span><br><span class="line"></span><br><span class="line">        // Release configuration</span><br><span class="line">        NamespaceReleaseDTO namespaceReleaseDTO = new NamespaceReleaseDTO();</span><br><span class="line">        namespaceReleaseDTO.setEmergencyPublish(true);</span><br><span class="line">        namespaceReleaseDTO.setReleaseComment(&quot;Modify or add configurations&quot;);</span><br><span class="line">        namespaceReleaseDTO.setReleasedBy(&quot;apollo&quot;);</span><br><span class="line">        namespaceReleaseDTO.setReleaseTitle(&quot;Modify or add configurations&quot;);</span><br><span class="line">        apolloOpenApiClient.publishNamespace(appid, env, clusterName, namespaceName, namespaceReleaseDTO);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>apollo数据序列化（按实际情况传递相应的实体）</p>
  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> Converter&lt;List&lt;FlowRuleEntity&gt;, String&gt; flowRuleEntityEncoder() &#123;</span><br><span class="line">    <span class="keyword">return</span> JSON::toJSONString;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> Converter&lt;String, List&lt;FlowRuleEntity&gt;&gt; flowRuleEntityDecoder() &#123;</span><br><span class="line">    <span class="keyword">return</span> s -&gt; JSON.parseArray(s, FlowRuleEntity.class);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -547,12 +556,6 @@ namespaceName = System.getProperty(&quot;namespace&quot;, ApolloEnvConst.APOLLO_
     
 
     <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/sentinel/" <i class="fa fa-tag"> sentinel</a>
-          
-        </div>
       
 
       
@@ -785,9 +788,7 @@ namespaceName = System.getProperty(&quot;namespace&quot;, ApolloEnvConst.APOLLO_
                     
                       
                     
-                      
-                    
-                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -850,9 +851,7 @@ namespaceName = System.getProperty(&quot;namespace&quot;, ApolloEnvConst.APOLLO_
                     
                       
                     
-                      
-                    
-                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-count">23</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -949,7 +948,7 @@ namespaceName = System.getProperty(&quot;namespace&quot;, ApolloEnvConst.APOLLO_
       <i class="fa fa-area-chart"></i>
     </span>
     
-    <span title="站点总字数">102k</span>
+    <span title="站点总字数">101k</span>
   
 
   
