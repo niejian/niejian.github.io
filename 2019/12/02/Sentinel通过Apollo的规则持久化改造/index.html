@@ -100,20 +100,20 @@
 
 
 
-  <meta name="description" content="Sentinel基于Apollo的持久化改造sentinel默认是将用户在dashboard中编辑过的流控信息保存在内存中，所以在重启后，所有之前配置过的流控规则也就不见了。但是sentinel给用户提供了可扩展的接口，用户可以根据自己熟悉的持久化引擎来做一定的相应的改造（apollo、nacos、zookeeper）。这里首先要了解下sentinel的规则管理和推送方式 规则管理和推送一般来说，">
+  <meta name="description" content="Sentinel基于Apollo的持久化改造Sentinel基于Apollo的持久化改造。">
 <meta name="keywords" content="sentinel">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Sentinel通过Apollo的规则持久化改造">
 <meta property="og:url" content="https://niejian.github.io/2019/12/02/Sentinel通过Apollo的规则持久化改造/index.html">
 <meta property="og:site_name" content="code4fun">
-<meta property="og:description" content="Sentinel基于Apollo的持久化改造sentinel默认是将用户在dashboard中编辑过的流控信息保存在内存中，所以在重启后，所有之前配置过的流控规则也就不见了。但是sentinel给用户提供了可扩展的接口，用户可以根据自己熟悉的持久化引擎来做一定的相应的改造（apollo、nacos、zookeeper）。这里首先要了解下sentinel的规则管理和推送方式 规则管理和推送一般来说，">
+<meta property="og:description" content="Sentinel基于Apollo的持久化改造Sentinel基于Apollo的持久化改造。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://s2.ax1x.com/2019/12/02/QnCFsg.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/12/02/QnC8eJ.png">
-<meta property="og:updated_time" content="2019-12-02T02:32:01.496Z">
+<meta property="og:updated_time" content="2019-12-02T02:33:07.236Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Sentinel通过Apollo的规则持久化改造">
-<meta name="twitter:description" content="Sentinel基于Apollo的持久化改造sentinel默认是将用户在dashboard中编辑过的流控信息保存在内存中，所以在重启后，所有之前配置过的流控规则也就不见了。但是sentinel给用户提供了可扩展的接口，用户可以根据自己熟悉的持久化引擎来做一定的相应的改造（apollo、nacos、zookeeper）。这里首先要了解下sentinel的规则管理和推送方式 规则管理和推送一般来说，">
+<meta name="twitter:description" content="Sentinel基于Apollo的持久化改造Sentinel基于Apollo的持久化改造。">
 <meta name="twitter:image" content="https://s2.ax1x.com/2019/12/02/QnCFsg.png">
 
 
@@ -403,7 +403,7 @@
                 
               
 
-              <time title="创建时间：2019-12-02 10:31:28 / 修改时间：10:32:01" itemprop="dateCreated datePublished" datetime="2019-12-02T10:31:28+08:00">2019-12-02</time>
+              <time title="创建时间：2019-12-02 10:31:28 / 修改时间：10:33:07" itemprop="dateCreated datePublished" datetime="2019-12-02T10:31:28+08:00">2019-12-02</time>
             
 
             
@@ -495,7 +495,9 @@
       
 
       
-        <h2 id="Sentinel基于Apollo的持久化改造"><a href="#Sentinel基于Apollo的持久化改造" class="headerlink" title="Sentinel基于Apollo的持久化改造"></a>Sentinel基于Apollo的持久化改造</h2><p>sentinel默认是将用户在dashboard中编辑过的流控信息保存在内存中，所以在重启后，所有之前配置过的流控规则也就不见了。但是sentinel给用户提供了可扩展的接口，用户可以根据自己熟悉的持久化引擎来做一定的相应的改造（apollo、nacos、zookeeper）。这里首先要了解下sentinel的规则管理和推送方式</p>
+        <h2 id="Sentinel基于Apollo的持久化改造"><a href="#Sentinel基于Apollo的持久化改造" class="headerlink" title="Sentinel基于Apollo的持久化改造"></a>Sentinel基于Apollo的持久化改造</h2><p>Sentinel基于Apollo的持久化改造。</p>
+<a id="more"></a>
+<p>sentinel默认是将用户在dashboard中编辑过的流控信息保存在内存中，所以在重启后，所有之前配置过的流控规则也就不见了。但是sentinel给用户提供了可扩展的接口，用户可以根据自己熟悉的持久化引擎来做一定的相应的改造（apollo、nacos、zookeeper）。这里首先要了解下sentinel的规则管理和推送方式</p>
 <h3 id="规则管理和推送"><a href="#规则管理和推送" class="headerlink" title="规则管理和推送"></a>规则管理和推送</h3><p>一般来说，规则的管理和推送有以下三种方式：<br>| 推送模式  | 说明                                                         | 优点                         | 缺点                                                         |      |<br>| ——— | ———————————————————— | —————————- | ———————————————————— | —- |<br>| 默认模式  | API 将规则推送至客户端并直接更新到内存中，扩展写数据源       | 简单，无任何依赖             | 不保证一致性；规则保存在内存中，重启即消失。严重不建议用于生产环境 |      |<br>| pull 模式 | 扩展写数据源（WritableDataSource）， 客户端主动向某个规则管理中心定期轮询拉取规则，这个规则中心可以是 RDBMS、文件（数据库保存） 等 | 简单，无任何依赖；规则持久化 | 不保证一致性；实时性不保证，拉取过于频繁也可能会有性能问题。 |      |<br>| push 模式 | 扩展读数据源（ReadableDataSource），规则中心统一推送，客户端通过注册监听器的方式时刻监听变化，比如使用 Nacos、Zookeeper 等配置中心。这种方式有更好的实时性和一致性保证。生产环境下一般采用 push 模式的数据源。 | 规则持久化；一致性；快速     | 引入第三方依赖                                               |      |</p>
 <p>所以简单的归纳来说，sentinel（基于push）的工作原理是：</p>
 <ol>
