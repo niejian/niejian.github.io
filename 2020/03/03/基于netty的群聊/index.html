@@ -100,18 +100,18 @@
 
 
 
-  <meta name="description" content="基于netty的群聊学了一段时间的netty知识，现在通过这个基于console的程序来对netty的相关接口做个简单的应用。 准备依赖12345&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;gt;io.netty&amp;lt;/groupId&amp;gt;    &amp;lt;artifactId&amp;gt;netty-all&amp;lt;/artifactId&amp;gt;    &amp;lt;version&amp;">
+  <meta name="description" content="基于netty的群聊学了一段时间的netty知识，现在通过这个基于console的程序来对netty的相关接口做个简单的应用。">
 <meta name="keywords" content="netty">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基于netty的群聊">
 <meta property="og:url" content="https://niejian.github.io/2020/03/03/基于netty的群聊/index.html">
 <meta property="og:site_name" content="code4fun">
-<meta property="og:description" content="基于netty的群聊学了一段时间的netty知识，现在通过这个基于console的程序来对netty的相关接口做个简单的应用。 准备依赖12345&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;gt;io.netty&amp;lt;/groupId&amp;gt;    &amp;lt;artifactId&amp;gt;netty-all&amp;lt;/artifactId&amp;gt;    &amp;lt;version&amp;">
+<meta property="og:description" content="基于netty的群聊学了一段时间的netty知识，现在通过这个基于console的程序来对netty的相关接口做个简单的应用。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-03-03T03:33:32.630Z">
+<meta property="og:updated_time" content="2020-03-03T03:37:04.043Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于netty的群聊">
-<meta name="twitter:description" content="基于netty的群聊学了一段时间的netty知识，现在通过这个基于console的程序来对netty的相关接口做个简单的应用。 准备依赖12345&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;gt;io.netty&amp;lt;/groupId&amp;gt;    &amp;lt;artifactId&amp;gt;netty-all&amp;lt;/artifactId&amp;gt;    &amp;lt;version&amp;">
+<meta name="twitter:description" content="基于netty的群聊学了一段时间的netty知识，现在通过这个基于console的程序来对netty的相关接口做个简单的应用。">
 
 
 
@@ -400,7 +400,7 @@
                 
               
 
-              <time title="创建时间：2020-03-03 11:21:30 / 修改时间：11:33:32" itemprop="dateCreated datePublished" datetime="2020-03-03T11:21:30+08:00">2020-03-03</time>
+              <time title="创建时间：2020-03-03 11:21:30 / 修改时间：11:37:04" itemprop="dateCreated datePublished" datetime="2020-03-03T11:21:30+08:00">2020-03-03</time>
             
 
             
@@ -492,7 +492,7 @@
       
 
       
-        <h1 id="基于netty的群聊"><a href="#基于netty的群聊" class="headerlink" title="基于netty的群聊"></a>基于netty的群聊</h1><p>学了一段时间的netty知识，现在通过这个基于console的程序来对netty的相关接口做个简单的应用。</p>
+        <h1 id="基于netty的群聊"><a href="#基于netty的群聊" class="headerlink" title="基于netty的群聊"></a>基于netty的群聊</h1><p>学了一段时间的netty知识，现在通过这个基于console的程序来对netty的相关接口做个简单的应用。<br><a id="more"></a></p>
 <h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><h3 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.netty<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>netty-all<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.1.44.Final<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>我们都知道，一个典型的netty程序绝大部分使基于以下三部曲来走的；</p>
 <ol>
