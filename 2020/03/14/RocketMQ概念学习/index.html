@@ -100,18 +100,21 @@
 
 
 
-  <meta name="description" content="brew更换为国内源">
-<meta name="keywords" content="brew 源更新">
+  <meta name="description" content="[toc] 架构图">
+<meta name="keywords" content="RocketMQ概念">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Mac brew源更新">
-<meta property="og:url" content="https://niejian.github.io/2019/06/28/Mac-brew源更新/index.html">
+<meta property="og:title" content="RocketMQ概念学习">
+<meta property="og:url" content="https://niejian.github.io/2020/03/14/RocketMQ概念学习/index.html">
 <meta property="og:site_name" content="code4fun">
-<meta property="og:description" content="brew更换为国内源">
+<meta property="og:description" content="[toc] 架构图">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-06-28T09:02:00.061Z">
+<meta property="og:image" content="http://rocketmq.apache.org/assets/images/rmq-basic-arc.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/03/13/8ndPxO.md.png">
+<meta property="og:updated_time" content="2020-03-14T09:38:23.425Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mac brew源更新">
-<meta name="twitter:description" content="brew更换为国内源">
+<meta name="twitter:title" content="RocketMQ概念学习">
+<meta name="twitter:description" content="[toc] 架构图">
+<meta name="twitter:image" content="http://rocketmq.apache.org/assets/images/rmq-basic-arc.png">
 
 
 
@@ -119,7 +122,7 @@
 
   
   
-  <link rel="canonical" href="https://niejian.github.io/2019/06/28/Mac-brew源更新/">
+  <link rel="canonical" href="https://niejian.github.io/2020/03/14/RocketMQ概念学习/">
 
 
 
@@ -129,7 +132,7 @@
   };
 </script>
 
-  <title>Mac brew源更新 | code4fun</title>
+  <title>RocketMQ概念学习 | code4fun</title>
   
 
 
@@ -357,7 +360,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://niejian.github.io/2019/06/28/Mac-brew源更新/">
+    <link itemprop="mainEntityOfPage" href="https://niejian.github.io/2020/03/14/RocketMQ概念学习/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jian Nie">
@@ -374,7 +377,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Mac brew源更新
+          <h1 class="post-title" itemprop="name headline">RocketMQ概念学习
 
               
             
@@ -400,7 +403,7 @@
                 
               
 
-              <time title="创建时间：2019-06-28 16:27:47 / 修改时间：17:02:00" itemprop="dateCreated datePublished" datetime="2019-06-28T16:27:47+08:00">2019-06-28</time>
+              <time title="创建时间：2020-03-14 17:36:32 / 修改时间：17:38:23" itemprop="dateCreated datePublished" datetime="2020-03-14T17:36:32+08:00">2020-03-14</time>
             
 
             
@@ -422,7 +425,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/mac/" itemprop="url" rel="index"><span itemprop="name">mac</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/RocketMQ/" itemprop="url" rel="index"><span itemprop="name">RocketMQ</span></a></span>
 
                 
                 
@@ -458,7 +461,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">324</span>
+                <span title="本文字数">3.2k</span>
               
 
               
@@ -472,7 +475,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">1 分钟</span>
+                <span title="阅读时长">3 分钟</span>
               
             </div>
           
@@ -492,14 +495,118 @@
       
 
       
-        <p>brew更换为国内源</p>
-<a id="more"></a>
-<p>在用brew安装新的软件的时候一直出现：</p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Updating Homebrew...</span><br></pre></td></tr></table></figure>
-<p>主要是因为它试图在连接国外的源，</p>
-<p>改成国内的源就好了：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#替换brew.git:</span></span><br><span class="line"><span class="built_in">cd</span> <span class="string">"<span class="variable">$(brew --repo)</span>"</span></span><br><span class="line">git remote <span class="built_in">set</span>-url origin https://mirrors.ustc.edu.cn/brew.git</span><br><span class="line"><span class="comment">#替换homebrew-core.git:</span></span><br><span class="line"><span class="built_in">cd</span> <span class="string">"<span class="variable">$(brew --repo)</span>/Library/Taps/homebrew/homebrew-core"</span></span><br><span class="line">git remote <span class="built_in">set</span>-url origin https://mirrors.ustc.edu.cn/homebrew-core.git</span><br></pre></td></tr></table></figure>
+        <p>[toc]</p>
+<h2 id="架构图"><a href="#架构图" class="headerlink" title="架构图"></a>架构图</h2><p><img src="http://rocketmq.apache.org/assets/images/rmq-basic-arc.png" alt><br><a id="more"></a></p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><code>RocketMQ</code> 是一个分布式的<code>低延迟</code>，<code>高性能</code>，<code>可靠性高</code>的消息系统，</p>
+<h3 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h3><h4 id="NameServer"><a href="#NameServer" class="headerlink" title="NameServer"></a>NameServer</h4><p>提供轻量的服务发现和路由的功能。每个NameServer记录了所有的路由信息，提供相应的读写服务和快速扩展的功能。</p>
+<p><strong>NameServer 遵循的是<code>share-nothing design</code>。也就是说NameServer之间不共享任何信息。<code>Brokers</code>给所有的NameServer发送心跳数据。Producers and consumers can query meta data from any of name servers available while sending / consuming messages. <code>Producer</code>和<code>Consumer</code>可以通过任何可用的<code>NameServer</code>在发送、接收消息的时候得到<code>borker</code>的元数据信息，</strong></p>
+<h5 id="NameServer-作用"><a href="#NameServer-作用" class="headerlink" title="NameServer 作用"></a>NameServer 作用</h5><ul>
+<li><strong>管理<code>Broker</code></strong>：NameServer接受<code>Broker Cluster</code>的注册，并且提供心跳检测机制来判断Broker是否存活。</li>
+<li><strong>管理路由</strong>：每个NameServer为客户端的<code>queue(队列)</code>查询（producer/consumer）维持着broker集群的所有路由信息，使客户端能快速定位到相应的broker。</li>
+</ul>
+<h5 id="客户端连接NameServer的方式"><a href="#客户端连接NameServer的方式" class="headerlink" title="客户端连接NameServer的方式"></a>客户端连接NameServer的方式</h5><ul>
+<li>编程式，<code>producer.setNamesrvAddr(&quot;ip:port&quot;)</code></li>
+<li>设置Java变量：<code>rocketmq.namesrv.addr</code></li>
+<li>系统环境变量：<code>NAMESRV_ADDR</code></li>
+</ul>
+<h4 id="Broker-Cluster"><a href="#Broker-Cluster" class="headerlink" title="Broker Cluster"></a>Broker Cluster</h4><p><code>Broker</code>通过<code>Topic</code>和<code>Queue</code>的机制提供消息的存储。支持<code>Pull</code>和<code>Push</code>模式，通常有2、3个副本支持容错机制。并提供强大的峰值填充和按原始时间顺序累积数千亿条消息的能力；除此之外，broker还提供容灾恢复，丰富的指标和告警机制；<br></p>
+<font color="red">在broker集群中可以分为两种角色，<code>Master</code>、<code>Slave</code>。<strong><code>Master</code>节点可以接受读写请求，而<code>Slave</code>节点只能接收读请求</strong></font>
 
+<h5 id="Broker的作用"><a href="#Broker的作用" class="headerlink" title="Broker的作用"></a>Broker的作用</h5><p><code>Broker</code>有的<code>消息存储</code>、<code>消息投送</code>、<code>消息查询</code>、<code>保证高可用</code>等作用。</p>
+<h5 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h5><p><img src="https://s1.ax1x.com/2020/03/13/8ndPxO.md.png" alt></p>
+<ul>
+<li><strong>Remoting Module</strong>：broker的入口，用来处理客户端的请求；</li>
+<li><strong>CLient Manager</strong>：管理客户端信息（Producer/Consumer）。并且为<code>Consumer</code>维护它所订阅的topic;</li>
+<li><strong>Store Service</strong>：提供API为客户端查询以存储在硬盘上的消息；</li>
+<li><strong>HA Service</strong>：为broker集群中的master和slave彤数据同步的功能；</li>
+<li><strong>Index Service</strong>： 为那些指定key的消息快速建立索引，并能为客户端快速查询消息<h4 id="Producer-Cluster"><a href="#Producer-Cluster" class="headerlink" title="Producer Cluster"></a>Producer Cluster</h4><h4 id="Consumer-Cluster"><a href="#Consumer-Cluster" class="headerlink" title="Consumer Cluster"></a>Consumer Cluster</h4>支持<code>Pull</code>和<code>Push</code>模式拉取消息。在<strong><code>广播模式</code>下，一个consumerGroup中的所有消费者都能收到消息，<code>默认情况</code>下，一个consumerGroup只能有一个consumer消费这条消息</strong></li>
+</ul>
+<h4 id="Topic"><a href="#Topic" class="headerlink" title="Topic"></a>Topic</h4><p>broker与consumer、producer联系的中间载体。</p>
+<h4 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h4><p>Topic与Queue的对应关系使1对多的关系，一个Topic可以包含多个Queue，主要是做负载均衡。<strong><em>当发送消息时，Producer只需要指定Topic，他就会根据topic的路由信息来来选择具体发送到哪个Queue上。</em></strong> 同样的，当消费者订阅消息的时候，也会根据<code>负载均衡算法</code>来决定订阅topic上的哪些Queue的消息。</p>
+<h4 id="Offset"><a href="#Offset" class="headerlink" title="Offset"></a>Offset</h4><p>rocketmq在存储消息的时候会为每个topic下的每个queue生成一个消息的索引文件，每个queue都对应这样一个offset来记录当前Queue消息总数。</p>
+<h2 id="部署篇"><a href="#部署篇" class="headerlink" title="部署篇"></a>部署篇</h2><h3 id="NameServer-1"><a href="#NameServer-1" class="headerlink" title="NameServer"></a>NameServer</h3><p>为了使集群能在有节点宕机的时候仍然能够正常工作，推荐部署两个或者更多的<code>NameServer</code>，只要有一台NameServer实例正常，整个集群都能正常提供服务。</p>
+<h3 id="broker部署"><a href="#broker部署" class="headerlink" title="broker部署"></a>broker部署</h3><ol>
+<li>部署多个broker节点；如果是master节点就要把brokerid设为0，slave节点就得设置为非0的正整数。</li>
+<li>所有的brokerName要设置乘同一个名字。</li>
+<li>为了实现高可用，至少要有两个broker。每个topic至少要分布在两个或者更多的broker上。</li>
+</ol>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">属性名</th>
+<th style="text-align:center">默认值</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">listenPort</td>
+<td style="text-align:center">10911</td>
+<td style="text-align:center">broker启动端口</td>
+</tr>
+<tr>
+<td style="text-align:center">namesrvAddr</td>
+<td style="text-align:center">null</td>
+<td style="text-align:center">nameServer 地址</td>
+</tr>
+<tr>
+<td style="text-align:center">brokerIP1</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">当有多个地址的时候，需要配置</td>
+</tr>
+<tr>
+<td style="text-align:center">brokerName</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">broke名称</td>
+</tr>
+<tr>
+<td style="text-align:center">brokerClusterName</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">broker集群名称</td>
+</tr>
+<tr>
+<td style="text-align:center">brokerId</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0:主; &gt; 0 从</td>
+</tr>
+<tr>
+<td style="text-align:center">storePathCommitLog</td>
+<td style="text-align:center">~/store/commitlog/</td>
+<td style="text-align:center">提交日志存储路径</td>
+</tr>
+<tr>
+<td style="text-align:center">storePathConsumerQueue</td>
+<td style="text-align:center">~/store/consumequeue/</td>
+<td style="text-align:center">消费队列存储路径</td>
+</tr>
+<tr>
+<td style="text-align:center">mapedFileSizeCommitLog</td>
+<td style="text-align:center">1024 <em> 1024 </em> 1024(1G)</td>
+<td style="text-align:center">mapped file size for commit log</td>
+</tr>
+<tr>
+<td style="text-align:center">deleteWhen</td>
+<td style="text-align:center">04（凌晨4点）</td>
+<td style="text-align:center">超过<code>保留时间</code>的commit log的删除时间</td>
+</tr>
+<tr>
+<td style="text-align:center">fileReserverdTime</td>
+<td style="text-align:center">72</td>
+<td style="text-align:center">commitlog的存活时间（小时）</td>
+</tr>
+<tr>
+<td style="text-align:center">brokerRole</td>
+<td style="text-align:center">ASYNC_MASTER</td>
+<td style="text-align:center">broker角色（SYNC_MASTER/ASYNC_MASTER/SLAVE）</td>
+</tr>
+<tr>
+<td style="text-align:center">flushDiskType</td>
+<td style="text-align:center">ASYNC_FLUSH</td>
+<td style="text-align:center">{SYNC_FLUSH/ASYNC_FLUSH}. Broker of SYNC_FLUSH mode flushes each message onto disk before acknowledging producer. Broker of ASYNC_FLUSH mode, on the other hand, takes advantage of group-committing, achieving better performance.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="通用配置"><a href="#通用配置" class="headerlink" title="通用配置"></a>通用配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">brokerClusterName = bm-test-rocketmq-broker-cluster</span><br><span class="line"># 108的从节点，集群中主从的对应关系是通过brokerName做映射的</span><br><span class="line">brokerName = bm-test-rocketmq-broker-108</span><br><span class="line">brokerId = 1</span><br><span class="line">deleteWhen = 04</span><br><span class="line">fileReservedTime = 72</span><br><span class="line">brokerRole = SLAVE</span><br><span class="line">flushDiskType = ASYNC_FLUSH</span><br><span class="line">listenPort=11912</span><br><span class="line"># 当单机部署的时候，注意多个节点之前路径要区分出来</span><br><span class="line">storePathCommitLog=/data/rocketmq/slave/strore/commitlog</span><br><span class="line">storePathConsumerQueue=/data/rocketmq/slave/store/consumequeue</span><br><span class="line"># 是否自动创建topic</span><br><span class="line">autoCreateTopicEnable=true</span><br><span class="line"># 在多网卡的时候需要配置</span><br><span class="line">brokerIP1=192.168.242.107</span><br><span class="line"># 告诉salve节点从哪台机器上同步信息</span><br><span class="line">brokerIP2=192.168.242.107</span><br><span class="line">namesrvAddr=192.168.240.64:9876;192.168.240.64:9877</span><br><span class="line">storePathRootDir=/data/rocketmq/slave/strore/rootdir</span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -522,7 +629,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/brew-源更新/" <i class="fa fa-tag"> brew 源更新</a>
+            <a href="/tags/RocketMQ概念/" <i class="fa fa-tag"> RocketMQ概念</a>
           
         </div>
       
@@ -627,8 +734,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/06/18/kafka知识整理/" rel="next" title="kafka知识整理">
-                <i class="fa fa-chevron-left"></i> kafka知识整理
+              <a href="/2020/03/07/Java-NIO-reactor模式介绍/" rel="next" title="Java NIO reactor模式介绍">
+                <i class="fa fa-chevron-left"></i> Java NIO reactor模式介绍
               </a>
             
           </div>
@@ -636,10 +743,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/06/28/k8s-yml部署文件详解/" rel="prev" title="k8s yml部署文件详解">
-                k8s yml部署文件详解 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -689,8 +792,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -887,6 +999,23 @@
       </div>
 
       
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#架构图"><span class="nav-number">1.</span> <span class="nav-text">架构图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">2.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#组成"><span class="nav-number">2.1.</span> <span class="nav-text">组成</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NameServer"><span class="nav-number">2.1.1.</span> <span class="nav-text">NameServer</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#NameServer-作用"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">NameServer 作用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端连接NameServer的方式"><span class="nav-number">2.1.1.2.</span> <span class="nav-text">客户端连接NameServer的方式</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Broker-Cluster"><span class="nav-number">2.1.2.</span> <span class="nav-text">Broker Cluster</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Broker的作用"><span class="nav-number">2.1.2.1.</span> <span class="nav-text">Broker的作用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#结构"><span class="nav-number">2.1.2.2.</span> <span class="nav-text">结构</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Producer-Cluster"><span class="nav-number">2.1.3.</span> <span class="nav-text">Producer Cluster</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Consumer-Cluster"><span class="nav-number">2.1.4.</span> <span class="nav-text">Consumer Cluster</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Topic"><span class="nav-number">2.1.5.</span> <span class="nav-text">Topic</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Queue"><span class="nav-number">2.1.6.</span> <span class="nav-text">Queue</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Offset"><span class="nav-number">2.1.7.</span> <span class="nav-text">Offset</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署篇"><span class="nav-number">3.</span> <span class="nav-text">部署篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NameServer-1"><span class="nav-number">3.1.</span> <span class="nav-text">NameServer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#broker部署"><span class="nav-number">3.2.</span> <span class="nav-text">broker部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置"><span class="nav-number">3.3.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通用配置"><span class="nav-number">3.4.</span> <span class="nav-text">通用配置</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
 
       
 
@@ -1078,7 +1207,7 @@
   
     <script>
   window.livereOptions = {
-    refer: '2019/06/28/Mac-brew源更新/'
+    refer: '2020/03/14/RocketMQ概念学习/'
   };
   (function(d, s) {
     var j, e = d.getElementsByTagName(s)[0];
