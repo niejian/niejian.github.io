@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="本文通过源码分析的方式对RocketMQ的负载均衡做一次简单的了解。">
+<meta name="keywords" content="RocketMQ的负载均衡">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RocketMQ的负载均衡源码分析">
+<meta property="og:url" content="https://niejian.github.io/2020/03/18/RocketMQ的负载均衡源码分析/index.html">
+<meta property="og:site_name" content="code4fun">
+<meta property="og:description" content="本文通过源码分析的方式对RocketMQ的负载均衡做一次简单的了解。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s1.ax1x.com/2020/03/14/8lOWV0.md.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/03/15/81Rgc8.md.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/03/15/81WDrF.md.png">
+<meta property="og:updated_time" content="2020-03-19T05:49:19.653Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RocketMQ的负载均衡源码分析">
+<meta name="twitter:description" content="本文通过源码分析的方式对RocketMQ的负载均衡做一次简单的了解。">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/03/14/8lOWV0.md.jpg">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://niejian.github.io/2020/03/18/RocketMQ的负载均衡源码分析/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>RocketMQ的负载均衡源码分析 | code4fun</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">code4fun</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-主页">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>主页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-归档">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-标签">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-分类">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-关于">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://niejian.github.io/2020/03/18/RocketMQ的负载均衡源码分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jian Nie">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://s2.ax1x.com/2019/05/07/Er0DE9.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="code4fun">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">RocketMQ的负载均衡源码分析
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-18 17:31:14" itemprop="dateCreated datePublished" datetime="2020-03-18T17:31:14+08:00">2020-03-18</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-03-19 13:49:19" itemprop="dateModified" datetime="2020-03-19T13:49:19+08:00">2020-03-19</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/RocketMQ/" itemprop="url" rel="index"><span itemprop="name">RocketMQ</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">6k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">5 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文通过源码分析的方式对RocketMQ的负载均衡做一次简单的了解。</p>
+<a id="more"></a>
+<h3 id="producer对MessageQueue的负载均衡"><a href="#producer对MessageQueue的负载均衡" class="headerlink" title="producer对MessageQueue的负载均衡"></a>producer对<code>MessageQueue</code>的负载均衡</h3><ol>
+<li>通过topic获取到broker的信息。</li>
+<li>得到broker上的messagequeue分布信息，再通过算法对messagequeue列表长度取模，得到queueId。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 确定queue的下标</span></span><br><span class="line"><span class="keyword">int</span> index = <span class="keyword">this</span>.sendWhichQueue.getAndIncrement();</span><br><span class="line"><span class="comment">// this.sendWhichQueue.getAndIncrement(); 类似轮询算法，从0开始</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadLocalIndex</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ThreadLocal&lt;Integer&gt; threadLocalIndex = <span class="keyword">new</span> ThreadLocal&lt;Integer&gt;();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Random random = <span class="keyword">new</span> Random();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAndIncrement</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Integer index = <span class="keyword">this</span>.threadLocalIndex.get();</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> == index) &#123;</span><br><span class="line">            index = Math.abs(random.nextInt());</span><br><span class="line">            <span class="keyword">if</span> (index &lt; <span class="number">0</span>)</span><br><span class="line">                index = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">this</span>.threadLocalIndex.set(index);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        index = Math.abs(index + <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">if</span> (index &lt; <span class="number">0</span>)</span><br><span class="line">            index = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.threadLocalIndex.set(index);</span><br><span class="line">        <span class="keyword">return</span> index;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"ThreadLocalIndex&#123;"</span> +</span><br><span class="line">            <span class="string">"threadLocalIndex="</span> + threadLocalIndex.get() +</span><br><span class="line">            <span class="string">'&#125;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s1.ax1x.com/2020/03/14/8lOWV0.md.jpg" alt></p>
+<p><font color="red">通过调试代码可以知道，所谓的<code>MessageQueue</code>就是broker上的队列信息，每个topic在创建的时候可以指定相应的queue的数量。<strong>也就是说，一个topic的消息存储在多个主broker中</strong></font></p>
+<h2 id="producer负载均衡"><a href="#producer负载均衡" class="headerlink" title="producer负载均衡"></a>producer负载均衡</h2><p>producer端的负载均衡主要是在选择对应的broker。在producer发送消息的时候会对消息进行路由，看到底是路由到哪个broker。下面主要说下以下两种发送消息的方法：<code>系统计算路由MessageQueue</code>，<code>自定义路由MessageQueue</code>。<br></p>
+<h3 id="系统计算路由MessageQueue"><a href="#系统计算路由MessageQueue" class="headerlink" title="系统计算路由MessageQueue"></a>系统计算路由MessageQueue</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SendResult send = producer.send(message, <span class="number">60</span> * <span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="系统计算路由MessageQueue的其他路由算法"><a href="#系统计算路由MessageQueue的其他路由算法" class="headerlink" title="系统计算路由MessageQueue的其他路由算法"></a>系统计算路由MessageQueue的其他路由算法</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> MessageQueue <span class="title">selectOneMessageQueue</span><span class="params">(<span class="keyword">final</span> TopicPublishInfo tpInfo, <span class="keyword">final</span> String lastBrokerName)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.sendLatencyFaultEnable) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">int</span> index = tpInfo.getSendWhichQueue().getAndIncrement();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; tpInfo.getMessageQueueList().size(); i++) &#123;</span><br><span class="line">                <span class="keyword">int</span> pos = Math.abs(index++) % tpInfo.getMessageQueueList().size();</span><br><span class="line">                <span class="keyword">if</span> (pos &lt; <span class="number">0</span>)</span><br><span class="line">                    pos = <span class="number">0</span>;</span><br><span class="line">                MessageQueue mq = tpInfo.getMessageQueueList().get(pos);</span><br><span class="line">                <span class="keyword">if</span> (latencyFaultTolerance.isAvailable(mq.getBrokerName())) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (<span class="keyword">null</span> == lastBrokerName || mq.getBrokerName().equals(lastBrokerName))</span><br><span class="line">                        <span class="keyword">return</span> mq;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">final</span> String notBestBroker = latencyFaultTolerance.pickOneAtLeast();</span><br><span class="line">            <span class="keyword">int</span> writeQueueNums = tpInfo.getQueueIdByBroker(notBestBroker);</span><br><span class="line">            <span class="keyword">if</span> (writeQueueNums &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">final</span> MessageQueue mq = tpInfo.selectOneMessageQueue();</span><br><span class="line">                <span class="keyword">if</span> (notBestBroker != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    mq.setBrokerName(notBestBroker);</span><br><span class="line">                    mq.setQueueId(tpInfo.getSendWhichQueue().getAndIncrement() % writeQueueNums);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> mq;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                latencyFaultTolerance.remove(notBestBroker);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            log.error(<span class="string">"Error occurred when selecting message queue"</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> tpInfo.selectOneMessageQueue();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 默认策略(路由到当前的broker主节点列表取模后的broker中)</span></span><br><span class="line">    <span class="keyword">return</span> tpInfo.selectOneMessageQueue(lastBrokerName);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="自定义路由MessageQueue"><a href="#自定义路由MessageQueue" class="headerlink" title="自定义路由MessageQueue"></a>自定义路由MessageQueue</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">SendResult send = producer.send(message, <span class="keyword">new</span> MessageQueueSelector() &#123;</span><br><span class="line">             <span class="comment">/**</span></span><br><span class="line"><span class="comment">              *</span></span><br><span class="line"><span class="comment">              * <span class="doctag">@param</span> mqs 通过name server返回的broker主节点列表</span></span><br><span class="line"><span class="comment">              * <span class="doctag">@param</span> msg 当前消息</span></span><br><span class="line"><span class="comment">              * <span class="doctag">@param</span> arg</span></span><br><span class="line"><span class="comment">              * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">              */</span></span><br><span class="line">             <span class="meta">@Override</span></span><br><span class="line">             <span class="function"><span class="keyword">public</span> MessageQueue <span class="title">select</span><span class="params">(List&lt;MessageQueue&gt; mqs, Message msg, Object arg)</span> </span>&#123;</span><br><span class="line">                 <span class="keyword">int</span> size = mqs.size();</span><br><span class="line">                 <span class="keyword">long</span> timeMillis = System.currentTimeMillis();</span><br><span class="line"></span><br><span class="line">                 <span class="keyword">return</span> mqs.get((<span class="keyword">int</span>)timeMillis % size);</span><br><span class="line">             &#125;</span><br><span class="line">         &#125;, <span class="number">60</span> * <span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="Consumer的负载均衡"><a href="#Consumer的负载均衡" class="headerlink" title="Consumer的负载均衡"></a>Consumer的负载均衡</h2><h3 id="消费端设置负责均衡策略"><a href="#消费端设置负责均衡策略" class="headerlink" title="消费端设置负责均衡策略"></a>消费端设置负责均衡策略</h3><p>在<code>consumer.statrt()</code>中，consumer会对所订阅的topic上的messagequeue做负载均衡<code>DefaultConsumerPushImpl.start()</code>下的<code>this.rebalanceImpl.setAllocateMessageQueueStrategy(this.defaultMQPushConsumer.getAllocateMessageQueueStrategy());</code>， 默认返回的是<code>AllocateMessageQueueAveragely</code><br><br><img src="https://s1.ax1x.com/2020/03/15/81Rgc8.md.png" alt></p>
+<h4 id="负责均衡策略"><a href="#负责均衡策略" class="headerlink" title="负责均衡策略"></a>负责均衡策略</h4><p><img src="https://s1.ax1x.com/2020/03/15/81WDrF.md.png" alt></p>
+<ol>
+<li>AllocateMessageQueueAveragely</li>
+</ol>
+<h3 id="负载均衡的时机"><a href="#负载均衡的时机" class="headerlink" title="负载均衡的时机"></a>负载均衡的时机</h3><p>在<code>Consumer</code>启动后，会通过<code>SchedlueThreadPool</code>来定时的计算此时此刻我这个消费者要去哪些个queue中获取消息<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// RebalanceService</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       log.info(<span class="keyword">this</span>.getServiceName() + <span class="string">" service started"</span>);</span><br><span class="line"></span><br><span class="line">       <span class="keyword">while</span> (!<span class="keyword">this</span>.isStopped()) &#123;</span><br><span class="line">           <span class="keyword">this</span>.waitForRunning(waitInterval);</span><br><span class="line">           <span class="comment">// 开始进行分配</span></span><br><span class="line">           <span class="keyword">this</span>.mqClientFactory.doRebalance();</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       log.info(<span class="keyword">this</span>.getServiceName() + <span class="string">" service end"</span>);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>具体实现<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">consumerGroup : 消费组名称</span></span><br><span class="line"><span class="comment">currentCID：当前消费者实例Id（随机数）</span></span><br><span class="line"><span class="comment">mqAll: 该topic对应的queue的信息列表</span></span><br><span class="line"><span class="comment">cidAll: 消费组中所有的消费者列表</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;MessageQueue&gt; <span class="title">allocate</span><span class="params">(String consumerGroup, String currentCID, List&lt;MessageQueue&gt; mqAll,</span></span></span><br><span class="line"><span class="function"><span class="params">    List&lt;String&gt; cidAll)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (currentCID == <span class="keyword">null</span> || currentCID.length() &lt; <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"currentCID is empty"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (mqAll == <span class="keyword">null</span> || mqAll.isEmpty()) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"mqAll is null or mqAll empty"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (cidAll == <span class="keyword">null</span> || cidAll.isEmpty()) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"cidAll is null or cidAll empty"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    List&lt;MessageQueue&gt; result = <span class="keyword">new</span> ArrayList&lt;MessageQueue&gt;();</span><br><span class="line">    <span class="keyword">if</span> (!cidAll.contains(currentCID)) &#123;</span><br><span class="line">        log.info(<span class="string">"[BUG] ConsumerGroup: &#123;&#125; The consumerId: &#123;&#125; not in cidAll: &#123;&#125;"</span>,</span><br><span class="line">            consumerGroup,</span><br><span class="line">            currentCID,</span><br><span class="line">            cidAll);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> index = cidAll.indexOf(currentCID);</span><br><span class="line">    <span class="keyword">int</span> mod = mqAll.size() % cidAll.size();</span><br><span class="line">    <span class="keyword">int</span> averageSize =</span><br><span class="line">        mqAll.size() &lt;= cidAll.size() ? <span class="number">1</span> : (mod &gt; <span class="number">0</span> &amp;&amp; index &lt; mod ? mqAll.size() / cidAll.size()</span><br><span class="line">            + <span class="number">1</span> : mqAll.size() / cidAll.size());</span><br><span class="line">    <span class="keyword">int</span> startIndex = (mod &gt; <span class="number">0</span> &amp;&amp; index &lt; mod) ? index * averageSize : index * averageSize + mod;</span><br><span class="line">    <span class="keyword">int</span> range = Math.min(averageSize, mqAll.size() - startIndex);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; range; i++) &#123;</span><br><span class="line">        result.add(mqAll.get((startIndex + i) % mqAll.size()));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/RocketMQ的负载均衡/" <i class="fa fa-tag"> RocketMQ的负载均衡</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+              <div>
+                
+
+<script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.css">
+
+
+  
+
+
+<div class="likely">
+	
+ 	 	<div class="twitter">Tweet</div>
+	
+ 	 	<div class="facebook">Share</div>
+	
+ 	 	<div class="linkedin">Link</div>
+	
+ 	 	<div class="gplus">Plus</div>
+	
+ 	 	<div class="vkontakte">Share</div>
+	
+ 	 	<div class="odnoklassniki">Class</div>
+	
+ 	 	<div class="telegram">Send</div>
+	
+ 	 	<div class="whatsapp">Send</div>
+	
+ 	 	<div class="pinterest">Pin</div>
+	
+</div>
+
+              </div>
+            
+            
+            
+              <div>
+                
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+              </div>
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/14/RocketMQ概念学习/" rel="next" title="RocketMQ概念学习">
+                <i class="fa fa-chevron-left"></i> RocketMQ概念学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80NDEwMC8yMDYzNQ=="></div>
+    </div>
+
+  
+
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://s2.ax1x.com/2019/05/07/Er0DE9.jpg" alt="Jian Nie">
+            
+              <p class="site-author-name" itemprop="name">Jian Nie</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">31</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/niejian" title="GitHub &rarr; https://github.com/niejian" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:niejian9001@gmail.com" title="E-Mail &rarr; mailto:niejian9001@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#producer对MessageQueue的负载均衡"><span class="nav-number">1.</span> <span class="nav-text">producer对MessageQueue的负载均衡</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#producer负载均衡"><span class="nav-number"></span> <span class="nav-text">producer负载均衡</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#系统计算路由MessageQueue"><span class="nav-number">1.</span> <span class="nav-text">系统计算路由MessageQueue</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#系统计算路由MessageQueue的其他路由算法"><span class="nav-number">1.1.</span> <span class="nav-text">系统计算路由MessageQueue的其他路由算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义路由MessageQueue"><span class="nav-number">2.</span> <span class="nav-text">自定义路由MessageQueue</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Consumer的负载均衡"><span class="nav-number"></span> <span class="nav-text">Consumer的负载均衡</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#消费端设置负责均衡策略"><span class="nav-number">1.</span> <span class="nav-text">消费端设置负责均衡策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#负责均衡策略"><span class="nav-number">1.1.</span> <span class="nav-text">负责均衡策略</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#负载均衡的时机"><span class="nav-number">2.</span> <span class="nav-text">负载均衡的时机</span></a></li></ol></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jian Nie</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">126k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">1:54</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.1"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script>
+  window.livereOptions = {
+    refer: '2020/03/18/RocketMQ的负载均衡源码分析/'
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+  
+
+
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'a33341b4cfef521eab14',
+    clientSecret: '170044a4d080008acb03edf1d187adde178f3227',
+    repo: 'niejian.github.io',
+    owner: 'niejian',
+    admin: ['niejian'],
+    id: md5(location.pathname),
+    
+      language: 'zh-CN',
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+  <script>
+    
+    
+  </script>
+
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
